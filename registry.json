@@ -1,0 +1,20 @@
+{
+  "name": "ai4science-skills",
+  "owner": { "name": "AI for Science community" },
+  "description": "Community index of Claude skills for scientific work. Every entry is pinned to an exact commit and checked automatically.",
+  "version": "0.1.0",
+  "plugins": [
+    {
+      "name": "szl-evidence-skills",
+      "repo": "szl-holdings/szl-skills",
+      "ref": "v0.1.2",
+      "sha": "f3ce86f8757844d6a9773cb3bc2499f9afe6665b",
+      "path": "skills",
+      "skills": ["szl-typesafe-ai", "szl-governed-decision"],
+      "description": "TypeSafe Jev as an optional, fail-closed second reader for evidence triage; decisions that carry their own evidence.",
+      "maintainer": "betterwithage (SZL Holdings)",
+      "license": "Apache-2.0",
+      "hosted_services": ["api.typesafe.ai - szl-typesafe-ai only, optional; sends the state you pass it; requires your own TypeSafe key"]
+    }
+  ]
+}
