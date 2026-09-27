@@ -43,9 +43,9 @@ Code owns the workflow. Jev supplies typed judgments.
 | Whether a condition holds | Noul | claims_live, invents_joules, treats_hf_as_source, lambda_as_theorem, unsigned_as_live |
 | Degree on ordered levels | Score | overclaim_severity |
 
-Pack: `jev-plane/packs/overclaim_reader.json` (`szl.overclaim_reader.v1`).
+Pack: [jev-plane/packs/overclaim_reader.json](https://github.com/szl-holdings/szl-typesafe-triage/blob/8d73dd23f640aace362172fff55d82ef7de63f98/jev-plane/packs/overclaim_reader.json) (`szl.overclaim_reader.v1`).
 Reference implementation (not bundled with this skill): the Jev client and compose helpers in [szl-typesafe-triage/jev-plane/plane](https://github.com/szl-holdings/szl-typesafe-triage/tree/8d73dd23f640aace362172fff55d82ef7de63f98/jev-plane/plane).
-Governed wrap: `skills/szl-governed-decision`.
+Governed wrap: the separate szl-governed-decision skill (install it too).
 
 ## Fail-closed contract (non-negotiable)
 

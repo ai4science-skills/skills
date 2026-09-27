@@ -7,8 +7,8 @@
     {
       "name": "szl-evidence-skills",
       "repo": "szl-holdings/szl-skills",
-      "ref": "v0.1.2",
-      "sha": "f3ce86f8757844d6a9773cb3bc2499f9afe6665b",
+      "ref": "v0.1.3",
+      "sha": "fbd4d43572d14ba4071f5662316896e53cadfd59",
       "path": "skills",
       "skills": ["szl-typesafe-ai", "szl-governed-decision"],
       "description": "TypeSafe Jev as an optional, fail-closed second reader for evidence triage; decisions that carry their own evidence.",
