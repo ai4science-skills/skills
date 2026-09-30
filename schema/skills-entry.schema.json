@@ -1,0 +1,376 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ai4science-skills/skills/schema/skills-entry.schema.json",
+  "title": "Non-installable skill evidence foundation v0",
+  "description": "New bounded foundation, not the absent full v3 schema. JSON only. LISTED and EVALUATION PASS are unavailable. Semantic validator additionally checks tuple identity, portable paths, UTC/expiry ordering and evidence/state consistency. Hash references do not authenticate approvals.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "state",
+    "installable",
+    "attestation",
+    "source",
+    "facets",
+    "human_gates",
+    "diagnostic"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ai4s.skills-entry/v0-foundation"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "state": {
+      "enum": [
+        "CANDIDATE",
+        "REVIEW",
+        "BLOCKED",
+        "STALE",
+        "DELISTED"
+      ]
+    },
+    "installable": {
+      "const": false
+    },
+    "attestation": {
+      "const": "UNSIGNED_HONEST"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "commit",
+        "path",
+        "archive_sha256",
+        "source_skill_tree_sha256",
+        "source_hash_contract_id",
+        "lock_sha256"
+      ],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*/(?:[A-Za-z0-9][A-Za-z0-9_.-]*|\\.[gG][iI][tT][hH][uU][bB])$"
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 4096,
+          "description": "Portable repository-relative skill root. Empty string denotes a root SKILL.md."
+        },
+        "archive_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_skill_tree_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_hash_contract_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "lock_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "facets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "STATIC",
+        "PROSE",
+        "BEHAVIOR",
+        "SCIENCE",
+        "TEST",
+        "EVALUATION",
+        "FRESHNESS"
+      ],
+      "properties": {
+        "STATIC": {
+          "$ref": "#/$defs/evidence"
+        },
+        "PROSE": {
+          "$ref": "#/$defs/evidence"
+        },
+        "BEHAVIOR": {
+          "$ref": "#/$defs/evidence"
+        },
+        "SCIENCE": {
+          "$ref": "#/$defs/evidence"
+        },
+        "TEST": {
+          "$ref": "#/$defs/evidence"
+        },
+        "EVALUATION": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/evidence"
+            },
+            {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "FAIL",
+                    "BLOCKED",
+                    "MISSING",
+                    "UNOBSERVED",
+                    "NOT_APPLICABLE"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "FRESHNESS": {
+          "$ref": "#/$defs/evidence"
+        }
+      }
+    },
+    "human_gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "RIGHTS",
+        "SECURITY",
+        "SAFETY_SCOPE",
+        "SCIENCE_APPLICABILITY",
+        "LISTING"
+      ],
+      "properties": {
+        "RIGHTS": {
+          "$ref": "#/$defs/review"
+        },
+        "SECURITY": {
+          "$ref": "#/$defs/review"
+        },
+        "SAFETY_SCOPE": {
+          "$ref": "#/$defs/review"
+        },
+        "SCIENCE_APPLICABILITY": {
+          "$ref": "#/$defs/review"
+        },
+        "LISTING": {
+          "$ref": "#/$defs/review"
+        }
+      }
+    },
+    "diagnostic": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "report_sha256",
+            "entry_receipt_sha256",
+            "auditor_tree_sha256",
+            "snapshot_sha256",
+            "status"
+          ],
+          "properties": {
+            "report_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "entry_receipt_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "auditor_tree_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "snapshot_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "status": {
+              "enum": [
+                "UNSIGNED_HONEST",
+                "REVIEW",
+                "FAIL",
+                "BLOCKED"
+              ]
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "coverage",
+        "reason",
+        "artifacts",
+        "checked_at",
+        "expires_at",
+        "checker_sha256"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "BLOCKED",
+            "MISSING",
+            "UNOBSERVED",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "coverage": {
+          "enum": [
+            "NONE",
+            "PARTIAL",
+            "COMPLETE"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "maxItems": 16,
+          "uniqueItems": true
+        },
+        "checked_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "checker_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "PASS"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "coverage": {
+                "const": "COMPLETE"
+              },
+              "artifacts": {
+                "minItems": 1
+              },
+              "checked_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "checker_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "receipt_sha256",
+        "reason"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "MISSING",
+            "BLOCKED",
+            "UNOBSERVED",
+            "CLAIMED_APPROVED"
+          ]
+        },
+        "receipt_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "CLAIMED_APPROVED"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "receipt_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

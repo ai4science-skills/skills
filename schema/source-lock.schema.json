@@ -1,0 +1,575 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ai4science:source-lock-projection:v1",
+  "title": "Limited source-census projection",
+  "description": "Limited structural projection for recorded census metadata, not a complete source-lock schema, skills-entry schema, legal or biosafety policy, archive verifier, or install/listing authorization.",
+  "$comment": "tools/source_lock.py is authoritative for cross-field consistency, immutable URL binding, evidence completeness, path portability/case aliases, hash/count agreement and explicit degraded states. Additional census metadata is retained but provides no approval. No third-party code is imported or executed. The v4 v1 hash contract differs from the v3 v0 contract: inert symlink records and case aliases stay separate from portability and reuse status. Manifest/receipt references are validated as inert paths only; their files and original archive bytes are not verified by this projection.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "sources",
+    "hash_contract"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "enum": [
+        "ai4s.sources-lock/v3-phase0-proposal",
+        "ai4s.sources-lock/v4-phase0-proposal"
+      ]
+    },
+    "sources": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/source"
+          },
+          {
+            "$ref": "#/$defs/source_v4"
+          }
+        ]
+      }
+    },
+    "hash_contract": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Recorded v3 v0 or v4 v1 content-tree identifier; Python checks the supported identifier and keys. Metadata only: archive, manifest and receipt bytes are not reverified, and no approval is granted."
+    },
+    "total_sources": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "total_skill_md_files": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "total_tracked_files": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "purpose": {
+      "description": "Retained census metadata; not projected as authority."
+    },
+    "created_at": {
+      "description": "Retained census metadata; not projected as authority."
+    },
+    "input_payload": {
+      "description": "Retained census metadata; not projected as authority."
+    },
+    "phase": {
+      "description": "Retained census metadata; not projected as authority."
+    },
+    "exit": {
+      "description": "Retained census metadata; not projected as authority."
+    },
+    "execution_performed": {
+      "const": false
+    },
+    "publication_performed": {
+      "const": false
+    },
+    "prior_report": {
+      "description": "Retained census metadata; not projected as authority."
+    },
+    "concurrent_pr_observation": {
+      "description": "Retained census metadata; not projected as authority."
+    },
+    "next_three_actions": {
+      "description": "Retained census metadata; not projected as authority."
+    },
+    "scope": {
+      "description": "Retained v4 census metadata; not projected as authority."
+    },
+    "all_sources_acquisition_complete": {
+      "type": "boolean"
+    },
+    "catalog_security_science_evaluation_complete": {
+      "const": false
+    },
+    "upstream_mutation_performed": {
+      "const": false
+    },
+    "external_publication_performed": {
+      "const": false
+    },
+    "third_party_skill_registry_copy_performed": {
+      "const": false
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "total_lock_entries",
+        "literal_skill_md_paths",
+        "regular_file_records",
+        "archive_bytes_total"
+      ],
+      "description": "Observed records and acquired archive bytes only; unavailable source counts remain unobserved, never inferred complete."
+    },
+    "prior_v3": {
+      "description": "Retained v4 census metadata; not projected as authority."
+    },
+    "inventory_basis": {
+      "description": "Retained v4 census metadata; not projected as authority."
+    },
+    "tooling": {
+      "description": "Retained v4 census metadata; not projected as authority."
+    },
+    "receipt_trust": {
+      "description": "Retained v4 census metadata; not projected as authority."
+    },
+    "excluded_repositories": {
+      "description": "Retained v4 census metadata; not projected as authority."
+    },
+    "stopping_condition": {
+      "description": "Retained v4 census metadata; not projected as authority."
+    }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "required": [
+        "repository",
+        "canonical_repository",
+        "repository_url",
+        "acquisition_status",
+        "installable"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "repository": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*$"
+        },
+        "canonical_repository": {
+          "type": "string"
+        },
+        "repository_url": {
+          "type": "string"
+        },
+        "acquisition_status": {
+          "enum": [
+            "PINNED_HASHED",
+            "BLOCKED",
+            "MISSING",
+            "UNOBSERVED"
+          ]
+        },
+        "installable": {
+          "const": false
+        },
+        "pin": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "archive": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "content": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "skill_md_paths": {
+                  "type": "array",
+                  "maxItems": 10000,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "skill_roots": {
+                  "type": "array",
+                  "maxItems": 10000,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "skill_md_count": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 0
+                },
+                "regular_file_count": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 0
+                }
+              }
+            }
+          ]
+        },
+        "bounded_acquisition": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "license": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "review_status": {
+                  "enum": [
+                    "NOT_REVIEWED",
+                    "HUMAN_REVIEW_REQUIRED",
+                    "BLOCKED",
+                    "MISSING",
+                    "UNOBSERVED"
+                  ]
+                },
+                "blocked_subtrees": {"type": "array", "maxItems": 10000, "uniqueItems": true, "items": {"type": "string"}},
+                "files": {
+                  "type": "array",
+                  "maxItems": 10000
+                }
+              }
+            }
+          ]
+        },
+        "metadata": {},
+        "validation": {},
+        "registry_disposition": {
+          "enum": [
+            "UNASSESSED_NOT_LISTED",
+            "BLOCKED_NOT_LISTED",
+            "MISSING_NOT_LISTED",
+            "UNOBSERVED_NOT_LISTED",
+            "BLOCKED_CUSTOM_LICENSE_SUBTREES"
+          ]
+        },
+        "source_tree_evidence": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "acquisition_reason": {}
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "acquisition_status": {
+                "const": "PINNED_HASHED"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "pin",
+              "archive",
+              "content",
+              "bounded_acquisition",
+              "license",
+              "source_tree_evidence"
+            ],
+            "properties": {
+              "pin": {
+                "type": "object"
+              },
+              "archive": {
+                "type": "object"
+              },
+              "content": {
+                "type": "object"
+              },
+              "bounded_acquisition": {
+                "type": "object"
+              },
+              "license": {
+                "type": "object"
+              },
+              "source_tree_evidence": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "source_v4": {
+      "type": "object",
+      "required": [
+        "repository",
+        "repository_url",
+        "commit",
+        "archive_sha256",
+        "skill_tree_sha256",
+        "repository_tree_sha256",
+        "acquisition_status",
+        "installable",
+        "registry_disposition",
+        "selection"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "repository": {
+          "type": "string"
+        },
+        "repository_url": {
+          "type": "string"
+        },
+        "commit": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "archive_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "skill_tree_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "repository_tree_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "acquisition_status": {
+          "enum": [
+            "PINNED_HASHED",
+            "BLOCKED",
+            "MISSING",
+            "UNOBSERVED"
+          ]
+        },
+        "installable": {
+          "const": false
+        },
+        "registry_disposition": {
+          "const": "NOT_LISTED"
+        },
+        "acquired_at": {},
+        "blocked_reason": {},
+        "archive": {},
+        "archive_manifest": {},
+        "archived": {},
+        "binary_or_nonutf8_candidate_count": {},
+        "blocked_custom_license_subtrees": {},
+        "bounded_retry_basis": {},
+        "case_collision_groups": {},
+        "commit_url": {},
+        "expected_git_tree_sha1": {},
+        "git_correspondence": {},
+        "hash_disagreement_evidence": {},
+        "human_approvals": {},
+        "license": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "human_approval": {
+              "const": "NOT_GRANTED"
+            }
+          }
+        },
+        "license_hash": {},
+        "license_reuse_disposition": {
+          "enum": [
+            null,
+            "NOT_APPROVED_SCOPE_REVIEW_REQUIRED",
+            "BLOCKED_ROOT_LICENSE",
+            "BLOCKED_CUSTOM_SUBTREES; OTHER_SCOPE_UNAPPROVED",
+            "BLOCKED_CUSTOM_PROPRIETARY_LICENSE; HUMAN_DISPOSITION_REQUIRED"
+          ]
+        },
+        "limits": {},
+        "pin_evidence": {},
+        "portability_status": {
+          "enum": [
+            null,
+            "NO_CASE_COLLISIONS_OBSERVED",
+            "REVIEW_CASE_COLLISIONS",
+            "BLOCKED",
+            "MISSING",
+            "UNOBSERVED"
+          ]
+        },
+        "quarantine": {},
+        "recomputed_git_tree_sha1": {},
+        "regular_file_count": {},
+        "repository_tree_manifest": {},
+        "retained_evidence_recheck": {},
+        "root_license_hashes": {},
+        "selected_component_manifest": {},
+        "selected_component_tree_sha256": {},
+        "selection": {
+          "type": "object",
+          "required": [
+            "status",
+            "approved_for_import"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "CANDIDATE_EVIDENCE_ONLY_NOT_IMPORTABLE",
+                "BLOCKED_SCOPE_PENDING", "ARCHIVED_LINEAGE_METADATA_ONLY", "BLOCKED_CUSTOM_LICENSE", "BLOCKED_MISSING_GITLINK_VENDOR_PLATFORM", "BLOCKED_ARCHIVE_GIT_BYTE_MISMATCH"
+              ]
+            },
+            "approved_for_import": {
+              "const": false
+            }
+          }
+        },
+        "skill_md_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "skill_md_paths": {
+          "type": "array",
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "skill_tree_manifest": {},
+        "status_dimensions": {},
+        "symlink_count": {}
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "acquisition_status": {
+                "const": "PINNED_HASHED"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "archive",
+              "commit_url",
+              "pin_evidence",
+              "expected_git_tree_sha1",
+              "recomputed_git_tree_sha1",
+              "git_correspondence",
+              "regular_file_count",
+              "symlink_count",
+              "skill_md_count",
+              "skill_md_paths",
+              "binary_or_nonutf8_candidate_count",
+              "limits",
+              "portability_status",
+              "license",
+              "license_hash",
+              "license_reuse_disposition"
+            ],
+            "properties": {
+              "commit": {
+                "type": "string"
+              },
+              "archive_sha256": {
+                "type": "string"
+              },
+              "skill_tree_sha256": {
+                "type": "string"
+              },
+              "repository_tree_sha256": {
+                "type": "string"
+              },
+              "archive": {
+                "type": "object"
+              },
+              "git_correspondence": {
+                "const": "MATCH"
+              },
+              "license": {
+                "type": "object"
+              },
+              "portability_status": {
+                "enum": [
+                  "NO_CASE_COLLISIONS_OBSERVED",
+                  "REVIEW_CASE_COLLISIONS",
+                  "BLOCKED",
+                  "MISSING",
+                  "UNOBSERVED"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": "ai4s.sources-lock/v3-phase0-proposal"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "total_sources",
+          "total_skill_md_files",
+          "total_tracked_files"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": "ai4s.sources-lock/v4-phase0-proposal"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "summary"
+        ],
+        "properties": {
+          "hash_contract": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  ]
+}
