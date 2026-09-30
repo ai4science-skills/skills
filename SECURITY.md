@@ -1,0 +1,13 @@
+# Importer boundaries
+
+Registry entries identify a public GitHub repository, a named ref, an exact commit, an explicit relative skill path, and a nonempty skill allowlist. `tools/sync.py` checks these fields before network access. The named ref must resolve to the declared commit. Only HTTPS requests to `api.github.com` and `codeload.github.com` are permitted, redirects are refused, and an optional GitHub token is sent only to the API origin.
+
+Each request has a 30-second socket timeout. Downloaded archives are limited to 32 MiB compressed, 64 MiB fully decompressed, and 10,000 members. Selected plugin files, including their generated source manifest, must be smaller than 1 MiB. A five-minute CI job timeout bounds the full hosted check; the local socket timeout is not a total wall-clock deadline or a bound on operating-system DNS resolution.
+
+Archive paths must be portable relative paths with one repository prefix. Traversal, absolute paths, Windows drive or backslash syntax, reserved device names, trailing-dot names, case collisions, duplicate paths, links, and special files are refused. Existing output symlinks are refused. All requested skills and a recognized source license must exist. The tool preserves source LICENSE and NOTICE bytes and does not change their rights.
+
+A generation is prepared in a temporary directory and checked before current output is touched. Handled replacement errors restore previous output. This is not a crash-durable multi-file transaction: abrupt process termination or storage failure can leave a staging or backup directory requiring inspection. Only one local writer should run at a time.
+
+`tools/check.py` checks all marketplace metadata against the registry, source identity, exact per-file hashes and membership, explicit skill membership, frontmatter, referenced files, recognized license consistency, recognizable credential patterns, and exact literal host declarations. It executes no vendored code. Its credential and host scans are heuristic: obfuscated secrets, runtime host construction, prompt injection, scientific validity, software vulnerabilities, data rights, and a provider's operational behavior require review beyond these checks. A hash or detected license name does not certify scientific claims or rights to third-party data.
+
+Regression tests use crafted in-memory archives and isolated temporary directories. They do not execute fetched skills or call their declared services. CI additionally re-vendors exact source bytes and refuses tracked or untracked drift.

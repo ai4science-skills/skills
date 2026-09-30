@@ -8,18 +8,23 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
           python-version: "3.12"
+      - name: Importer regression tests without network or plugin execution
+        run: python -B -m unittest discover -s tools -p 'test_*.py' -v
       - name: Re-vendor from pinned commits
-        run: python tools/sync.py
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python -B tools/sync.py
       - name: Vendored files must match pinned commits
         run: |
-          if ! git diff --exit-code; then
+          if ! git diff --exit-code || test -n "$(git status --porcelain --untracked-files=all)"; then
             echo "::error::Vendored files differ from the pinned commits. Run python tools/sync.py and commit the result."
             exit 1
           fi
       - name: Checks
-        run: python tools/check.py
+        run: python -B tools/check.py

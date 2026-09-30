@@ -1,93 +1,310 @@
 #!/usr/bin/env python3
-"""Vendor every registry entry at its pinned commit and regenerate the marketplace.
-Stdlib only. Usage: python tools/sync.py"""
-import io, json, pathlib, re, shutil, sys, tarfile, urllib.request
+"""Bounded, non-executing vendoring of exact GitHub commits. Stdlib only."""
+import hashlib
+import gzip
+import io
+import json
+import os
+import pathlib
+import re
+import shutil
+import sys
+import tarfile
+import tempfile
+import urllib.parse
+import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-PLUG = ROOT / "plugins"
 LICENSE_NAMES = ("LICENSE", "LICENSE.md", "LICENSE.txt", "COPYING", "NOTICE")
+MAX_DOWNLOAD = 32 * 1024 * 1024
+MAX_EXPANDED = 64 * 1024 * 1024
+MAX_MEMBERS = 10000
+MAX_PLUGIN = 1024 * 1024
+MAX_JSON_DEPTH = 64
+NAME = re.compile(r"[a-z0-9][a-z0-9-]{1,63}")
+REPO = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]{0,38}/[A-Za-z0-9][A-Za-z0-9_.-]{0,99}")
+HOST = re.compile(r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9-]{2,63}|localhost")
 
-def put(path, text):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_bytes(text.encode("utf-8"))
+
+class SyncError(ValueError):
+    pass
+
+
+def unique_object(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise SyncError("duplicate JSON key")
+        result[key] = value
+    return result
+
+
+def read_json(raw):
+    if len(raw) > MAX_PLUGIN:
+        raise SyncError("JSON exceeds byte budget")
+    depth, quoted, escaped = 0, False, False
+    for byte in raw:
+        if quoted:
+            if escaped:
+                escaped = False
+            elif byte == 92:
+                escaped = True
+            elif byte == 34:
+                quoted = False
+        elif byte == 34:
+            quoted = True
+        elif byte in (91, 123):
+            depth += 1
+            if depth > MAX_JSON_DEPTH:
+                raise SyncError("JSON nesting exceeds 64 levels")
+        elif byte in (93, 125):
+            depth -= 1
+            if depth < 0:
+                raise SyncError("invalid JSON structure")
+    try:
+        return json.loads(raw.decode("utf-8"), object_pairs_hook=unique_object,
+                          parse_constant=lambda value: (_ for _ in ()).throw(SyncError("nonfinite JSON")))
+    except RecursionError as error:
+        raise SyncError("JSON nesting exceeds interpreter limit") from error
+
+
+def safe_path(value):
+    if not isinstance(value, str) or len(value) > 512:
+        raise SyncError("invalid relative path")
+    parts = value.split("/")
+    reserved = {"con", "prn", "aux", "nul"} | {"com%d" % i for i in range(1, 10)} | {"lpt%d" % i for i in range(1, 10)}
+    if any(not p or p in (".", "..") or not re.fullmatch(r"[A-Za-z0-9_.-]+", p)
+           or p.endswith((".", " ")) or p.split(".")[0].lower() in reserved for p in parts):
+        raise SyncError("unsafe relative path")
+    return value
+
+
+def declared_hosts(entry):
+    services = entry["hosted_services"]
+    if not isinstance(services, list):
+        raise SyncError("hosted_services must be a list")
+    result = set()
+    for service in services:
+        if not isinstance(service, str) or len(service) > 1024 or "\n" in service or "\r" in service or "|" in service:
+            raise SyncError("invalid hosted service declaration")
+        host = service.split(" - ", 1)[0].lower()
+        if not HOST.fullmatch(host):
+            raise SyncError("hosted service must start with an exact hostname")
+        result.add(host)
+    return result
+
+
+def validate_entry(entry):
+    required = {"name", "repo", "sha", "ref", "path", "skills", "description", "maintainer", "license", "hosted_services"}
+    if not isinstance(entry, dict) or set(entry) != required:
+        raise SyncError("registry entry fields must match the documented contract")
+    if not isinstance(entry["name"], str) or not NAME.fullmatch(entry["name"]):
+        raise SyncError("invalid plugin name")
+    if not isinstance(entry["repo"], str) or not REPO.fullmatch(entry["repo"]) or ".." in entry["repo"]:
+        raise SyncError("repo must be a GitHub owner/repository")
+    if not isinstance(entry["sha"], str) or not re.fullmatch(r"[a-f0-9]{40}", entry["sha"]):
+        raise SyncError("sha must be a full lowercase commit id")
+    ref = entry["ref"]
+    if not isinstance(ref, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._/-]{0,127}", ref) or ".." in ref:
+        raise SyncError("invalid source ref")
+    safe_path(entry["path"])
+    skills = entry["skills"]
+    if not isinstance(skills, list) or not skills or len(skills) > 100:
+        raise SyncError("skills must be a nonempty unique list")
+    if any(not isinstance(s, str) or not NAME.fullmatch(s) for s in skills):
+        raise SyncError("invalid skill name")
+    if len(set(skills)) != len(skills):
+        raise SyncError("duplicate skill name")
+    for field in ("description", "maintainer", "license"):
+        value = entry[field]
+        if not isinstance(value, str) or not value.strip() or len(value) > 1024 or any(c in value for c in "\r\n|"):
+            raise SyncError("invalid registry text field")
+    declared_hosts(entry)
+
+
+def validate_registry(registry):
+    if not isinstance(registry, dict) or set(registry) != {"name", "owner", "description", "version", "plugins"}:
+        raise SyncError("invalid registry fields")
+    for field in ("name", "description", "version"):
+        value = registry[field]
+        if not isinstance(value, str) or not value.strip() or len(value) > 1024 or any(c in value for c in "\r\n|"):
+            raise SyncError("invalid registry metadata")
+    if not isinstance(registry["owner"], dict) or not isinstance(registry["owner"].get("name"), str):
+        raise SyncError("invalid registry owner")
+    plugins = registry["plugins"]
+    if not isinstance(plugins, list) or not 1 <= len(plugins) <= 50:
+        raise SyncError("registry must contain 1 to 50 plugins")
+    names = set()
+    for entry in plugins:
+        validate_entry(entry)
+        if entry["name"] in names:
+            raise SyncError("duplicate plugin name")
+        names.add(entry["name"])
+
+
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, request, fp, code, message, headers, new_url):
+        raise SyncError("redirect refused")
+
+
+def bounded_get(url, limit):
+    parsed = urllib.parse.urlsplit(url)
+    if parsed.scheme != "https" or parsed.hostname not in {"api.github.com", "codeload.github.com"} or parsed.username or parsed.password or parsed.port:
+        raise SyncError("source URL is outside the GitHub allowlist")
+    headers = {"User-Agent": "ai4science-skills-sync"}
+    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    if token and parsed.hostname == "api.github.com":
+        headers["Authorization"] = "Bearer " + token
+    opener = urllib.request.build_opener(NoRedirect)
+    with opener.open(urllib.request.Request(url, headers=headers), timeout=30) as response:
+        if response.status != 200 or response.geturl() != url:
+            raise SyncError("source response did not match requested URL")
+        raw = response.read(limit + 1)
+    if len(raw) > limit:
+        raise SyncError("source response exceeds byte budget")
+    return raw
+
+
+def verify_ref(entry):
+    ref = urllib.parse.quote(entry["ref"], safe="")
+    resolved = read_json(bounded_get("https://api.github.com/repos/%s/commits/%s" % (entry["repo"], ref), 128 * 1024))
+    if resolved.get("sha") != entry["sha"]:
+        raise SyncError("source ref does not resolve to declared commit")
+
 
 def fetch(repo, sha):
-    url = f"https://codeload.github.com/{repo}/tar.gz/{sha}"
-    req = urllib.request.Request(url, headers={"User-Agent": "ai4science-skills-sync"})
-    with urllib.request.urlopen(req, timeout=180) as r:
-        data = r.read()
-    return tarfile.open(fileobj=io.BytesIO(data), mode="r:gz")
+    return bounded_get("https://codeload.github.com/%s/tar.gz/%s" % (repo, sha), MAX_DOWNLOAD)
 
-def vendor(e):
-    name = e["name"]
-    if not re.fullmatch(r"[a-f0-9]{40}", e.get("sha", "")):
-        sys.exit(f"{name}: sha must be a full 40-character commit id")
-    dest = PLUG / name
-    if dest.exists():
-        shutil.rmtree(dest)
-    base = e.get("path", "skills").strip("/")
-    wanted = set(e.get("skills") or [])
-    found = set()
-    tf = fetch(e["repo"], e["sha"])
-    for m in tf.getmembers():
-        if not m.isfile():
-            continue
-        parts = m.name.split("/", 1)
-        if len(parts) < 2 or ".." in pathlib.PurePosixPath(parts[1]).parts:
-            continue
-        rel = parts[1]
-        if rel in LICENSE_NAMES:
-            target = dest / rel
-        elif rel.startswith(base + "/"):
-            sub = rel[len(base) + 1:]
-            skill = sub.split("/", 1)[0]
-            if wanted and skill not in wanted:
+
+def prepare(entry, raw):
+    """Validate all archive paths and budgets before returning selected bytes."""
+    validate_entry(entry)
+    if len(raw) > MAX_DOWNLOAD:
+        raise SyncError("archive exceeds download budget")
+    # Bound full decompression before tarfile can consume oversized PAX metadata.
+    with gzip.GzipFile(fileobj=io.BytesIO(raw)) as compressed:
+        unpacked = compressed.read(MAX_EXPANDED + 1)
+    if len(unpacked) > MAX_EXPANDED:
+        raise SyncError("archive exceeds decompression budget")
+    result, archive_paths, root, expanded = {}, set(), None, 0
+    with tarfile.open(fileobj=io.BytesIO(unpacked), mode="r:") as archive:
+        for count, member in enumerate(archive, 1):
+            if count > MAX_MEMBERS:
+                raise SyncError("archive exceeds member budget")
+            name = member.name.rstrip("/") if member.isdir() else member.name
+            safe_path(name)
+            parts = name.split("/", 1)
+            if root is None:
+                root = parts[0]
+            if root != parts[0] or name.casefold() in archive_paths:
+                raise SyncError("archive has inconsistent root or duplicate paths")
+            archive_paths.add(name.casefold())
+            if member.isdir():
                 continue
-            found.add(skill)
-            target = dest / "skills" / sub
-        else:
-            continue
-        target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_bytes(tf.extractfile(m).read())
-    if wanted - found:
-        sys.exit(f"{name}: skills not found at pinned commit: {sorted(wanted - found)}")
-    skills = sorted(s for s in found if (dest / "skills" / s / "SKILL.md").exists())
-    if not skills:
-        sys.exit(f"{name}: no SKILL.md found under {base}/ at pinned commit")
-    put(dest / "SOURCE.json", json.dumps({"repo": e["repo"], "ref": e.get("ref"), "sha": e["sha"], "path": base}, indent=2) + "\n")
-    return skills
+            if not member.isfile() or member.size < 0:
+                raise SyncError("archive links and special files are refused")
+            expanded += member.size
+            if expanded > MAX_EXPANDED:
+                raise SyncError("archive exceeds expanded byte budget")
+            if len(parts) != 2:
+                raise SyncError("archive file has no repository prefix")
+            relative = parts[1]
+            if relative in LICENSE_NAMES:
+                target = relative
+            elif relative.startswith(entry["path"] + "/"):
+                sub = relative[len(entry["path"]) + 1:]
+                if sub.split("/", 1)[0] not in entry["skills"]:
+                    continue
+                target = "skills/" + sub
+            else:
+                continue
+            if member.size >= MAX_PLUGIN or target in result:
+                raise SyncError("selected file exceeds budget or has duplicate destination")
+            handle = archive.extractfile(member)
+            data = handle.read(MAX_PLUGIN)
+            if len(data) != member.size:
+                raise SyncError("archive file was truncated")
+            result[target] = data
+    if sum(len(data) for data in result.values()) >= MAX_PLUGIN:
+        raise SyncError("plugin exceeds byte budget")
+    if not any(name in result for name in LICENSE_NAMES[:-1]):
+        raise SyncError("source license is missing")
+    if any("skills/%s/SKILL.md" % skill not in result for skill in entry["skills"]):
+        raise SyncError("requested skill has no SKILL.md at pinned commit")
+    source = {"repo": entry["repo"], "ref": entry["ref"], "sha": entry["sha"], "path": entry["path"],
+              "files_sha256": {path: hashlib.sha256(data).hexdigest() for path, data in sorted(result.items())}}
+    result["SOURCE.json"] = (json.dumps(source, indent=2) + "\n").encode()
+    return result
+
+
+def marketplace(registry):
+    return {"name": registry["name"], "owner": registry["owner"],
+            "metadata": {"description": registry["description"], "version": registry["version"]},
+            "plugins": [{"name": e["name"], "description": e["description"], "source": "./plugins/" + e["name"],
+                         "strict": False, "skills": ["./skills/" + s for s in sorted(e["skills"])],
+                         "author": {"name": e["maintainer"]}, "license": e["license"],
+                         "homepage": "https://github.com/%s/tree/%s" % (e["repo"], e["sha"])} for e in registry["plugins"]]}
+
+
+def reject_links(root):
+    if root.is_symlink() or any(p.is_symlink() for p in root.rglob("*")):
+        raise SyncError("existing output contains a symlink")
+
 
 def main():
-    reg = json.loads((ROOT / "registry.json").read_text("utf-8"))
-    PLUG.mkdir(exist_ok=True)
-    plugins, rows, keep = [], [], set()
-    for e in reg["plugins"]:
-        skills = vendor(e)
-        keep.add(e["name"])
-        plugins.append({
-            "name": e["name"],
-            "description": e["description"],
-            "source": f"./plugins/{e['name']}",
-            "strict": False,
-            "skills": [f"./skills/{s}" for s in skills],
-            "author": {"name": e["maintainer"]},
-            "license": e["license"],
-            "homepage": f"https://github.com/{e['repo']}/tree/{e['sha']}",
-        })
-        hosted = "; ".join(e.get("hosted_services") or []) or "none"
-        rows.append(f"| {e['name']} | {', '.join(skills)} | {e['maintainer']} | {e['license']} | [{e['repo']}@{e['sha'][:12]}](https://github.com/{e['repo']}/tree/{e['sha']}) | {hosted} |")
-        print(f"vendored {e['name']}: {', '.join(skills)}")
-    for d in PLUG.iterdir():
-        if d.is_dir() and d.name not in keep:
-            shutil.rmtree(d)
-    market = {"name": reg["name"], "owner": reg["owner"],
-              "metadata": {"description": reg["description"], "version": reg["version"]},
-              "plugins": plugins}
-    put(ROOT / ".claude-plugin" / "marketplace.json", json.dumps(market, indent=2) + "\n")
-    put(ROOT / "CATALOG.md", "# Catalog\n\nGenerated by tools/sync.py from registry.json. Do not edit by hand.\n\n"
-        "| Plugin | Skills | Maintainer | License | Pinned source | External services |\n|---|---|---|---|---|---|\n"
-        + "\n".join(rows) + "\n")
-    print(f"synced {len(plugins)} plugin(s)")
+    registry = read_json((ROOT / "registry.json").read_bytes())
+    validate_registry(registry)
+    for path in (ROOT / "plugins", ROOT / ".claude-plugin", ROOT / "CATALOG.md"):
+        if path.exists() or path.is_symlink():
+            reject_links(path)
+    # Prepare and audit a complete generation before touching previous output.
+    with tempfile.TemporaryDirectory(prefix=".sync-stage-", dir=ROOT) as temporary:
+        staged = pathlib.Path(temporary)
+        for entry in registry["plugins"]:
+            verify_ref(entry)
+            files = prepare(entry, fetch(entry["repo"], entry["sha"]))
+            for path, data in files.items():
+                target = staged / "plugins" / entry["name"] / path
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(data)
+        (staged / "registry.json").write_bytes((ROOT / "registry.json").read_bytes())
+        market = staged / ".claude-plugin/marketplace.json"
+        market.parent.mkdir()
+        market.write_text(json.dumps(marketplace(registry), indent=2) + "\n", encoding="utf-8")
+        rows = ["| %s | %s | %s | %s | [%s@%s](https://github.com/%s/tree/%s) | %s |" %
+                (e["name"], ", ".join(sorted(e["skills"])), e["maintainer"], e["license"], e["repo"], e["sha"][:12], e["repo"], e["sha"], "; ".join(e["hosted_services"]) or "none") for e in registry["plugins"]]
+        (staged / "CATALOG.md").write_text("# Catalog\n\nGenerated by tools/sync.py from registry.json. Do not edit by hand.\n\n| Plugin | Skills | Maintainer | License | Pinned source | External services |\n|---|---|---|---|---|---|\n" + "\n".join(rows) + "\n", encoding="utf-8")
+        import check
+        failures, warnings, count = check.audit(staged)
+        if failures:
+            raise SyncError("staged plugin checks failed: " + "; ".join(failures))
+        moved = []
+        try:
+            for relative in ("plugins", ".claude-plugin/marketplace.json", "CATALOG.md"):
+                destination = ROOT / relative
+                backup = staged / "backup" / relative
+                backup.parent.mkdir(parents=True, exist_ok=True)
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                if destination.exists():
+                    os.replace(destination, backup)
+                moved.append((destination, backup))
+                os.replace(staged / relative, destination)
+        except BaseException:
+            for destination, backup in reversed(moved):
+                if destination.is_dir():
+                    shutil.rmtree(destination)
+                elif destination.exists():
+                    destination.unlink()
+                if backup.exists():
+                    os.replace(backup, destination)
+            raise
+    print("synced %d plugin(s), %d skill(s); static checks only" % (len(registry["plugins"]), count))
+
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (ValueError, OSError, tarfile.TarError) as error:
+        # Never include request headers, credentials, or untrusted content.
+        print("sync failed: " + type(error).__name__, file=sys.stderr)
+        sys.exit(1)

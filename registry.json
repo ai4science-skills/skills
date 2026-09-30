@@ -14,7 +14,11 @@
       "description": "TypeSafe Jev as an optional, fail-closed second reader for evidence triage; decisions that carry their own evidence.",
       "maintainer": "betterwithage (SZL Holdings)",
       "license": "Apache-2.0",
-      "hosted_services": ["api.typesafe.ai - szl-typesafe-ai only, optional; sends the state you pass it; requires your own TypeSafe key"]
+      "hosted_services": [
+        "api.typesafe.ai - szl-typesafe-ai only, optional; sends the state you pass it; requires your own TypeSafe key",
+        "docs.typesafe.ai - linked documentation; visiting fetches documentation, not benchmark input",
+        "console.typesafe.ai - linked credential console; user-controlled credential setup"
+      ]
     }
   ]
 }
