@@ -1,8 +1,10 @@
 {
   "name": "ai4science-skills",
-  "owner": { "name": "AI for Science community" },
+  "owner": {
+    "name": "AI for Science community"
+  },
   "description": "Community index of Claude skills for scientific work. Every entry is pinned to an exact commit and checked automatically.",
-  "version": "0.1.0",
+  "version": "0.2.0-rc.1",
   "plugins": [
     {
       "name": "szl-evidence-skills",
@@ -10,11 +12,41 @@
       "ref": "v0.1.3",
       "sha": "fbd4d43572d14ba4071f5662316896e53cadfd59",
       "path": "skills",
-      "skills": ["szl-typesafe-ai", "szl-governed-decision"],
+      "skills": [
+        "szl-typesafe-ai",
+        "szl-governed-decision"
+      ],
       "description": "TypeSafe Jev as an optional, fail-closed second reader for evidence triage; decisions that carry their own evidence.",
       "maintainer": "betterwithage (SZL Holdings)",
       "license": "Apache-2.0",
-      "hosted_services": ["api.typesafe.ai - szl-typesafe-ai only, optional; sends the state you pass it; requires your own TypeSafe key"]
+      "hosted_services": [
+        "api.typesafe.ai - szl-typesafe-ai only, optional; sends the state you pass it; requires your own TypeSafe key",
+        "docs.typesafe.ai - linked documentation; visiting fetches documentation, not benchmark input",
+        "console.typesafe.ai - linked credential console; user-controlled credential setup"
+      ]
+    },
+    {
+      "name": "szl-science-skills",
+      "repo": "szl-holdings/szl-skills",
+      "ref": "v0.2.0-rc.1",
+      "sha": "a314917286269630b053ea16f2d65acf1000bd8f",
+      "path": "skills",
+      "skills": [
+        "szl-science-workbench",
+        "szl-research-anatomy",
+        "szl-math-claim-check",
+        "szl-dataset-readiness",
+        "szl-model-evaluation",
+        "szl-kernel-comparison",
+        "szl-reproducibility-capsule",
+        "szl-paired-science"
+      ],
+      "description": "Integrated living research anatomy, scientific checks and reproducibility capsules; explicit prerelease, offline by default.",
+      "maintainer": "betterwithage (SZL Holdings)",
+      "license": "Apache-2.0",
+      "hosted_services": [
+        "huggingface.co - optional explicit fetch-triage downloads four pinned public synthetic-study files and records byte hashes; public artifact CDN redirects may occur; no credentials or private data sent. Normal init/run/check is offline."
+      ]
     }
   ]
 }

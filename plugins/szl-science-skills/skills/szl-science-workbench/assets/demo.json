@@ -1,0 +1,153 @@
+{
+  "dataset": {
+    "rows": [
+      {
+        "id": "synthetic-1",
+        "subject": "synthetic-A",
+        "signal": 0.1,
+        "label": 0,
+        "split": "train"
+      },
+      {
+        "id": "synthetic-2",
+        "subject": "synthetic-B",
+        "signal": 0.9,
+        "label": 1,
+        "split": "train"
+      },
+      {
+        "id": "synthetic-3",
+        "subject": "synthetic-A",
+        "signal": 0.1,
+        "label": 0,
+        "split": "test"
+      },
+      {
+        "id": "synthetic-4",
+        "subject": "synthetic-C",
+        "signal": 0.8,
+        "label": 1,
+        "split": "test"
+      }
+    ],
+    "feature_columns": [
+      "signal"
+    ],
+    "group_column": "subject",
+    "metadata": {
+      "source_revision": "synthetic-fixture-v1",
+      "license": "Apache-2.0",
+      "evidence_class": "SYNTHETIC"
+    }
+  },
+  "predictions": {
+    "probabilities": [
+      0.1,
+      0.9,
+      0.8,
+      0.2
+    ],
+    "labels": [
+      0,
+      1,
+      1,
+      0
+    ],
+    "n_bins": 5,
+    "threshold": 0.5,
+    "groups": [
+      "synthetic-A",
+      "synthetic-A",
+      "synthetic-B",
+      "synthetic-B"
+    ],
+    "metadata": {
+      "model": "NO_MODEL_SYNTHETIC_PREDICTIONS",
+      "split": "synthetic",
+      "evidence_class": "SYNTHETIC"
+    }
+  },
+  "math": {
+    "claim": "For positive axes in [0,1], geometric mean always equals the minimum (false demonstration claim)",
+    "relation": "equal",
+    "atol": 1e-12,
+    "rtol": 0,
+    "cases": [
+      {
+        "inputs": [
+          0.25,
+          1
+        ],
+        "rhs": 0.25
+      },
+      {
+        "inputs": [
+          0.5,
+          0.5
+        ],
+        "rhs": 0.5
+      }
+    ],
+    "compute": "weighted_geomean"
+  },
+  "paired": {
+    "schema": "szl.paired-science/v1",
+    "source_revision": "b2e317877abed98e70f9cf6730944a797837faf1",
+    "dataset_sha256": "22493e8ac58599e492480fd02e71ca804ed942e099c63f8315e7903dcda9d99b",
+    "plan_sha256": "c7cf07b9d021d76228d9e893b362600a4026f7ff52e66dfb5e21aa28ad89a1a8",
+    "input_scope": "SYNTHETIC",
+    "pre_registered": false,
+    "independent_pairs": false,
+    "alpha": 0.05,
+    "minimum_normalized_improvement": 0.01,
+    "identity_control_tolerance": 1e-12,
+    "train_ids": [
+      "demo-train"
+    ],
+    "test_ids": [
+      "demo-test"
+    ],
+    "tasks": [
+      {
+        "id": "identity-demo",
+        "loss_unit": "synthetic_brier",
+        "training_scale": 1.0,
+        "scale_scope": "TRAIN_ONLY",
+        "expected_trial_ids": [
+          "a",
+          "b",
+          "c"
+        ],
+        "trials": [
+          {
+            "id": "a",
+            "baseline_loss": 0.025,
+            "treatment_loss": 0.025,
+            "identity_control_loss": 0.025,
+            "baseline_predictions_sha256": "92b1234c0ae9d47d04048f1f3bdb44041c78d399c9d972e4a6edd1657353a4fa",
+            "treatment_predictions_sha256": "92b1234c0ae9d47d04048f1f3bdb44041c78d399c9d972e4a6edd1657353a4fa",
+            "identity_control_predictions_sha256": "92b1234c0ae9d47d04048f1f3bdb44041c78d399c9d972e4a6edd1657353a4fa"
+          },
+          {
+            "id": "b",
+            "baseline_loss": 0.025,
+            "treatment_loss": 0.025,
+            "identity_control_loss": 0.025,
+            "baseline_predictions_sha256": "92b1234c0ae9d47d04048f1f3bdb44041c78d399c9d972e4a6edd1657353a4fa",
+            "treatment_predictions_sha256": "92b1234c0ae9d47d04048f1f3bdb44041c78d399c9d972e4a6edd1657353a4fa",
+            "identity_control_predictions_sha256": "92b1234c0ae9d47d04048f1f3bdb44041c78d399c9d972e4a6edd1657353a4fa"
+          },
+          {
+            "id": "c",
+            "baseline_loss": 0.025,
+            "treatment_loss": 0.025,
+            "identity_control_loss": 0.025,
+            "baseline_predictions_sha256": "92b1234c0ae9d47d04048f1f3bdb44041c78d399c9d972e4a6edd1657353a4fa",
+            "treatment_predictions_sha256": "92b1234c0ae9d47d04048f1f3bdb44041c78d399c9d972e4a6edd1657353a4fa",
+            "identity_control_predictions_sha256": "92b1234c0ae9d47d04048f1f3bdb44041c78d399c9d972e4a6edd1657353a4fa"
+          }
+        ]
+      }
+    ]
+  }
+}

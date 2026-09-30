@@ -16,6 +16,25 @@ Then pick what you want. See [CATALOG.md](CATALOG.md) for every skill, its maint
 
 Imported skills do not update automatically. Re-import when a new tag is announced.
 
+## Science pack prerelease
+
+The catalog adds an explicit prerelease of eight connected SZL science skills, pinned to
+szl-holdings/szl-skills@v0.2.0-rc.1 and its immutable commit. The self-contained workbench
+connects living project memory, numerical math checks, dataset leakage checks, model
+evaluation, kernel comparison, paired qualification and retained file capsules. A separate
+offline CI step exercises this selected pack; the general importer remains static and
+never executes downloaded skill code.
+
+The stable import above remains available. To try just the source science pack in Claude
+Science, import:
+
+    szl-holdings/szl-skills@v0.2.0-rc.1
+
+Normal workbench use is offline. Optional fetch-triage reads the pinned public synthetic
+study from Hugging Face, with no credentials or model weights. Actual Claude Science
+registration and agent efficacy remain unverified; local/source CI checks do not establish
+them. Setup and pilot instructions are in the source repository. No automatic update occurs.
+
 ## What every skill must pass
 
 | Check | Why |
@@ -26,10 +45,12 @@ Imported skills do not update automatically. Re-import when a new tag is announc
 | SKILL.md has a name, a description, and says what it does NOT do | Claude uses it at the right time |
 | Every file the SKILL.md references exists | No skills calling code that was never committed |
 | License file present and consistent with registry and SKILL.md | Clear reuse terms |
-| No tokens, keys, personal paths, or private IPs | Nothing leaks |
-| Every external host a skill names or calls is declared | You know when data leaves your machine |
+| Recognizable credential and personal-path patterns are scanned in all vendored bytes | Values are withheld from diagnostics; a static scan cannot prove that no sensitive data exists |
+| Literal URL hosts and API hostnames are matched to exact declarations | Dynamic destinations still require manual review |
 
 Passing the checks means a skill is well-formed and honest about what it touches. It does not mean the index maintainers vouch for its scientific correctness. Read a skill before relying on it.
+
+The importer validates registry paths before making a request, reconciles each named ref with its immutable commit, refuses redirects and archive links, and limits downloads, decompression, member counts, and selected bytes. It prepares and statically checks the entire generation before replacing existing output, with rollback for handled replacement errors. It never executes skill code. See [SECURITY.md](SECURITY.md) for the remaining limits.
 
 ## Add your skill
 

@@ -29,6 +29,8 @@ python tools/check.py
 
 4. Commit everything (`registry.json`, `plugins/`, `.claude-plugin/marketplace.json`, `CATALOG.md`) and open a pull request. CI re-runs both scripts and fails if anything differs.
 
+Run `python -B -m unittest discover -s tools -p 'test_*.py' -v` when changing the importer. Keep paths portable, list every intended skill explicitly, and declare hosts as `hostname - purpose and data sent`. Literal documentation and credential-console links also need declarations when they are outside the built-in source/example/license hosts. Declaration matching uses exact hostnames, not substring matches. See SECURITY.md for archive limits and static-check boundaries.
+
 To update your skill later, change `ref` and `sha`, run the two scripts, and open a new pull request.
 
 ## Naming
