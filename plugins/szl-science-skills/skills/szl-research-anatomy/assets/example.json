@@ -1,0 +1,15 @@
+{
+  "graph": {
+    "schema": "szl.research-anatomy.v1",
+    "project": "SYNTHETIC normalization study",
+    "nodes": [
+      {"id": "question", "kind": "question", "title": "Does the candidate preserve normalized outputs?"},
+      {"id": "data", "kind": "dataset", "title": "Synthetic observations v1", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "claim_state": "SYNTHETIC"},
+      {"id": "code", "kind": "kernel", "title": "Reviewed local candidate", "claim_state": "UNVERIFIED"},
+      {"id": "run", "kind": "run", "title": "Synthetic comparison", "depends_on": ["data", "code"], "claim_state": "SYNTHETIC"},
+      {"id": "conclusion", "kind": "claim", "title": "Candidate agrees on this fixture", "depends_on": ["run"], "claim_state": "REPORTED"},
+      {"id": "open-proof", "kind": "proof", "title": "General equivalence has not been established", "claim_state": "OPEN"}
+    ]
+  },
+  "current_digests": {"data": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}
+}

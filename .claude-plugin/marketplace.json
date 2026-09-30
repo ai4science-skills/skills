@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "Community index of Claude skills for scientific work. Every entry is pinned to an exact commit and checked automatically.",
-    "version": "0.1.0"
+    "version": "0.2.0-rc.1"
   },
   "plugins": [
     {
@@ -22,6 +22,27 @@
       },
       "license": "Apache-2.0",
       "homepage": "https://github.com/szl-holdings/szl-skills/tree/fbd4d43572d14ba4071f5662316896e53cadfd59"
+    },
+    {
+      "name": "szl-science-skills",
+      "description": "Integrated living research anatomy, scientific checks and reproducibility capsules; explicit prerelease, offline by default.",
+      "source": "./plugins/szl-science-skills",
+      "strict": false,
+      "skills": [
+        "./skills/szl-dataset-readiness",
+        "./skills/szl-kernel-comparison",
+        "./skills/szl-math-claim-check",
+        "./skills/szl-model-evaluation",
+        "./skills/szl-paired-science",
+        "./skills/szl-reproducibility-capsule",
+        "./skills/szl-research-anatomy",
+        "./skills/szl-science-workbench"
+      ],
+      "author": {
+        "name": "betterwithage (SZL Holdings)"
+      },
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/a314917286269630b053ea16f2d65acf1000bd8f"
     }
   ]
 }
