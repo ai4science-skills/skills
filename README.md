@@ -26,10 +26,12 @@ Imported skills do not update automatically. Re-import when a new tag is announc
 | SKILL.md has a name, a description, and says what it does NOT do | Claude uses it at the right time |
 | Every file the SKILL.md references exists | No skills calling code that was never committed |
 | License file present and consistent with registry and SKILL.md | Clear reuse terms |
-| No tokens, keys, personal paths, or private IPs | Nothing leaks |
-| Every external host a skill names or calls is declared | You know when data leaves your machine |
+| Recognizable credential and personal-path patterns are scanned in all vendored bytes | Values are withheld from diagnostics; a static scan cannot prove that no sensitive data exists |
+| Literal URL hosts and API hostnames are matched to exact declarations | Dynamic destinations still require manual review |
 
 Passing the checks means a skill is well-formed and honest about what it touches. It does not mean the index maintainers vouch for its scientific correctness. Read a skill before relying on it.
+
+The importer validates registry paths before making a request, reconciles each named ref with its immutable commit, refuses redirects and archive links, and limits downloads, decompression, member counts, and selected bytes. It prepares and statically checks the entire generation before replacing existing output, with rollback for handled replacement errors. It never executes skill code. See [SECURITY.md](SECURITY.md) for the remaining limits.
 
 ## Add your skill
 
