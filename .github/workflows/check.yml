@@ -28,3 +28,5 @@ jobs:
           fi
       - name: Checks
         run: python -B tools/check.py
+      - name: Offline exercise of the selected SZL science prerelease
+        run: python -B tools/science_pack_smoke.py
