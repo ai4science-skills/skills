@@ -1,0 +1,325 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ai4s:security-prerequisites:v0",
+  "title": "Unapproved security prerequisite inventory (not scan evidence)",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/inventory"
+    },
+    {
+      "$ref": "#/$defs/error"
+    }
+  ],
+  "$defs": {
+    "inventory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "decision",
+        "installable",
+        "inspected_revision",
+        "revision_provenance",
+        "facets",
+        "trust",
+        "prerequisites",
+        "stages",
+        "source_coverage",
+        "reproducibility"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ai4s.security-prerequisites/v0"
+        },
+        "decision": {
+          "const": "BLOCKED"
+        },
+        "installable": {
+          "const": false
+        },
+        "inspected_revision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "revision_provenance": {
+          "const": "CALLER_ASSERTED"
+        },
+        "facets": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "STATIC",
+            "PROSE",
+            "BEHAVIOR",
+            "SCIENCE",
+            "TEST",
+            "EVALUATION",
+            "FRESHNESS"
+          ],
+          "properties": {
+            "STATIC": {
+              "const": "UNOBSERVED"
+            },
+            "PROSE": {
+              "const": "UNOBSERVED"
+            },
+            "BEHAVIOR": {
+              "const": "UNOBSERVED"
+            },
+            "SCIENCE": {
+              "const": "UNOBSERVED"
+            },
+            "TEST": {
+              "const": "UNOBSERVED"
+            },
+            "EVALUATION": {
+              "const": "UNOBSERVED"
+            },
+            "FRESHNESS": {
+              "const": "UNOBSERVED"
+            }
+          }
+        },
+        "trust": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "checker_revision",
+            "policy_sha256",
+            "workflow_independence"
+          ],
+          "properties": {
+            "checker_revision": {
+              "type": "null"
+            },
+            "policy_sha256": {
+              "type": "null"
+            },
+            "workflow_independence": {
+              "const": "UNESTABLISHED"
+            }
+          }
+        },
+        "prerequisites": {
+          "type": "array",
+          "minItems": 15,
+          "maxItems": 15,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "availability",
+              "reason",
+              "sha256"
+            ],
+            "properties": {
+              "path": {
+                "type": "string",
+                "enum": [
+                  "policy/registries.yaml",
+                  "policy/security-rules.yaml",
+                  "policy/vulnerability.yaml",
+                  "schema/catalog.schema.json",
+                  "schema/skills-entry.schema.json",
+                  "sources/sources.lock.json",
+                  "tools/ai4s_audit.py",
+                  "tools/bootstrap_tools.py",
+                  "tools/build_catalog.py",
+                  "tools/build_dashboard.py",
+                  "tools/dependency_audit.py",
+                  "tools/enforce_policy.py",
+                  "tools/normalize_findings.py",
+                  "tools/tools.lock.json",
+                  "tools/vulnerability_audit.py"
+                ]
+              },
+              "availability": {
+                "enum": [
+                  "MISSING",
+                  "PRESENT_UNVERIFIED",
+                  "REJECTED"
+                ]
+              },
+              "reason": {
+                "enum": [
+                  "ABSENT",
+                  "NO_APPROVED_CONTRACT",
+                  "UNSAFE_PATH",
+                  "NON_REGULAR",
+                  "OVERSIZE",
+                  "JSON_BOUNDS",
+                  "INVALID_JSON",
+                  "UNREADABLE"
+                ]
+              },
+              "sha256": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "availability": {
+                      "const": "PRESENT_UNVERIFIED"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "sha256": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "const": "NO_APPROVED_CONTRACT"
+                    }
+                  }
+                },
+                "else": {
+                  "properties": {
+                    "sha256": {
+                      "type": "null"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "stages": {
+          "type": "array",
+          "minItems": 9,
+          "maxItems": 9,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "execution",
+              "receipt",
+              "prerequisites",
+              "unavailable",
+              "blockers"
+            ],
+            "properties": {
+              "id": {
+                "enum": [
+                  "bootstrap",
+                  "static",
+                  "dependency",
+                  "vulnerability",
+                  "normalization",
+                  "catalog",
+                  "dashboard",
+                  "policy",
+                  "reproducibility"
+                ]
+              },
+              "execution": {
+                "const": "NOT_RUN"
+              },
+              "receipt": {
+                "type": "null"
+              },
+              "prerequisites": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 4,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "policy/registries.yaml",
+                    "policy/security-rules.yaml",
+                    "policy/vulnerability.yaml",
+                    "schema/catalog.schema.json",
+                    "schema/skills-entry.schema.json",
+                    "sources/sources.lock.json",
+                    "tools/ai4s_audit.py",
+                    "tools/bootstrap_tools.py",
+                    "tools/build_catalog.py",
+                    "tools/build_dashboard.py",
+                    "tools/dependency_audit.py",
+                    "tools/enforce_policy.py",
+                    "tools/normalize_findings.py",
+                    "tools/tools.lock.json",
+                    "tools/vulnerability_audit.py"
+                  ]
+                }
+              },
+              "unavailable": {
+                "type": "array",
+                "maxItems": 4,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "policy/registries.yaml",
+                    "policy/security-rules.yaml",
+                    "policy/vulnerability.yaml",
+                    "schema/catalog.schema.json",
+                    "schema/skills-entry.schema.json",
+                    "sources/sources.lock.json",
+                    "tools/ai4s_audit.py",
+                    "tools/bootstrap_tools.py",
+                    "tools/build_catalog.py",
+                    "tools/build_dashboard.py",
+                    "tools/dependency_audit.py",
+                    "tools/enforce_policy.py",
+                    "tools/normalize_findings.py",
+                    "tools/tools.lock.json",
+                    "tools/vulnerability_audit.py"
+                  ]
+                }
+              },
+              "blockers": {
+                "const": [
+                  "INDEPENDENT_WORKFLOW_UNESTABLISHED",
+                  "CHECKER_POLICY_NOT_APPROVED",
+                  "STAGE_NOT_IMPLEMENTED_OR_REVIEWED"
+                ]
+              }
+            }
+          }
+        },
+        "source_coverage": {
+          "const": {
+            "status": "NOT_RUN",
+            "receipts": []
+          }
+        },
+        "reproducibility": {
+          "const": {
+            "catalog": "NOT_RUN",
+            "dashboard": "NOT_RUN"
+          }
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "decision",
+        "reason"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ai4s.security-prerequisites/error-v0"
+        },
+        "decision": {
+          "const": "BLOCKED"
+        },
+        "reason": {
+          "const": "INVALID_INPUT"
+        }
+      }
+    }
+  }
+}
