@@ -1,0 +1,4 @@
+{
+  "files": ["assets/protocol.txt"],
+  "metadata": {"experiment": "SYNTHETIC capsule demonstration", "seed": 7, "evidence_class": "SYNTHETIC", "environment": "Python 3.10+ stdlib"}
+}

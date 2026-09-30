@@ -1,0 +1,5 @@
+{
+  "probabilities": [0.1, 0.9, 0.8, 0.2], "labels": [0, 1, 1, 0],
+  "n_bins": 5, "threshold": 0.5, "groups": ["synthetic-A", "synthetic-A", "synthetic-B", "synthetic-B"],
+  "metadata": {"model": "NO_MODEL_SYNTHETIC_PREDICTIONS", "split": "synthetic", "evidence_class": "SYNTHETIC"}
+}

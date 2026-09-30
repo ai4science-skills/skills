@@ -16,6 +16,25 @@ Then pick what you want. See [CATALOG.md](CATALOG.md) for every skill, its maint
 
 Imported skills do not update automatically. Re-import when a new tag is announced.
 
+## Science pack prerelease
+
+The catalog adds an explicit prerelease of eight connected SZL science skills, pinned to
+szl-holdings/szl-skills@v0.2.0-rc.1 and its immutable commit. The self-contained workbench
+connects living project memory, numerical math checks, dataset leakage checks, model
+evaluation, kernel comparison, paired qualification and retained file capsules. A separate
+offline CI step exercises this selected pack; the general importer remains static and
+never executes downloaded skill code.
+
+The stable import above remains available. To try just the source science pack in Claude
+Science, import:
+
+    szl-holdings/szl-skills@v0.2.0-rc.1
+
+Normal workbench use is offline. Optional fetch-triage reads the pinned public synthetic
+study from Hugging Face, with no credentials or model weights. Actual Claude Science
+registration and agent efficacy remain unverified; local/source CI checks do not establish
+them. Setup and pilot instructions are in the source repository. No automatic update occurs.
+
 ## What every skill must pass
 
 | Check | Why |

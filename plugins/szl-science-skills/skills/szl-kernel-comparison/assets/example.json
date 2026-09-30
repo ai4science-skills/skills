@@ -1,0 +1,6 @@
+{
+  "reference_output": [[1, 2], [3, 4]],
+  "candidate_output": [[1, 2], [3, 4.1]],
+  "atol": 1e-6, "rtol": 1e-6,
+  "evidence_class": "SYNTHETIC_OUTPUTS_NO_TIMINGS"
+}

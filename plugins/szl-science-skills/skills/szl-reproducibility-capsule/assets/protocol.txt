@@ -1,0 +1,3 @@
+Synthetic reproducibility example. No model, laboratory or accelerator was used.
+Retain input bytes and this protocol, then compare the saved manifest after a file change.
+Hash agreement establishes byte equality relative to the retained manifest, not scientific truth.
