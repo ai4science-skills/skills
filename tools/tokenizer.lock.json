@@ -1,0 +1,54 @@
+{
+  "packages": [
+    {
+      "name": "tiktoken",
+      "version": "0.12.0",
+      "filename": "tiktoken-0.12.0-cp312-cp312-manylinux_2_28_x86_64.whl",
+      "url": "https://files.pythonhosted.org/packages/f4/90/3dae6cc5436137ebd38944d396b5849e167896fc2073da643a49f372dc4f/tiktoken-0.12.0-cp312-cp312-manylinux_2_28_x86_64.whl",
+      "sha256": "edde1ec917dfd21c1f2f8046b86348b0f54a2c0547f68149d8600859598769ad",
+      "bytes": 1152665,
+      "metadata_url": "https://pypi.org/pypi/tiktoken/0.12.0/json"
+    },
+    {
+      "name": "regex",
+      "version": "2025.9.18",
+      "filename": "regex-2025.9.18-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+      "url": "https://files.pythonhosted.org/packages/35/9e/a91b50332a9750519320ed30ec378b74c996f6befe282cfa6bb6cea7e9fd/regex-2025.9.18-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+      "sha256": "4f130c3a7845ba42de42f380fff3c8aebe89a810747d91bcf56d40a069f15352",
+      "bytes": 802011,
+      "metadata_url": "https://pypi.org/pypi/regex/2025.9.18/json"
+    }
+  ],
+  "encoding": {
+    "name": "cl100k_base",
+    "url": "https://openaipublic.blob.core.windows.net/encodings/cl100k_base.tiktoken",
+    "filename": "cl100k_base.tiktoken",
+    "sha256": "223921b76ee99bde995b7ff738513eef100fb51d18c93597a113bcffe865b2a7",
+    "bytes": 1681126
+  },
+  "schema": "ai4science-tokenizer-lock-v1",
+  "contract": {
+    "id": "ai4science-exact-text-v1",
+    "decoder": "strict UTF-8; reject NUL; no BOM removal, normalization, or newline rewriting",
+    "encoder": "cl100k_base encode_ordinary; special-token spellings are ordinary text",
+    "fragments": "each full file and each contiguous SKILL fragment encoded independently; no wrapper, separator, or chat overhead",
+    "eager": "raw name/description top-level field lines including indented continuation lines; YAML syntax retained",
+    "activation": "remaining frontmatter including delimiters, and exact body after closing delimiter",
+    "lazy": "every other file below closest enclosing literal SKILL.md directory; references/scripts/assets/other by first relative path component",
+    "outside_skills": "repo_other; excluded from per-skill loading totals, included in whole-repository file counts",
+    "dedup": "per-file occurrences retained by repo/full pin/path; separate unique totals by complete file SHA256, never name",
+    "coverage": "missing/ambiguous raw fields or non-UTF8/NUL file yields NOT_RUN for complete facet; measured file receipts retained",
+    "semantics": "raw text inventory, not a YAML interpretation, actual loader trace, model context charge, or evaluation"
+  },
+  "contract_sha256": "0ad1a8813b522d45c4a2dfc403535f0175234c16352f9b07cfa90775b64fe391",
+  "pattern": "'(?i:[sdmt]|ll|ve|re)|[^\\r\\n\\p{L}\\p{N}]?+\\p{L}++|\\p{N}{1,3}+| ?[^\\s\\p{L}\\p{N}]++[\\r\\n]*+|\\s++$|\\s*[\\r\\n]|\\s+(?!\\S)|\\s",
+  "special_tokens": {
+    "<|endoftext|>": 100257,
+    "<|fim_prefix|>": 100258,
+    "<|fim_middle|>": 100259,
+    "<|fim_suffix|>": 100260,
+    "<|endofprompt|>": 100276
+  },
+  "platform": "CPython 3.12 / Linux x86_64, glibc >=2.28",
+  "dependency_note": "regex wheel retained and verified; requests downloader is not imported or called; direct Encoding avoids network and plugin discovery"
+}
