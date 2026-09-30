@@ -70,6 +70,8 @@ class ImporterTests(unittest.TestCase):
         for raw in (b'{"a":1,"a":2}', b'{"a":NaN}', b'[' * 2000 + b'0' + b']' * 2000):
             with self.assertRaises(ValueError):
                 sync.read_json(raw)
+        self.assertEqual(sync.read_json(json.dumps({"value": '[' * 2000 + '"escaped"' + ']' * 2000}).encode()),
+                         {"value": '[' * 2000 + '"escaped"' + ']' * 2000})
 
     def test_archive_traversal_absolute_windows_reserved_and_links_rejected(self):
         for path in ("repo/skills/toy-skill/../../escape", "/repo/skills/toy-skill/file",

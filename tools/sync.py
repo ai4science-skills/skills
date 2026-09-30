@@ -20,6 +20,7 @@ MAX_DOWNLOAD = 32 * 1024 * 1024
 MAX_EXPANDED = 64 * 1024 * 1024
 MAX_MEMBERS = 10000
 MAX_PLUGIN = 1024 * 1024
+MAX_JSON_DEPTH = 64
 NAME = re.compile(r"[a-z0-9][a-z0-9-]{1,63}")
 REPO = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]{0,38}/[A-Za-z0-9][A-Za-z0-9_.-]{0,99}")
 HOST = re.compile(r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9-]{2,63}|localhost")
@@ -41,6 +42,25 @@ def unique_object(pairs):
 def read_json(raw):
     if len(raw) > MAX_PLUGIN:
         raise SyncError("JSON exceeds byte budget")
+    depth, quoted, escaped = 0, False, False
+    for byte in raw:
+        if quoted:
+            if escaped:
+                escaped = False
+            elif byte == 92:
+                escaped = True
+            elif byte == 34:
+                quoted = False
+        elif byte == 34:
+            quoted = True
+        elif byte in (91, 123):
+            depth += 1
+            if depth > MAX_JSON_DEPTH:
+                raise SyncError("JSON nesting exceeds 64 levels")
+        elif byte in (93, 125):
+            depth -= 1
+            if depth < 0:
+                raise SyncError("invalid JSON structure")
     try:
         return json.loads(raw.decode("utf-8"), object_pairs_hook=unique_object,
                           parse_constant=lambda value: (_ for _ in ()).throw(SyncError("nonfinite JSON")))
