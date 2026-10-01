@@ -1,0 +1,48 @@
+{
+  "name": "Security prerequisites (blocked scaffold)",
+  "on": {
+    "pull_request": {},
+    "push": {
+      "branches": [
+        "main"
+      ]
+    },
+    "schedule": [
+      {
+        "cron": "17 6 * * 1"
+      }
+    ],
+    "workflow_dispatch": {}
+  },
+  "permissions": {
+    "contents": "read"
+  },
+  "jobs": {
+    "prerequisites": {
+      "runs-on": "ubuntu-latest",
+      "timeout-minutes": 20,
+      "steps": [
+        {
+          "name": "Fail closed: security toolchain not established",
+          "shell": "bash",
+          "run": "set -euo pipefail\nprintf '%s\\n' '::error::Security pipeline BLOCKED: independent workflow/checker/policy and reviewed toolchain are not established. No security stages ran.'\nexit 2\n"
+        },
+        {
+          "name": "Always summarize unperformed stages",
+          "if": "${{ always() }}",
+          "shell": "bash",
+          "env": {
+            "SECURITY_EVENT": "${{ github.event_name }}",
+            "SECURITY_TRIGGER_SHA": "${{ github.sha }}",
+            "SECURITY_HEAD_SHA": "${{ github.event.pull_request.head.sha }}",
+            "SECURITY_BASE_SHA": "${{ github.event.pull_request.base.sha }}",
+            "SECURITY_WORKFLOW_SHA": "${{ github.workflow_sha }}",
+            "SECURITY_RUN_ID": "${{ github.run_id }}",
+            "SECURITY_RUN_ATTEMPT": "${{ github.run_attempt }}"
+          },
+          "run": "set -euo pipefail\nsafe_sha() {\n  if [[ \"$1\" =~ ^[0-9a-f]{40}$ ]]; then printf '%s' \"$1\"; else printf 'UNOBSERVED'; fi\n}\nsafe_number() {\n  if [[ \"$1\" =~ ^[0-9]{1,20}$ ]]; then printf '%s' \"$1\"; else printf 'UNOBSERVED'; fi\n}\ncase \"$SECURITY_EVENT\" in\n  pull_request|push|schedule|workflow_dispatch) safe_event=\"$SECURITY_EVENT\" ;;\n  *) safe_event=\"UNOBSERVED\" ;;\nesac\n{\n  printf '## Security prerequisites\\n\\n'\n  printf '**Decision: BLOCKED.** No candidate checkout, prerequisite inventory, scanner, build or evaluation ran.\\n\\n'\n  printf 'Independent workflow/checker/policy authority: UNESTABLISHED. This PR-controlled scaffold is not an independent security gate.\\n\\n'\n  printf '| Current-run metadata | Value |\\n| --- | --- |\\n'\n  printf '| Event | %s |\\n' \"$safe_event\"\n  printf '| Trigger / PR merge SHA | %s |\\n' \"$(safe_sha \"$SECURITY_TRIGGER_SHA\")\"\n  printf '| PR head SHA | %s |\\n' \"$(safe_sha \"$SECURITY_HEAD_SHA\")\"\n  printf '| PR base SHA | %s |\\n' \"$(safe_sha \"$SECURITY_BASE_SHA\")\"\n  printf '| Workflow SHA | %s |\\n' \"$(safe_sha \"$SECURITY_WORKFLOW_SHA\")\"\n  printf '| Run ID / attempt | %s / %s |\\n' \"$(safe_number \"$SECURITY_RUN_ID\")\" \"$(safe_number \"$SECURITY_RUN_ATTEMPT\")\"\n  printf '\\n| Stage | Execution |\\n| --- | --- |\\n'\n  printf '| Bootstrap | NOT_RUN |\\n| Static audit | NOT_RUN |\\n| Dependency audit | NOT_RUN |\\n| Vulnerability / KEV | NOT_RUN |\\n'\n  printf '| Normalization | NOT_RUN |\\n| Catalog | NOT_RUN |\\n| Dashboard | NOT_RUN |\\n| Policy | NOT_RUN |\\n| Reproducibility: catalog and dashboard | NOT_RUN |\\n'\n  printf '\\nSTATIC, PROSE, BEHAVIOR, SCIENCE, TEST, EVALUATION and FRESHNESS are UNOBSERVED. No install/list/reuse authority is granted.\\n'\n} >> \"$GITHUB_STEP_SUMMARY\"\n"
+        }
+      ]
+    }
+  }
+}
