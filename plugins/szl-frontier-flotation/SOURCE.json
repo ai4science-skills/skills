@@ -1,11 +1,12 @@
 {
   "repo": "szl-holdings/szl-frontier",
-  "ref": "d47c988647641fbdd20711aac6148a34fcb97ef8",
-  "sha": "d47c988647641fbdd20711aac6148a34fcb97ef8",
+  "ref": "c918a9b7000b9d13a0f89b7c4f62a6d60dd27207",
+  "sha": "c918a9b7000b9d13a0f89b7c4f62a6d60dd27207",
   "path": "docs/skills",
   "files_sha256": {
     "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
-    "skills/flotation-selectivity-before-bench/SKILL.md": "af94efc5cc023437db242ec04124b81058a6b7f2cd96383f45b4e88a581f4dd2",
-    "skills/flotation-selectivity-before-bench/rank.py": "b098a578c68f3e47d44885fc2a61b8b8dc4fa5e48e2353e33f7d925b4d7f84a2"
+    "skills/flotation-selectivity-before-bench/SKILL.md": "89a62104d71fd1fc012f2e34faf6b3a68e86b775cb755dcda3c6f38a48087052",
+    "skills/flotation-selectivity-before-bench/prior.py": "9c86d1edc0064851dea0ae7b19843a56a46f7aeb869dd546f377c8b210c0ec95",
+    "skills/flotation-selectivity-before-bench/rank.py": "b815b55b2dff81be2ced9922e08643eccbeac4763ccb20faa64765f0cf8995f8"
   }
 }

@@ -46,7 +46,7 @@
     },
     {
       "name": "szl-frontier-flotation",
-      "description": "MODELED flotation rank before the bench. Abstains on recovery percent. No hosted service.",
+      "description": "MODELED flotation rank and abstaining unitless selectivity prior before the bench. Never recovery. No hosted service.",
       "source": "./plugins/szl-frontier-flotation",
       "strict": false,
       "skills": [
@@ -56,7 +56,7 @@
         "name": "betterwithage (SZL Holdings)"
       },
       "license": "Apache-2.0",
-      "homepage": "https://github.com/szl-holdings/szl-frontier/tree/d47c988647641fbdd20711aac6148a34fcb97ef8"
+      "homepage": "https://github.com/szl-holdings/szl-frontier/tree/c918a9b7000b9d13a0f89b7c4f62a6d60dd27207"
     },
     {
       "name": "szl-science-multiplicity-skills",

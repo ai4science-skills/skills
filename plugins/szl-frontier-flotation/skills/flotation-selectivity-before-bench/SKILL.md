@@ -1,6 +1,6 @@
 ---
 name: flotation-selectivity-before-bench
-description: Rank flotation reagent candidates before the bench. MODELED only. Abstains without a measured CSV. Emits a SOFTWARE_RECEIPT. Does not claim recovery percent.
+description: Rank flotation reagent candidates before the bench and emit an abstaining unitless selectivity prior. MODELED only. Abstains without a measured CSV or without descriptors/weights. Emits a SOFTWARE_RECEIPT. Does not claim recovery percent. Use when ranking collectors, flotation reagents, homo_lumo_gap_eV, dipole_D, or selectivity-prior.
 license: Apache-2.0
 ---
 
@@ -21,16 +21,24 @@ and a receipt.
 ```text
 python rank.py --table reagents.csv
 python rank.py --table reagents.csv --bench bench.csv
+python rank.py --features features.json --weights weights.json
 python -m szl_frontier flotation --table reagents.csv
+python -m szl_frontier flotation --features features.json --weights weights.json
 ```
 
 The rank is a sort of one declared column, `public_score` or `screen_score`.
 Bands are tertiles of that order (`high`, `mid`, `low`). Fewer than three rows
 are `listed`. The numeric score is not copied into the receipt.
 
+The prior is a unitless logistic S over homo_lumo_gap_eV, dipole_D,
+surface_charge, pH, and collector_mM. Missing any descriptor, unset weights,
+or |2S-1| below tau (default 0.15) is ABSTAIN. PRIOR_ONLY is not recovery.
+
 If the bench CSV is missing, the run is MODELED, the directive is DEFER, and
 `claims.input` is UNAVAILABLE. A bench file is hashed and may release the
-software receipt. It does not create a recovery percent.
+software receipt. It does not create a recovery percent. Do not host this
+skill on a-11-oy.com. Do not dispatch the-grid. Do not open a PR to
+ai4s-research/ai4s-skills unless a human reviews the ABSTAIN fixtures.
 
 ## Refuse
 
@@ -61,6 +69,10 @@ claims.execution: SOFTWARE
 claims.identity: MEASURED when the reagent table sha256 is present, else UNAVAILABLE
 claims.input: MEASURED only when the bench CSV sha256 is present, else UNAVAILABLE
 recoveryPercent: null
+prior.state: UNAVAILABLE | ABSTAIN | PRIOR_ONLY
+prior.S: unitless or null — never recovery
+prior.S_class: SIMULATED when S is computed, else UNAVAILABLE
+exhibitOnApex: false
 energyClass: UNAVAILABLE
 ato: false
 lambda: OPEN
