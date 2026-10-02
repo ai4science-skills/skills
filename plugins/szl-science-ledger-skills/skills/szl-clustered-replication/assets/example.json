@@ -1,0 +1,150 @@
+{
+  "plan": {
+    "schema": "szl.clustered-replication.v1",
+    "experimental_unit": "donor",
+    "observational_unit": "cell",
+    "unit": "loss",
+    "expected_cases": [
+      {
+        "id": "donor-A-cell-0",
+        "cluster": "donor-A"
+      },
+      {
+        "id": "donor-A-cell-1",
+        "cluster": "donor-A"
+      },
+      {
+        "id": "donor-A-cell-2",
+        "cluster": "donor-A"
+      },
+      {
+        "id": "donor-A-cell-3",
+        "cluster": "donor-A"
+      },
+      {
+        "id": "donor-A-cell-4",
+        "cluster": "donor-A"
+      },
+      {
+        "id": "donor-A-cell-5",
+        "cluster": "donor-A"
+      },
+      {
+        "id": "donor-A-cell-6",
+        "cluster": "donor-A"
+      },
+      {
+        "id": "donor-A-cell-7",
+        "cluster": "donor-A"
+      },
+      {
+        "id": "donor-B-cell-0",
+        "cluster": "donor-B"
+      },
+      {
+        "id": "donor-B-cell-1",
+        "cluster": "donor-B"
+      },
+      {
+        "id": "donor-C-cell-0",
+        "cluster": "donor-C"
+      },
+      {
+        "id": "donor-C-cell-1",
+        "cluster": "donor-C"
+      }
+    ],
+    "reported_n": 12,
+    "independent_clusters_declared": true,
+    "sign_flip_basis": "symmetric_cluster_differences",
+    "min_clusters": 3,
+    "alpha": 0.05,
+    "minimum_improvement": 0.1
+  },
+  "rows": [
+    {
+      "id": "donor-A-cell-0",
+      "cluster": "donor-A",
+      "unit": "loss",
+      "baseline_loss": 13,
+      "candidate_loss": 10
+    },
+    {
+      "id": "donor-A-cell-1",
+      "cluster": "donor-A",
+      "unit": "loss",
+      "baseline_loss": 13,
+      "candidate_loss": 10
+    },
+    {
+      "id": "donor-A-cell-2",
+      "cluster": "donor-A",
+      "unit": "loss",
+      "baseline_loss": 13,
+      "candidate_loss": 10
+    },
+    {
+      "id": "donor-A-cell-3",
+      "cluster": "donor-A",
+      "unit": "loss",
+      "baseline_loss": 13,
+      "candidate_loss": 10
+    },
+    {
+      "id": "donor-A-cell-4",
+      "cluster": "donor-A",
+      "unit": "loss",
+      "baseline_loss": 13,
+      "candidate_loss": 10
+    },
+    {
+      "id": "donor-A-cell-5",
+      "cluster": "donor-A",
+      "unit": "loss",
+      "baseline_loss": 13,
+      "candidate_loss": 10
+    },
+    {
+      "id": "donor-A-cell-6",
+      "cluster": "donor-A",
+      "unit": "loss",
+      "baseline_loss": 13,
+      "candidate_loss": 10
+    },
+    {
+      "id": "donor-A-cell-7",
+      "cluster": "donor-A",
+      "unit": "loss",
+      "baseline_loss": 13,
+      "candidate_loss": 10
+    },
+    {
+      "id": "donor-B-cell-0",
+      "cluster": "donor-B",
+      "unit": "loss",
+      "baseline_loss": 9,
+      "candidate_loss": 10
+    },
+    {
+      "id": "donor-B-cell-1",
+      "cluster": "donor-B",
+      "unit": "loss",
+      "baseline_loss": 9,
+      "candidate_loss": 10
+    },
+    {
+      "id": "donor-C-cell-0",
+      "cluster": "donor-C",
+      "unit": "loss",
+      "baseline_loss": 9,
+      "candidate_loss": 10
+    },
+    {
+      "id": "donor-C-cell-1",
+      "cluster": "donor-C",
+      "unit": "loss",
+      "baseline_loss": 9,
+      "candidate_loss": 10
+    }
+  ]
+}

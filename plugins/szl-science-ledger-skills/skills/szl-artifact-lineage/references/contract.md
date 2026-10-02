@@ -1,0 +1,13 @@
+# Contract: szl.artifact-lineage.v1
+
+The top-level object has exactly `schema`, `artifacts`, `stages`, `required_stages`, and `observed_digests`. Unknown fields are rejected. Hashes are lowercase 64-character SHA-256 strings; ids match `[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}`. The audit neither hashes file bytes nor reads paths.
+
+Each artifact has exactly `id`, `kind` (`source` or `derived`), and `sha256`. Artifact ids are unique. Each stage has exactly `id`, `operation` (nonblank, at most 256 characters), `code_sha256`, `config_sha256`, `required_inputs`, `inputs`, and `outputs`. Code/config pins are mandatory declarations; this helper cannot observe them. `required_inputs` lists 1..1000 unique known artifact ids, with at most 10000 required references across all stages. Each IO list contains unique `{"artifact": id, "sha256": digest}` entries; outputs cannot be empty. A source has no producer; every derived artifact needs exactly one producer. Multiple producers and cycles are rejected, including a stage that consumes its own output.
+
+`required_stages` lists 1..1000 unique stage ids from the independently selected protocol. Absent listed stages and unlisted supplied stages become findings. Similarly, each input set must equal its declared required set. An omitted stage or input cannot be detected if the scientist omits it from both the protocol and manifest.
+
+`observed_digests` maps known artifact ids to independently supplied readback hashes. Missing input/output observations produce findings. Each input hash is compared to its artifact hash, its observed hash, and its parent's output hash. Each output is compared to its artifact and observed hashes. Derived artifacts without producers produce `MISSING_PRODUCER`. Findings have fixed `code`, `stage`, `artifact`, `detail` fields and are sorted by code/stage/artifact. Artifact reports are sorted by id; topological stage order uses lexicographic ties.
+
+The output schema is `szl.artifact-lineage-report.v1`. `status` is `REVIEW_REQUIRED` if any finding exists, otherwise `CONTINUITY_ON_SUPPLIED_DIGESTS`. The report binds the manifest with canonical-JSON SHA-256, but carries `authentic: false`, `transformations_executed: false`, and `code_and_config_pins_verified: false`. The CLI exits 0 for a clean audit, 1 for a completed report with findings, and 2 for malformed input or IO failure. `--output` creates a new file exclusively.
+
+Useful failure fixtures: replace a consumed parent digest; replace an observed source; remove a required input edge; remove a required stage; add two producers for one artifact; add a back edge; remove a readback; retain an unproduced derived artifact. Accepted matching digests test record consistency, not actual execution or reproduction.

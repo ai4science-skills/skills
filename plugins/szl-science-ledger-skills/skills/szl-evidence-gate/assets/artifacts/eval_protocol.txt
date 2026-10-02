@@ -1,0 +1,2 @@
+split rule: template families kept together
+held-out rows: 113

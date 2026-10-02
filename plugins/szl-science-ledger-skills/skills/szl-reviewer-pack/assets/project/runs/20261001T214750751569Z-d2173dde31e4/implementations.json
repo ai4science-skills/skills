@@ -1,0 +1,42 @@
+{
+  "files": [
+    {
+      "path": "scripts/workbench.py",
+      "sha256": "46484dee42afd21963bc0a901fa56a455fb1671b53981fbf29331d5767a4fbf3"
+    },
+    {
+      "path": "scripts/library/anatomy.py",
+      "sha256": "abc6ae213eb972534a8d97dc310dfdabaa2b61e41a96044dd564d8ff998963eb"
+    },
+    {
+      "path": "scripts/library/calibration_reference.py",
+      "sha256": "d4df54a71dda5f646c8b49fa1043a634fa21c898f22f8e6984a5008d464844f0"
+    },
+    {
+      "path": "scripts/library/capsule.py",
+      "sha256": "dd25c6fd6f094446119dd9c3c6368c1bf96b9f8706c909a50f00e6a79a4f9546"
+    },
+    {
+      "path": "scripts/library/dataset.py",
+      "sha256": "cf410eeaecc4159ec29568dbfe82e1f46bc00ba29ba8f37e7b324e15aa7dc891"
+    },
+    {
+      "path": "scripts/library/kernel_compare.py",
+      "sha256": "e829687efed8e7818514e54d709749fdb1453901c55b4974639eb9816c2af925"
+    },
+    {
+      "path": "scripts/library/math_claim.py",
+      "sha256": "0d10b2bd1a064976f3a1d7ccc50b16ec6de081026004cd043d97af0127d1d69c"
+    },
+    {
+      "path": "scripts/library/model.py",
+      "sha256": "bd8754c77a962eed07061a7b57d9894ccafbb39604cfc52d5db20e5052bf15e0"
+    },
+    {
+      "path": "scripts/library/paired.py",
+      "sha256": "42ab6aad7fd2a101d00a574d92e6389f06a740b87bda0700a29e6f1d038c6838"
+    }
+  ],
+  "sha256": "f248ce18f0d30187b19818567b7a275e59a289e0a8e7061e614732d61d7cc31d",
+  "signed": false
+}

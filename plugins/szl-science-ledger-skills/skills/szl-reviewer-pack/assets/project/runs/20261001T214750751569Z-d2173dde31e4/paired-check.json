@@ -1,0 +1,40 @@
+{
+  "schema": "szl.paired-science-report/v1",
+  "status": "REJECTED_LOCAL_COMPARISON",
+  "production_authority": "NONE",
+  "input_scope": "SYNTHETIC",
+  "declarations_independently_verified": false,
+  "declared_source_revision": "b2e317877abed98e70f9cf6730944a797837faf1",
+  "declared_dataset_sha256": "22493e8ac58599e492480fd02e71ca804ed942e099c63f8315e7903dcda9d99b",
+  "declared_plan_sha256": "c7cf07b9d021d76228d9e893b362600a4026f7ff52e66dfb5e21aa28ad89a1a8",
+  "raw_cross_task_average": null,
+  "tasks": [
+    {
+      "id": "identity-demo",
+      "loss_unit": "synthetic_brier",
+      "pairs": 3,
+      "normalized_pair_improvements": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_normalized_improvement": 0.0,
+      "sign_flip_p": 1.0,
+      "bonferroni_p": 1.0,
+      "identity_control_passed": true,
+      "qualified": false
+    }
+  ],
+  "blockers": [
+    "PLAN_NOT_DECLARED_PRE_REGISTERED",
+    "INDEPENDENT_PAIRS_NOT_DECLARED",
+    "TASK_NOT_QUALIFIED:identity-demo"
+  ],
+  "binding_status": "DECLARED",
+  "binding_evidence": {
+    "missing_evidence": [
+      "actual input/target/corpus/scorer/normalization/prediction bytes"
+    ]
+  },
+  "scientific_performance": "NOT_MEASURED"
+}

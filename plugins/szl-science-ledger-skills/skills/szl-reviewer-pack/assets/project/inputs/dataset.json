@@ -1,0 +1,41 @@
+{
+  "rows": [
+    {
+      "id": "synthetic-1",
+      "subject": "synthetic-A",
+      "signal": 0.1,
+      "label": 0,
+      "split": "train"
+    },
+    {
+      "id": "synthetic-2",
+      "subject": "synthetic-B",
+      "signal": 0.9,
+      "label": 1,
+      "split": "train"
+    },
+    {
+      "id": "synthetic-3",
+      "subject": "synthetic-A",
+      "signal": 0.1,
+      "label": 0,
+      "split": "test"
+    },
+    {
+      "id": "synthetic-4",
+      "subject": "synthetic-C",
+      "signal": 0.8,
+      "label": 1,
+      "split": "test"
+    }
+  ],
+  "feature_columns": [
+    "signal"
+  ],
+  "group_column": "subject",
+  "metadata": {
+    "source_revision": "synthetic-fixture-v1",
+    "license": "Apache-2.0",
+    "evidence_class": "SYNTHETIC"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "a": {"label": "R 4.4 (lme4)", "implementation": "analysis.R",
+        "input_sha256": "3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855e",
+        "results": {"n": 240, "effect": {"estimate": 0.4213, "se": 0.0871}, "p_value": 1.4e-06, "converged": true}},
+  "b": {"label": "Python 3.12 (statsmodels)", "implementation": "analysis.py",
+        "input_sha256": "3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855e",
+        "results": {"n": 240, "effect": {"estimate": 0.4209, "se": 0.0994}, "p_value": 2.3e-05, "converged": true, "aic": 512.3}},
+  "tolerance": {"atol": 0.0, "rtol": 0.01},
+  "per_quantity_tolerance": {"p_value": {"rtol": 0.5}}
+}

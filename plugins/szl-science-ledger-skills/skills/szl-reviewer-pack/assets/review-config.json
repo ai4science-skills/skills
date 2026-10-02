@@ -1,0 +1,2 @@
+{"scores": {"math-check": 0.0}, "weights": {"dataset-check": 2, "model-check": 1, "math-check": 1, "kernel-check": 1, "paired-check": 1},
+ "note": "Reviewer-declared. Default score is 1.0 for a check without findings and 0.0 with findings."}

@@ -1,0 +1,40 @@
+{
+  "status": "PINNED",
+  "schema": "szl.repo-pin.v1",
+  "project": "cohort-reanalysis-2026",
+  "repos": [
+    {
+      "name": "analysis",
+      "path": "code/analysis",
+      "state": "CLEAN",
+      "head": "9f1c2b7d4e5a6b7c8d9e0f1a2b3c4d5e6f708192",
+      "uncommitted_changes": 0,
+      "tag_at_head": "v1.2.0",
+      "origin_url_as_configured": "git@example.invalid:lab/analysis.git"
+    },
+    {
+      "name": "data-prep",
+      "path": "code/prep",
+      "state": "CLEAN",
+      "head": "0a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3",
+      "uncommitted_changes": 0,
+      "tag_at_head": null,
+      "origin_url_as_configured": "git@example.invalid:lab/prep.git"
+    },
+    {
+      "name": "shared-utils",
+      "path": "vendor/labutils",
+      "state": "CLEAN",
+      "head": "deadbeefcafef00d0123456789abcdef01234567",
+      "uncommitted_changes": 0,
+      "tag_at_head": "2.4.1",
+      "origin_url_as_configured": null
+    }
+  ],
+  "composite_sha256": "f522d6cc0e15c6a397b177449e85c49c2ba8ae26620f4b9b86eb33418fa5bb37",
+  "not_pinnable": [],
+  "limits": [
+    "A pin records which commits were checked out with nothing uncommitted; it does not say they are published or correct.",
+    "Origin URLs are read from local configuration and never contacted."
+  ]
+}

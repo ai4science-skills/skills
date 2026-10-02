@@ -1,0 +1,15 @@
+{
+  "baseline_flagged": false,
+  "variants": {
+    "duplicate_rows": {"flagged": true, "check": "unique-sample-id"},
+    "drop_rows": {"flagged": false, "check": "row-count-not-checked"},
+    "shuffle_labels": {"flagged": false, "check": "none"},
+    "scale_column": {"flagged": true, "check": "dose-range"},
+    "swap_columns": {"flagged": true, "check": "dose-range"},
+    "inject_missing": {"flagged": true, "check": "missingness"},
+    "precision_drift": {"flagged": false, "check": "none"},
+    "type_confusion": {"flagged": true, "check": "schema"},
+    "reorder_rows": {"flagged": false, "check": "none"},
+    "truncate": {"flagged": true, "check": "row-count"}
+  }
+}

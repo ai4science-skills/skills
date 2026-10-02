@@ -45,6 +45,11 @@ and `szl-paper-evidence-skills` (`szl-paper-evidence-audit`). Each is offline ex
 declared literature or converter-doc hosts. None of them validate a method, replay
 supplied code, or certify a paper claim.
 
+`szl-science-ledger-skills` pins the remaining sixteen v0.5.0-rc.1 evidence-ledger
+skills at the same commit. The eight-skill v0.2.0-rc.1 workbench pin is unchanged.
+Literature hosts are journals.plos.org and pmc.ncbi.nlm.nih.gov; example.invalid is a
+fixture hostname only.
+
 Normal workbench use is offline. Optional fetch-triage reads the pinned public synthetic
 study from Hugging Face, with no credentials or model weights. Actual Claude Science
 registration and agent efficacy remain unverified; local/source CI checks do not establish

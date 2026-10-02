@@ -1,0 +1,76 @@
+{
+  "schema": "szl.science-project.v1",
+  "question": "What evidence supports this selected scientific workflow?",
+  "input_scope": "SYNTHETIC",
+  "artifacts": [
+    {
+      "id": "dataset",
+      "kind": "dataset",
+      "title": "dataset",
+      "path": "inputs/dataset.json"
+    },
+    {
+      "id": "predictions",
+      "kind": "dataset",
+      "title": "predictions",
+      "path": "inputs/predictions.json"
+    },
+    {
+      "id": "math",
+      "kind": "dataset",
+      "title": "math",
+      "path": "inputs/math.json"
+    },
+    {
+      "id": "paired",
+      "kind": "dataset",
+      "title": "paired",
+      "path": "inputs/paired.json"
+    }
+  ],
+  "checks": [
+    {
+      "id": "dataset-check",
+      "type": "dataset",
+      "input": "dataset",
+      "depends_on": [
+        "dataset"
+      ]
+    },
+    {
+      "id": "model-check",
+      "type": "binary-model",
+      "input": "predictions",
+      "depends_on": [
+        "predictions",
+        "dataset-check"
+      ]
+    },
+    {
+      "id": "math-check",
+      "type": "math",
+      "input": "math",
+      "depends_on": [
+        "math"
+      ]
+    },
+    {
+      "id": "kernel-check",
+      "type": "calibration-benchmark",
+      "input": "predictions",
+      "depends_on": [
+        "predictions",
+        "model-check"
+      ]
+    },
+    {
+      "id": "paired-check",
+      "type": "paired",
+      "input": "paired",
+      "depends_on": [
+        "paired",
+        "kernel-check"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "schema": "szl.reproducibility-capsule.v1",
+  "files": [
+    {
+      "path": "graph.json",
+      "size_bytes": 691,
+      "sha256": "a2922a57d798d0ac971b424e6060318ceecf5ad0293afc6afc359db46505200a"
+    },
+    {
+      "path": "inputs/dataset.json",
+      "size_bytes": 754,
+      "sha256": "a75b11f7c0c04fe7288d2ddeacaaf19864748029f46b8fa6f07917345a65a444"
+    },
+    {
+      "path": "inputs/math.json",
+      "size_bytes": 381,
+      "sha256": "a537b458a56c46542a29ddbeb3cf93bea542fa68d7c054bb298756a5f6a220d0"
+    },
+    {
+      "path": "inputs/paired.json",
+      "size_bytes": 2266,
+      "sha256": "e7bbde01eb78b7109aee928a44fcbbb96bdde2cb98f325cca12378f2563e9d20"
+    },
+    {
+      "path": "inputs/predictions.json",
+      "size_bytes": 367,
+      "sha256": "0bbeaec46b0a8e988a52df5f1b090564d70cbb92504b849dbefe2f64c0450076"
+    },
+    {
+      "path": "project.json",
+      "size_bytes": 1470,
+      "sha256": "423d3dc951edaff875ab18e877b4a48195cead2ae0015d864a2df350f77ce800"
+    },
+    {
+      "path": "runs/20261001T214750751569Z-d2173dde31e4/anatomy.json",
+      "size_bytes": 5523,
+      "sha256": "d6c54dd9cb3b139946a8e45f630c54543c515a04fff5dfb45b8d70fe5ba9e315"
+    },
+    {
+      "path": "runs/20261001T214750751569Z-d2173dde31e4/dataset-check.json",
+      "size_bytes": 1933,
+      "sha256": "3ce3fcaf45dcb36c5ca2e5446bfe7044d1c27ad62b488a38cd74751372cc74c0"
+    },
+    {
+      "path": "runs/20261001T214750751569Z-d2173dde31e4/graph.json",
+      "size_bytes": 8076,
+      "sha256": "f8ded4e3c720c13b3bf2549bee9c53fded583d4266ae79dcedf58db747e1a78e"
+    },
+    {
+      "path": "runs/20261001T214750751569Z-d2173dde31e4/implementations.json",
+      "size_bytes": 1394,
+      "sha256": "af11687ba636041949a21ed697e7ab7ebb4c021f58964510fcbf578b2e89e4b7"
+    },
+    {
+      "path": "runs/20261001T214750751569Z-d2173dde31e4/kernel-check.json",
+      "size_bytes": 2358,
+      "sha256": "795ec15bbc5d832477d860fae43d912290eadd191c837bc8667f8c527e29fddc"
+    },
+    {
+      "path": "runs/20261001T214750751569Z-d2173dde31e4/math-check.json",
+      "size_bytes": 550,
+      "sha256": "a3d38f97bccea0050296cfa1955f87912212ca751fc45b5530c541e0ca701b1d"
+    },
+    {
+      "path": "runs/20261001T214750751569Z-d2173dde31e4/model-check.json",
+      "size_bytes": 3128,
+      "sha256": "5c99b278781c0929bdf9dff4255643d3b0668604e3f836c9d7a7604adf9da1b2"
+    },
+    {
+      "path": "runs/20261001T214750751569Z-d2173dde31e4/paired-check.json",
+      "size_bytes": 1208,
+      "sha256": "1a7b0aa1cd459fdd303ac7e08e8edeebb9345d47ef61ca955f723ac5d5e06523"
+    },
+    {
+      "path": "runs/20261001T214750751569Z-d2173dde31e4/summary.json",
+      "size_bytes": 1607,
+      "sha256": "385d4d8eaea8893c733773f10aa4a93b3208b5a947aaaaf9f25bc0b447494385"
+    },
+    {
+      "path": "runs/20261001T214750751569Z-d2173dde31e4/template.json",
+      "size_bytes": 691,
+      "sha256": "a2922a57d798d0ac971b424e6060318ceecf5ad0293afc6afc359db46505200a"
+    }
+  ],
+  "metadata": {
+    "run_id": "20261001T214750751569Z-d2173dde31e4",
+    "input_scope": "SYNTHETIC"
+  },
+  "signed": false,
+  "scope": "Byte integrity against this retained unsigned manifest; scientific claims not verified",
+  "capsule_sha256": "3cf7a0f322b4fe7dd886ee4519aab87d4ab90884c9baf98eb2b9010b444e7a2b"
+}
