@@ -135,7 +135,9 @@ def audit(root):
                 except sync.SyncError:
                     fails.append(tag + ": unsafe reference")
                     continue
-                if not (directory / ref).is_file():
+                target = directory / ref
+                resource_directory = "/" in ref and not pathlib.PurePosixPath(ref).suffix and target.is_dir()
+                if not target.is_file() and not resource_directory:
                     fails.append(tag + ": referenced file missing")
         for path in files:
             relative = path.relative_to(root).as_posix()
