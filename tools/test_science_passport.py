@@ -4,10 +4,12 @@ import hashlib
 import json
 import pathlib
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
 import unittest
+from types import SimpleNamespace
 from unittest import mock
 
 import science_passport as passport
@@ -73,6 +75,25 @@ class SciencePassportTests(unittest.TestCase):
             (root / "registry.json").write_bytes(b"x" * (passport.MAX_METADATA_BYTES + 1))
             with mock.patch.object(passport.check, "audit", side_effect=AssertionError("too late")):
                 with self.assertRaisesRegex(passport.PassportError, "OVERSIZE_INPUT"):
+                    passport.generate(root, PLUGIN, SKILL)
+
+    def test_marketplace_parent_link_blocks_before_static_audit(self):
+        with tempfile.TemporaryDirectory(prefix="ai4s-passport-") as temporary:
+            root = pathlib.Path(temporary)
+            shutil.copy2(ROOT / "registry.json", root / "registry.json")
+            (root / ".claude-plugin").mkdir()
+            (root / "plugins").mkdir()
+            original_lstat = pathlib.Path.lstat
+
+            def linked_marketplace_parent(path):
+                if path == root / ".claude-plugin":
+                    return SimpleNamespace(st_mode=stat.S_IFLNK, st_file_attributes=0)
+                return original_lstat(path)
+
+            with mock.patch.object(pathlib.Path, "lstat", autospec=True,
+                                   side_effect=linked_marketplace_parent), \
+                 mock.patch.object(passport.check, "audit", side_effect=AssertionError("too late")):
+                with self.assertRaisesRegex(passport.PassportError, "UNSAFE_MARKETPLACE_TREE"):
                     passport.generate(root, PLUGIN, SKILL)
 
     def test_tree_entry_budget_blocks_before_static_audit(self):

@@ -50,20 +50,25 @@ def _digest(raw):
     return hashlib.sha256(raw).hexdigest()
 
 
+def _require_directory(path, reason):
+    observed = path.lstat()
+    if not stat.S_ISDIR(observed.st_mode) or getattr(observed, "st_file_attributes", 0) & 0x400:
+        raise PassportError(reason)
+
+
 def _preflight(root):
     """Bound the metadata and plugin tree before invoking the existing auditor."""
     try:
         registry = sync.read_json(_read_bounded(root / "registry.json", MAX_METADATA_BYTES))
         sync.validate_registry(registry)
+        _require_directory(root / ".claude-plugin", "UNSAFE_MARKETPLACE_TREE")
         sync.read_json(_read_bounded(root / ".claude-plugin" / "marketplace.json", MAX_METADATA_BYTES))
     except PassportError:
         raise
     except (OSError, ValueError, TypeError) as error:
         raise PassportError("INVALID_INDEX_INPUT") from error
     plugins = root / "plugins"
-    observed = plugins.lstat()
-    if not stat.S_ISDIR(observed.st_mode) or getattr(observed, "st_file_attributes", 0) & 0x400:
-        raise PassportError("UNSAFE_PLUGIN_TREE")
+    _require_directory(plugins, "UNSAFE_PLUGIN_TREE")
     stack = [plugins]
     count = total_bytes = 0
     while stack:

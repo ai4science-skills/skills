@@ -17,6 +17,7 @@ and the registry's service declarations. Output is deterministic JSON following
 causes a nonzero `BLOCKED` result. No output file is written.
 Before the existing auditor runs, the command bounds registry and marketplace
 metadata to 256 KiB each and the plugin tree to 10,000 entries and 50 MiB. It
+also rejects a linked or reparse-point marketplace parent directory. It
 blocks rather than truncates if one skill has over 2,048 vendored files, over 128
 fixture candidates, or a JSON preview over 64 KiB. These are resource bounds,
 not a sandbox or a race-free filesystem proof.
