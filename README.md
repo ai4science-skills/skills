@@ -25,7 +25,7 @@ preview commit 8f7055a07fe58cb3f4eccac4a3365c190312cebe in szl-holdings/szl-skil
 It prepares a community v0.5.0-rc.1 source inventory; no tag is created here. The separate
 security-prerequisites workflow remains BLOCKED and this preview is not an admitted release.
 The self-contained workbench connects living project memory, math, dataset, model, kernel
-and paired checks plus scientific outcome preservation and release continuity, with retained
+and paired checks plus bounded experiment replay, scientific outcome preservation and release continuity, with retained
 capsules. Additional audits use their own CLIs, covering
 lineage, units, analysis plans, negative controls, evidence gates, retrieval, quantization,
 replication records, fragility, repository pins, receipts and reviewer handoffs. A separate

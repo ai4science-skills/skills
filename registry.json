@@ -28,8 +28,8 @@
     {
       "name": "szl-science-skills",
       "repo": "szl-holdings/szl-skills",
-      "ref": "8f7055a07fe58cb3f4eccac4a3365c190312cebe",
-      "sha": "8f7055a07fe58cb3f4eccac4a3365c190312cebe",
+      "ref": "5c51a023fccb0630298fdaa9f5dc955a716bb6dc",
+      "sha": "5c51a023fccb0630298fdaa9f5dc955a716bb6dc",
       "path": "skills",
       "skills": [
         "szl-research-anatomy",
@@ -38,6 +38,7 @@
         "szl-model-evaluation",
         "szl-kernel-comparison",
         "szl-reproducibility-capsule",
+        "szl-experiment-replay",
         "szl-science-workbench",
         "szl-paired-science",
         "szl-artifact-lineage",
@@ -58,7 +59,7 @@
         "szl-outcome-preservation",
         "szl-release-continuity"
       ],
-      "description": "Twenty-five SZL science skills with integrated outcome preservation and release continuity, pinned to a signed source preview commit. This is not a published v0.5.0 release or an admitted security pipeline. Offline by default.",
+      "description": "Twenty-six offline science skills: research workbench, claim and refutation ledgers, dataset leakage, model and retrieval evaluation, quantization, math and kernel checks, paired qualification, capsules, bounded experiment replay, lineage, units, negative controls, analysis plans, evidence gates, cross-implementation checks, mutation coverage, energy and session receipts, repository pins, result fragility, scientific outcome preservation, release continuity and reviewer packs. Optional pinned public study fetch; no credentials required.",
       "maintainer": "betterwithage (SZL Holdings)",
       "license": "Apache-2.0",
       "hosted_services": [

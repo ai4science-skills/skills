@@ -1,0 +1,1 @@
+{"schema":"szl.experiment-replay.declaration.v1","operation":"csv_column_mean_v1","input_path":"assets/synthetic.csv","reference_path":"assets/expected.json","column":"measurement","absolute_tolerance":"0"}

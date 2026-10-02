@@ -2,6 +2,7 @@
 import hashlib
 import json
 import pathlib
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -28,13 +29,13 @@ class VendoredScienceTests(unittest.TestCase):
 
     def test_immutable_pin_and_generated_helpers_match(self):
         source = json.loads((PLUGIN / "SOURCE.json").read_text())
-        self.assertEqual(source["sha"], "8f7055a07fe58cb3f4eccac4a3365c190312cebe")
+        self.assertEqual(source["sha"], "5c51a023fccb0630298fdaa9f5dc955a716bb6dc")
         self.assertEqual(source["ref"], source["sha"])
         registry = json.loads((ROOT / "registry.json").read_text())
         entry = next(p for p in registry["plugins"] if p["name"] == "szl-science-skills")
         present = {p.name for p in (PLUGIN / "skills").iterdir() if p.is_dir()}
         self.assertEqual(present, set(entry["skills"]))
-        self.assertEqual(len(present), 25)
+        self.assertEqual(len(present), 26)
         self.assertTrue({"szl-typesafe-ai", "szl-governed-decision"}.isdisjoint(present))
         records = json.loads((SKILL / "references" / "implementations.json").read_text())
         self.assertEqual(len(records), 10)
@@ -78,7 +79,21 @@ class VendoredScienceTests(unittest.TestCase):
                 cli = directory / "scripts" / "run.py"
                 fixture = directory / "assets" / "example.json"
                 arguments = [str(fixture)]
-                if name == "szl-paired-science":
+                if name == "szl-experiment-replay":
+                    replay_root = pathlib.Path(self.temp.name) / "replay"
+                    shutil.copytree(directory, replay_root)
+                    runner = replay_root / "scripts" / "run.py"
+                    for command, arguments, expected_status in [
+                        ("prepare", ["assets/declaration.json", "--output", "pin.json"], "PINNED"),
+                        ("replay", ["pin.json", "--receipt", "receipt.json"], "MATCH"),
+                    ]:
+                        process = subprocess.run([sys.executable, "-B", str(runner), command, *arguments,
+                                                  "--root", str(replay_root)],
+                                                 capture_output=True, text=True, timeout=30)
+                        self.assertEqual(process.returncode, 0, process.stderr)
+                        self.assertEqual(json.loads(process.stdout)["status"], expected_status)
+                    continue
+                elif name == "szl-paired-science":
                     cli = directory / "scripts" / "qualify.py"
                     lock = json.loads((directory / "assets" / "fixture-lock.json").read_text())
                     arguments = [str(directory / "assets" / "example-v2.json"),

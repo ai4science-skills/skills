@@ -1,7 +1,7 @@
 {
   "repo": "szl-holdings/szl-skills",
-  "ref": "8f7055a07fe58cb3f4eccac4a3365c190312cebe",
-  "sha": "8f7055a07fe58cb3f4eccac4a3365c190312cebe",
+  "ref": "5c51a023fccb0630298fdaa9f5dc955a716bb6dc",
+  "sha": "5c51a023fccb0630298fdaa9f5dc955a716bb6dc",
   "path": "skills",
   "files_sha256": {
     "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
@@ -48,6 +48,12 @@
     "skills/szl-evidence-gate/kernel.py": "094a0e6ccf8278bf44fc1c135a2a214bfdcf0bac06d789f9f37363da90ef2d56",
     "skills/szl-evidence-gate/references/contract.md": "3dad698ecb3546cfbac5be2ecd809df5a8f2a060b3e0dad2027f8eb57c7a1b41",
     "skills/szl-evidence-gate/scripts/run.py": "4ce4c13f4ac8dce4c27a8435300c89468398a322200fe7bc43169c68bfb86e0d",
+    "skills/szl-experiment-replay/SKILL.md": "71d550bcbe7d383e72b34c987576d1d9a409b97bec1b99f4650615eb8f05f96d",
+    "skills/szl-experiment-replay/assets/declaration.json": "cbfb99a8bc8c35c110fd9a60318ad7ee9612384503f02a2deff70692fb19de8d",
+    "skills/szl-experiment-replay/assets/expected.json": "68d2c0700ec7d796de2ebce32692766f6ff28fd9a928ef8f51877574541cd386",
+    "skills/szl-experiment-replay/assets/synthetic.csv": "a3edd1de50bf3648ba5eebc64d88a434ce25fe06d67baf7252fda409f3105f2e",
+    "skills/szl-experiment-replay/kernel.py": "1e4496f4ab415a6b1ec77a340b9d6367e014f00a5d7eb8cd0b5bf6dea301fefb",
+    "skills/szl-experiment-replay/scripts/run.py": "bcd43e211fa56cb615775a0f834a24cc0d0778be271962d6c1d7a999cf43189f",
     "skills/szl-kernel-comparison/SKILL.md": "cf5c9f63338196e28f471363829d7c01b9d43df987bdd527b592b94a1b0cd467",
     "skills/szl-kernel-comparison/assets/example.json": "bea8896ba8399395568aff9ec39cbb9956854af916da6b829204e3ae34689005",
     "skills/szl-kernel-comparison/kernel.py": "e829687efed8e7818514e54d709749fdb1453901c55b4974639eb9816c2af925",
