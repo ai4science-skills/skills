@@ -1,0 +1,152 @@
+{
+  "schema": "szl.refutation-ledger.v1",
+  "title": "Example: a three-claim dependency chain with mixed replication outcomes",
+  "entries": [
+    {
+      "seq": 1,
+      "kind": "claim",
+      "recorded_at": "2026-01-10T09:00:00Z",
+      "body": {
+        "claim_id": "A",
+        "statement": "Compound X lowers marker M by 20 percent in cell line L at 10 uM",
+        "source": {
+          "doi": "10.0000/example.a"
+        },
+        "depends_on": [],
+        "effect": {
+          "metric": "percent_change",
+          "value": -20.0,
+          "ci": [
+            -26.0,
+            -14.0
+          ]
+        }
+      },
+      "prev_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "entry_sha256": "49296aa309ca4dc859a1c1d73161e028537ef10ad78a833e13b62a755fb49c5e"
+    },
+    {
+      "seq": 2,
+      "kind": "claim",
+      "recorded_at": "2026-02-02T10:00:00Z",
+      "body": {
+        "claim_id": "B",
+        "statement": "The M reduction by X is mediated by pathway P (knockdown abolishes the effect)",
+        "source": {
+          "doi": "10.0000/example.b"
+        },
+        "depends_on": [
+          "A"
+        ]
+      },
+      "prev_sha256": "49296aa309ca4dc859a1c1d73161e028537ef10ad78a833e13b62a755fb49c5e",
+      "entry_sha256": "7f047794c030bd20198b9468295c7fd49b4669e57c1795f9cb99616ee9853c92"
+    },
+    {
+      "seq": 3,
+      "kind": "claim",
+      "recorded_at": "2026-03-15T12:00:00Z",
+      "body": {
+        "claim_id": "C",
+        "statement": "Pathway P inhibitors reproduce the X phenotype in organoids",
+        "source": {
+          "repo": "example/organoid-study"
+        },
+        "depends_on": [
+          "B"
+        ]
+      },
+      "prev_sha256": "7f047794c030bd20198b9468295c7fd49b4669e57c1795f9cb99616ee9853c92",
+      "entry_sha256": "8d6ea737efab2373c3d66e6e7bbe2cc770257f797e7fd024b9a30c1b24fd80c2"
+    },
+    {
+      "seq": 4,
+      "kind": "attempt",
+      "recorded_at": "2026-04-01T08:00:00Z",
+      "body": {
+        "attempt_id": "A-rep-1",
+        "claim_id": "A",
+        "outcome": "REPLICATED",
+        "n": 12,
+        "effect": {
+          "metric": "percent_change",
+          "value": -17.5,
+          "ci": [
+            -24.0,
+            -11.0
+          ]
+        },
+        "preregistered": true,
+        "receipt": {
+          "sha256": "a3f1000000000000000000000000000000000000000000000000000000000000",
+          "path": "receipts/A-rep-1.json"
+        },
+        "actor": "lab 2"
+      },
+      "prev_sha256": "8d6ea737efab2373c3d66e6e7bbe2cc770257f797e7fd024b9a30c1b24fd80c2",
+      "entry_sha256": "d91c77f489bdef4a16d521ac5e70ebbe85e7ffe5848cb8c43b5e95aaa9758f81"
+    },
+    {
+      "seq": 5,
+      "kind": "attempt",
+      "recorded_at": "2026-05-20T08:00:00Z",
+      "body": {
+        "attempt_id": "A-rep-2",
+        "claim_id": "A",
+        "outcome": "NOT_REPLICATED",
+        "n": 10,
+        "effect": {
+          "metric": "percent_change",
+          "value": -2.0,
+          "ci": [
+            -9.0,
+            5.0
+          ]
+        },
+        "preregistered": false,
+        "actor": "lab 3",
+        "notes": "different serum lot; no receipt filed"
+      },
+      "prev_sha256": "d91c77f489bdef4a16d521ac5e70ebbe85e7ffe5848cb8c43b5e95aaa9758f81",
+      "entry_sha256": "d15771857809112ae9df6f70b2c84055edc8667b272d1c54f74ac7b951dd7044"
+    },
+    {
+      "seq": 6,
+      "kind": "attempt",
+      "recorded_at": "2026-06-11T08:00:00Z",
+      "body": {
+        "attempt_id": "B-rep-1",
+        "claim_id": "B",
+        "outcome": "NOT_REPLICATED",
+        "n": 8,
+        "preregistered": true,
+        "receipt": {
+          "sha256": "b7c2000000000000000000000000000000000000000000000000000000000000",
+          "url": "https://example.invalid/receipts/B-rep-1"
+        },
+        "actor": "lab 4"
+      },
+      "prev_sha256": "d15771857809112ae9df6f70b2c84055edc8667b272d1c54f74ac7b951dd7044",
+      "entry_sha256": "50908f65f3bfa074e3026f1bf76a5cce923cc9c316fcf57d82bd04079680353d"
+    },
+    {
+      "seq": 7,
+      "kind": "attempt",
+      "recorded_at": "2026-07-02T08:00:00Z",
+      "body": {
+        "attempt_id": "A-rep-3",
+        "claim_id": "A",
+        "outcome": "INCONCLUSIVE",
+        "n": 4,
+        "receipt": {
+          "sha256": "c9d4000000000000000000000000000000000000000000000000000000000000",
+          "path": "receipts/A-rep-3.json"
+        },
+        "actor": "lab 5",
+        "notes": "underpowered"
+      },
+      "prev_sha256": "50908f65f3bfa074e3026f1bf76a5cce923cc9c316fcf57d82bd04079680353d",
+      "entry_sha256": "436d96d888f91c531ad3e65f39ba31d5874842b37b2bfbb410827014ec747b71"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "label_column": "outcome",
+  "k": 2,
+  "seed": 11,
+  "rows": [
+    {"sample": "S01", "dose_mg": 10, "response": 0.21, "outcome": 0},
+    {"sample": "S02", "dose_mg": 20, "response": 0.35, "outcome": 0},
+    {"sample": "S03", "dose_mg": 40, "response": 0.58, "outcome": 1},
+    {"sample": "S04", "dose_mg": 80, "response": 0.77, "outcome": 1},
+    {"sample": "S05", "dose_mg": 160, "response": 0.91, "outcome": 1},
+    {"sample": "S06", "dose_mg": 5, "response": 0.12, "outcome": 0}
+  ]
+}

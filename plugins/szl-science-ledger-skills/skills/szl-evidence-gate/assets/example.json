@@ -1,0 +1,14 @@
+{
+  "subject": "SYNTHETIC model card for a triage classifier",
+  "claims": [
+    {"id": "held-out-accuracy", "text": "Mean held-out accuracy across three seeds is 0.912",
+     "evidence": [{"path": "artifacts/held_out_metrics.csv", "sha256": "4853f43c459a2ee7ab8ba3ec1769dce97534cf8068a4d9b2f240de88eb74f180"}]},
+    {"id": "no-template-leakage", "text": "Held-out rows share no template family with training rows",
+     "evidence": [{"path": "artifacts/eval_protocol.txt", "must_contain": ["template families kept together"]}]},
+    {"id": "calibrated", "text": "The model is well calibrated (ECE < 0.05)",
+     "evidence": []},
+    {"id": "energy", "text": "Training consumed 1.8 kWh",
+     "required": false,
+     "evidence": [{"path": "artifacts/energy_receipt.json"}]}
+  ]
+}

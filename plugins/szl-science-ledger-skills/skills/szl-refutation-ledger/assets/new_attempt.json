@@ -1,0 +1,15 @@
+{
+  "kind": "attempt",
+  "body": {
+    "attempt_id": "C-rep-1",
+    "claim_id": "C",
+    "outcome": "REPLICATED",
+    "n": 6,
+    "preregistered": true,
+    "receipt": {
+      "sha256": "d1e5000000000000000000000000000000000000000000000000000000000000",
+      "path": "receipts/C-rep-1.json"
+    },
+    "actor": "lab 6"
+  }
+}

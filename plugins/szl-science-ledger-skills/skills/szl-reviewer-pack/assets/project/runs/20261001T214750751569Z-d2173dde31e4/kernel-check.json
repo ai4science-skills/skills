@@ -1,0 +1,86 @@
+{
+  "status": "AGREEMENT_ON_SUPPLIED_OUTPUTS",
+  "shape": [
+    5
+  ],
+  "elements": 5,
+  "mismatch_indexes": [],
+  "mismatch_count": 0,
+  "max_absolute_error": 0.0,
+  "atol": 1e-12,
+  "rtol": 1e-09,
+  "timing_contexts_match": true,
+  "median_speedup": 1.4810431678521907,
+  "timing_source": "CALLER_SUPPLIED",
+  "timing_verified": false,
+  "input_sha256": "f91c91f3786a0d543168cab2180edbfdcf459981fd40c43d0bcaf06c871d67fc",
+  "energy_joules": null,
+  "scope": "Five reference metric calls versus the unified helper (also computes accuracy/confusion); this CPU/input only",
+  "measurement_executed_locally": true,
+  "measurement_record": {
+    "reference_output": [
+      0.024999999999999994,
+      0.164252033486018,
+      0.14999999999999997,
+      0.2,
+      1.0
+    ],
+    "candidate_output": [
+      0.024999999999999994,
+      0.164252033486018,
+      0.14999999999999997,
+      0.2,
+      1.0
+    ],
+    "atol": 1e-12,
+    "rtol": 1e-09,
+    "reference_context": {
+      "hardware": "x86_64 / Linux CPU",
+      "dtype": "Python float64",
+      "input_sha256": "92ed3b982045c4b221713081951b34c6260d9573860b9035bd93a5007e0ebe8d",
+      "threads": 1,
+      "warmup": 3,
+      "synchronized": true,
+      "measurement_method": "perf_counter, synchronous CPU"
+    },
+    "candidate_context": {
+      "hardware": "x86_64 / Linux CPU",
+      "dtype": "Python float64",
+      "input_sha256": "92ed3b982045c4b221713081951b34c6260d9573860b9035bd93a5007e0ebe8d",
+      "threads": 1,
+      "warmup": 3,
+      "synchronized": true,
+      "measurement_method": "perf_counter, synchronous CPU"
+    },
+    "reference_seconds": [
+      2.090500038320897e-05,
+      2.061099985439796e-05,
+      2.0283000139897922e-05,
+      1.9706999864865793e-05,
+      1.964900002349168e-05,
+      1.916699966386659e-05,
+      1.9300000076327706e-05,
+      1.9281999811937567e-05,
+      1.952499997059931e-05
+    ],
+    "candidate_seconds": [
+      1.3884000054531498e-05,
+      1.3426999885268742e-05,
+      2.005099986490677e-05,
+      1.5227999938360881e-05,
+      1.3235000096756266e-05,
+      1.3267000213090796e-05,
+      1.260799990632222e-05,
+      1.2471999980334658e-05,
+      1.2642999990930548e-05
+    ]
+  },
+  "reference_revision": "b2e317877abed98e70f9cf6730944a797837faf1",
+  "compared_metrics": [
+    "brier",
+    "log_loss",
+    "ece",
+    "mce",
+    "auroc"
+  ]
+}

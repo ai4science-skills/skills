@@ -1,0 +1,32 @@
+{
+  "schema": "szl.research-anatomy.v1",
+  "nodes": [
+    {
+      "id": "question",
+      "kind": "question",
+      "title": "What evidence supports this selected scientific workflow?"
+    },
+    {
+      "id": "lambda",
+      "kind": "claim",
+      "title": "Lambda uniqueness",
+      "claim_state": "Conjecture 1 (OPEN)"
+    },
+    {
+      "id": "run",
+      "kind": "run",
+      "title": "No checks executed yet",
+      "generated": true,
+      "claim_state": "NOT_EXECUTED"
+    },
+    {
+      "id": "conclusion",
+      "kind": "claim",
+      "title": "Research conclusions require scientist review",
+      "depends_on": [
+        "run"
+      ],
+      "claim_state": "UNKNOWN"
+    }
+  ]
+}

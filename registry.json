@@ -126,6 +126,39 @@
       "hosted_services": [
         "docling-project.github.io - linked local converter documentation; visiting fetches docs, not paper bytes"
       ]
+    },
+    {
+      "name": "szl-science-ledger-skills",
+      "repo": "szl-holdings/szl-skills",
+      "ref": "7c9086e18cc0f653c77794d93bd586df4b445c4b",
+      "sha": "7c9086e18cc0f653c77794d93bd586df4b445c4b",
+      "path": "skills",
+      "skills": [
+        "szl-artifact-lineage",
+        "szl-unit-invariants",
+        "szl-negative-control-audit",
+        "szl-analysis-plan-audit",
+        "szl-evidence-gate",
+        "szl-cross-implementation-check",
+        "szl-analysis-mutation-test",
+        "szl-compute-energy-receipt",
+        "szl-session-receipt",
+        "szl-reviewer-pack",
+        "szl-refutation-ledger",
+        "szl-retrieval-eval",
+        "szl-quantization-check",
+        "szl-repo-pin",
+        "szl-result-fragility",
+        "szl-clustered-replication"
+      ],
+      "description": "Sixteen offline evidence-ledger science skills from szl-skills@7c9086e1. Completes the v0.5.0-rc.1 family beside the eight-skill v0.2.0-rc.1 workbench pin.",
+      "maintainer": "betterwithage (SZL Holdings)",
+      "license": "Apache-2.0",
+      "hosted_services": [
+        "journals.plos.org - clustered-replication literature link; visiting fetches HTML, not study bytes",
+        "pmc.ncbi.nlm.nih.gov - clustered-replication literature link; visiting fetches HTML, not study bytes",
+        "example.invalid - fixture hostname in the refutation ledger; no network request is made"
+      ]
     }
   ]
 }

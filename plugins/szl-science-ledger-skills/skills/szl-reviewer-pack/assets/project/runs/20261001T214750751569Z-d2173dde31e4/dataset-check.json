@@ -1,0 +1,83 @@
+{
+  "status": "ISSUES_FOUND",
+  "readiness": "REVIEW",
+  "rows": 4,
+  "splits": {
+    "test": 2,
+    "train": 2
+  },
+  "missing": {},
+  "issues": [
+    "EXACT_FEATURE_DUPLICATES",
+    "CROSS_SPLIT_FEATURE_LEAKAGE",
+    "CROSS_SPLIT_GROUP_LEAKAGE"
+  ],
+  "duplicates": [
+    {
+      "sha256": "06a6535c3ff5c9da828e977bc53df452117cd1579a24be9595a0b154d601d75c",
+      "row_indexes": [
+        0,
+        2
+      ],
+      "splits": [
+        "test",
+        "train"
+      ]
+    }
+  ],
+  "feature_leakage": [
+    {
+      "sha256": "06a6535c3ff5c9da828e977bc53df452117cd1579a24be9595a0b154d601d75c",
+      "row_indexes": [
+        0,
+        2
+      ],
+      "splits": [
+        "test",
+        "train"
+      ]
+    }
+  ],
+  "group_leakage": [
+    {
+      "group_sha256": "f0118ed67f74826565ac7cdb8cfdafca135421f3e44266f56067ed6bd13360e2",
+      "splits": [
+        "test",
+        "train"
+      ]
+    }
+  ],
+  "input_sha256": "22493e8ac58599e492480fd02e71ca804ed942e099c63f8315e7903dcda9d99b",
+  "declared_metadata": {
+    "source_revision": "synthetic-fixture-v1",
+    "license": "Apache-2.0",
+    "evidence_class": "SYNTHETIC"
+  },
+  "provenance_verified": false,
+  "scientific_suitability": "NOT_ASSESSED",
+  "limitations": [
+    "Exact feature equality only; no semantic leakage detector",
+    "Digests do not anonymize sensitive data",
+    "License metadata is recorded, not legally verified",
+    "Temporal ordering checks declared design, not causal validity",
+    "Fit manifests bind selected rows, not actual transform execution"
+  ],
+  "leakage_checks": {
+    "entity": {
+      "status": "NOT_CHECKED",
+      "findings": [],
+      "missing_evidence": []
+    },
+    "temporal": {
+      "status": "NOT_CHECKED",
+      "findings": [],
+      "missing_evidence": []
+    },
+    "preprocessing": {
+      "status": "NOT_CHECKED",
+      "findings": [],
+      "missing_evidence": []
+    }
+  },
+  "behavioral_evaluation": "NOT_MEASURED"
+}

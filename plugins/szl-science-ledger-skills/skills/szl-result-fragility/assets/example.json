@@ -1,0 +1,6 @@
+{
+  "label": "primary endpoint: 30-day mortality (synthetic example)",
+  "arms": {"treatment": {"events": 12, "total": 100}, "control": {"events": 25, "total": 100}},
+  "alpha": 0.05,
+  "lost_to_follow_up": 7
+}

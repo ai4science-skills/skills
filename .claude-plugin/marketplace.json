@@ -113,6 +113,35 @@
       },
       "license": "Apache-2.0",
       "homepage": "https://github.com/szl-holdings/szl-skills/tree/7c9086e18cc0f653c77794d93bd586df4b445c4b"
+    },
+    {
+      "name": "szl-science-ledger-skills",
+      "description": "Sixteen offline evidence-ledger science skills from szl-skills@7c9086e1. Completes the v0.5.0-rc.1 family beside the eight-skill v0.2.0-rc.1 workbench pin.",
+      "source": "./plugins/szl-science-ledger-skills",
+      "strict": false,
+      "skills": [
+        "./skills/szl-analysis-mutation-test",
+        "./skills/szl-analysis-plan-audit",
+        "./skills/szl-artifact-lineage",
+        "./skills/szl-clustered-replication",
+        "./skills/szl-compute-energy-receipt",
+        "./skills/szl-cross-implementation-check",
+        "./skills/szl-evidence-gate",
+        "./skills/szl-negative-control-audit",
+        "./skills/szl-quantization-check",
+        "./skills/szl-refutation-ledger",
+        "./skills/szl-repo-pin",
+        "./skills/szl-result-fragility",
+        "./skills/szl-retrieval-eval",
+        "./skills/szl-reviewer-pack",
+        "./skills/szl-session-receipt",
+        "./skills/szl-unit-invariants"
+      ],
+      "author": {
+        "name": "betterwithage (SZL Holdings)"
+      },
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/7c9086e18cc0f653c77794d93bd586df4b445c4b"
     }
   ]
 }

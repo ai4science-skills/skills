@@ -1,0 +1,91 @@
+{
+  "schema": "szl.negative-control-audit.v1",
+  "registry": {
+    "id": "synthetic-null-registry",
+    "version": 1,
+    "scope": "COMPUTATIONAL",
+    "frozen_at": "2026-01-01T00:00:00Z",
+    "graph": {
+      "nodes": [
+        "algorithm",
+        "batch",
+        "dummy",
+        "loss"
+      ],
+      "edges": [
+        [
+          "algorithm",
+          "loss"
+        ],
+        [
+          "batch",
+          "algorithm"
+        ],
+        [
+          "batch",
+          "dummy"
+        ],
+        [
+          "batch",
+          "loss"
+        ]
+      ]
+    },
+    "main": {
+      "intervention": "algorithm",
+      "readout": "loss"
+    },
+    "protocol_artifact": "protocol",
+    "scorer_artifact": "scorer",
+    "execution_artifact": "execution",
+    "controls": [
+      {
+        "id": "dummy-exposure",
+        "kind": "NEGATIVE_EXPOSURE",
+        "intervention": "dummy",
+        "readout": "loss",
+        "shared_nuisance": [
+          "batch"
+        ],
+        "rationale": "The inert computational dummy shares batch handling without affecting the scored output in this declared graph.",
+        "input_artifact": "input",
+        "metric": "signed_mse_delta",
+        "expectation": "ABS_DELTA_LE",
+        "tolerance": 0.01
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "id": "protocol",
+      "sha256": "345a343cbc39f223aedd019b2454c7479f259734b836531a53206e5802d4fd5c",
+      "content_utf8": "synthetic computational protocol v1\n"
+    },
+    {
+      "id": "scorer",
+      "sha256": "c11d638a09596f857758ac51876e833588621fbf244e1f86401649adece1ea89",
+      "content_utf8": "synthetic signed MSE difference specification v1\n"
+    },
+    {
+      "id": "execution",
+      "sha256": "4d718c10ebc2997497534cab8f04b472e1223dc90e154c43ace41a0e395c9d4e",
+      "content_utf8": "synthetic offline execution manifest v1; no execution claimed\n"
+    },
+    {
+      "id": "input",
+      "sha256": "cb2e5f27762d4f04f30a1749f78399077090657bf88ddc1eddafdfb27195bdf3",
+      "content_utf8": "synthetic dummy input; no dataset rows\n"
+    },
+    {
+      "id": "outcome",
+      "sha256": "230dd3bbd2faead5fbb659bc7e919c86efd87db4bf88533216a68387ca51fc20",
+      "content_utf8": "{\"schema\":\"szl.negative-control-result.v1\",\"control_id\":\"dummy-exposure\",\"registry_sha256\":\"fdceaa4de97a9de38c89ac1035739bbfc990c2bcaaaeda3815e5d1b070390f0b\",\"protocol_sha256\":\"345a343cbc39f223aedd019b2454c7479f259734b836531a53206e5802d4fd5c\",\"scorer_sha256\":\"c11d638a09596f857758ac51876e833588621fbf244e1f86401649adece1ea89\",\"execution_sha256\":\"4d718c10ebc2997497534cab8f04b472e1223dc90e154c43ace41a0e395c9d4e\",\"input_sha256\":\"cb2e5f27762d4f04f30a1749f78399077090657bf88ddc1eddafdfb27195bdf3\",\"metric\":\"signed_mse_delta\",\"tolerance\":0.01,\"delta\":0.005,\"started_at\":\"2026-01-01T01:00:00Z\",\"completed_at\":\"2026-01-01T01:01:00Z\",\"status\":\"SUCCESS\",\"failure_reason\":null,\"contaminated\":false}"
+    }
+  ],
+  "results": [
+    {
+      "control_id": "dummy-exposure",
+      "outcome_artifact": "outcome"
+    }
+  ]
+}

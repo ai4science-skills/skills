@@ -1,0 +1,13 @@
+{
+  "project": "SYNTHETIC dose-response reanalysis",
+  "session_id": "2026-10-01-a",
+  "started_at": "2026-10-01T14:00:00Z",
+  "finished_at": "2026-10-01T14:25:00Z",
+  "actor": {"kind": "agent", "name": "Claude (Claude Science)"},
+  "inputs": ["data/raw.csv"],
+  "code": ["analysis.py"],
+  "outputs": ["results/summary.csv"],
+  "commands": ["python analysis.py"],
+  "environment": {"python": "3.12.1", "platform": "linux-x86_64", "packages": {"numpy": "2.1.0", "pandas": "2.2.3"}},
+  "notes": "Synthetic demonstration manifest."
+}
