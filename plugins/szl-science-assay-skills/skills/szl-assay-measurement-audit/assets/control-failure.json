@@ -1,0 +1,28 @@
+{
+  "schema": "szl.assay-measurement.v1",
+  "assay_id": "invented-plate-assay",
+  "run_id": "synthetic-run-bad-qc",
+  "concentration_unit": "mg/L",
+  "method_ref": "invented-method-v1",
+  "standards_ref": "invented-standard-lot-7",
+  "limits": {
+    "max_abs_standard_residual": "0.02",
+    "max_abs_blank_signal": "0.05",
+    "max_qc_relative_error": "0.10",
+    "quantification_min": "0.20"
+  },
+  "calibrators": [
+    {"well_id": "A1", "concentration": "0", "unit": "mg/L", "signal": "0.02"},
+    {"well_id": "A2", "concentration": "1", "unit": "mg/L", "signal": "0.52"},
+    {"well_id": "A3", "concentration": "2", "unit": "mg/L", "signal": "1.02"},
+    {"well_id": "A4", "concentration": "3", "unit": "mg/L", "signal": "1.52"}
+  ],
+  "blank": {"well_id": "A5", "signal": "0.02"},
+  "quality_controls": [
+    {"well_id": "A6", "target_concentration": "0.5", "unit": "mg/L", "signal": "0.95"},
+    {"well_id": "A7", "target_concentration": "2.5", "unit": "mg/L", "signal": "1.27"}
+  ],
+  "samples": [
+    {"sample_id": "invented-sample-1", "well_id": "A8", "signal": "0.77", "dilution_factor": "2", "expanded_uncertainty": "0.10", "coverage_factor": "2", "uncertainty_unit": "mg/L", "uncertainty_basis": "FINAL_REPORTED_CONCENTRATION", "dilution_uncertainty_included": true}
+  ]
+}

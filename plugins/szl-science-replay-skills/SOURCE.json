@@ -1,0 +1,16 @@
+{
+  "repo": "szl-holdings/szl-skills",
+  "ref": "7c9086e18cc0f653c77794d93bd586df4b445c4b",
+  "sha": "7c9086e18cc0f653c77794d93bd586df4b445c4b",
+  "path": "skills",
+  "files_sha256": {
+    "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "NOTICE": "021ac47ff117a126574e3ced3f4496b3b6e332854c683f93bd8acf2ce79c9106",
+    "skills/szl-experiment-replay/SKILL.md": "447095f0863b074a62406b45b163a9bdc85e84985d208687edff990147dad642",
+    "skills/szl-experiment-replay/assets/declaration.json": "cbfb99a8bc8c35c110fd9a60318ad7ee9612384503f02a2deff70692fb19de8d",
+    "skills/szl-experiment-replay/assets/expected.json": "68d2c0700ec7d796de2ebce32692766f6ff28fd9a928ef8f51877574541cd386",
+    "skills/szl-experiment-replay/assets/synthetic.csv": "a3edd1de50bf3648ba5eebc64d88a434ce25fe06d67baf7252fda409f3105f2e",
+    "skills/szl-experiment-replay/scripts/engine.py": "40b65dcb7f48de5655aca6e14f900d95dfd17121c02b5ab4f866361a352cf281",
+    "skills/szl-experiment-replay/scripts/run.py": "dea57f44526aec3ae6a825b5e08ffad2c6b4a46a7a0443748a63532884b76506"
+  }
+}

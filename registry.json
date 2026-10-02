@@ -79,6 +79,53 @@
         "rss.onlinelibrary.wiley.com - linked Holm 1979 paper; visiting fetches publisher HTML, not plan or results bytes",
         "www.jstor.org - linked Benjamini-Hochberg 1995 paper; visiting fetches publisher HTML, not plan or results bytes"
       ]
+    },
+    {
+      "name": "szl-science-assay-skills",
+      "repo": "szl-holdings/szl-skills",
+      "ref": "7c9086e18cc0f653c77794d93bd586df4b445c4b",
+      "sha": "7c9086e18cc0f653c77794d93bd586df4b445c4b",
+      "path": "skills",
+      "skills": [
+        "szl-assay-measurement-audit"
+      ],
+      "description": "Offline assay-run audit for a declared increasing linear calibration, blank, QC and sample uncertainty. Synthetic fixtures; not method validation.",
+      "maintainer": "betterwithage (SZL Holdings)",
+      "license": "Apache-2.0",
+      "hosted_services": [
+        "eurachem.org - linked measurement-uncertainty guidance; visiting fetches literature, not plate bytes",
+        "www.nist.gov - linked metrology notes; visiting fetches literature, not plate bytes"
+      ]
+    },
+    {
+      "name": "szl-science-replay-skills",
+      "repo": "szl-holdings/szl-skills",
+      "ref": "7c9086e18cc0f653c77794d93bd586df4b445c4b",
+      "sha": "7c9086e18cc0f653c77794d93bd586df4b445c4b",
+      "path": "skills",
+      "skills": [
+        "szl-experiment-replay"
+      ],
+      "description": "Offline CSV column-mean replay against a frozen reference. MATCH, divergence, or incomplete. No network.",
+      "maintainer": "betterwithage (SZL Holdings)",
+      "license": "Apache-2.0",
+      "hosted_services": []
+    },
+    {
+      "name": "szl-paper-evidence-skills",
+      "repo": "szl-holdings/szl-skills",
+      "ref": "7c9086e18cc0f653c77794d93bd586df4b445c4b",
+      "sha": "7c9086e18cc0f653c77794d93bd586df4b445c4b",
+      "path": "skills",
+      "skills": [
+        "szl-paper-evidence-audit"
+      ],
+      "description": "Offline PDF table/figure locator against pinned original and extracted bytes. Human visual review required.",
+      "maintainer": "betterwithage (SZL Holdings)",
+      "license": "Apache-2.0",
+      "hosted_services": [
+        "docling-project.github.io - linked local converter documentation; visiting fetches docs, not paper bytes"
+      ]
     }
   ]
 }

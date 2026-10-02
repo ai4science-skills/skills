@@ -1,0 +1,23 @@
+{
+  "schema": "szl.paper-evidence-claims.v1",
+  "pdf_sha256": "replace-with-sha256-of-original-pdf",
+  "document_json_sha256": "replace-with-sha256-of-docling-json",
+  "extraction": {
+    "tool": "Docling",
+    "version": "record-installed-version",
+    "pipeline": "record-pipeline",
+    "ocr_engine": "record-engine-or-none"
+  },
+  "claims": [
+    {
+      "id": "example-table-claim",
+      "ref": "#/tables/0",
+      "quote": "exact text from one table cell"
+    },
+    {
+      "id": "example-figure-caption",
+      "ref": "#/pictures/0",
+      "quote": "exact text from a linked caption"
+    }
+  ]
+}
