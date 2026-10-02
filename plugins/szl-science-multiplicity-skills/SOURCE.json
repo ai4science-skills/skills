@@ -1,0 +1,16 @@
+{
+  "repo": "szl-holdings/szl-skills",
+  "ref": "7c9086e18cc0f653c77794d93bd586df4b445c4b",
+  "sha": "7c9086e18cc0f653c77794d93bd586df4b445c4b",
+  "path": "skills",
+  "files_sha256": {
+    "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "NOTICE": "021ac47ff117a126574e3ced3f4496b3b6e332854c683f93bd8acf2ce79c9106",
+    "skills/szl-multiplicity-audit/SKILL.md": "6c73d6cf5bee2916d504e557c16a82e8dc4e95db7f3cd12d2e1da95319847ac3",
+    "skills/szl-multiplicity-audit/assets/plan.json": "873760eef22c08c5b171474462b8d5540607b04c8c27402d95f76e6bba572c00",
+    "skills/szl-multiplicity-audit/assets/results.json": "7049ff5ee6635f635ab261fd1dfdb3136e00a4e3f8252683db1f55dcd5812ed9",
+    "skills/szl-multiplicity-audit/kernel.py": "794cb7983043c65660df38a03682cd23c3ff24dc561d0f5101b47bd5a3c4e4cc",
+    "skills/szl-multiplicity-audit/references/contract.md": "0e046f8f219216082448976f8ecb13962a8f841a289f988f8b2a6dc8dd2e61cc",
+    "skills/szl-multiplicity-audit/scripts/run.py": "ba7b9022c8ed29b290708650fedeffe6e174b4fe16f34a4703430a0264508c76"
+  }
+}

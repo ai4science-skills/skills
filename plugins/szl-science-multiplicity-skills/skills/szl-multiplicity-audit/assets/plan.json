@@ -1,0 +1,12 @@
+{
+  "schema": "szl.multiplicity.plan.v1",
+  "family_id": "synthetic-primary",
+  "alpha": "0.05",
+  "method": "holm",
+  "hypotheses": [
+    {"id": "a", "description": "Synthetic primary endpoint A"},
+    {"id": "b", "description": "Synthetic primary endpoint B"},
+    {"id": "c", "description": "Synthetic primary endpoint C"},
+    {"id": "d", "description": "Synthetic primary endpoint D"}
+  ]
+}
