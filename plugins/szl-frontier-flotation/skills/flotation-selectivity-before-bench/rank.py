@@ -2,8 +2,9 @@
 
 Sorts one declared public score column into a rank band. Does not invent
 recovery, grade, or selectivity percent. A bench CSV may be hashed; its
-bytes are never turned into a recovery number. Energy stays UNAVAILABLE.
-Lambda uniqueness is not decided here.
+bytes are never turned into a recovery number. An optional descriptor
+prior is unitless and may ABSTAIN. Energy stays UNAVAILABLE. Lambda
+uniqueness is not decided here.
 """
 
 from __future__ import annotations
@@ -11,12 +12,13 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import importlib.util
 import json
 import math
 import re
 import sys
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any, Mapping, Sequence
 
 SCHEMA = "szl.frontier.flotation-selectivity.v1"
 ORGAN = "flotation-selectivity-before-bench"
@@ -27,6 +29,20 @@ _ID_COLUMNS = ("id", "reagent", "name")
 
 class FlotationError(Exception):
     """Fail-closed flotation input error. No partial rank is emitted."""
+
+
+def _load_prior():
+    path = Path(__file__).with_name("prior.py")
+    spec = importlib.util.spec_from_file_location("szl_flotation_prior", path)
+    if spec is None or spec.loader is None:
+        raise FlotationError("selectivity prior runner is missing")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+_prior_mod = _load_prior()
+selectivity_prior = _prior_mod.prior
 
 
 def _norm(name: str) -> str:
@@ -93,6 +109,16 @@ def _base_receipt() -> dict[str, Any]:
         "discourse": "REPORTED topic 412",
         "nexusOrgan": False,
         "mintNexusSpace": False,
+        "prior": {
+            "state": "UNAVAILABLE",
+            "reason": "prior not requested",
+            "missing": [],
+            "S": None,
+            "S_class": "UNAVAILABLE",
+            "not": "flotation recovery",
+            "tau": None,
+        },
+        "exhibitOnApex": False,
     }
 
 
@@ -121,13 +147,23 @@ def _column(fields: list[str], wanted: str) -> str | None:
 
 
 def build_receipt(
-    table: Path,
+    table: Path | None = None,
     bench: Path | None = None,
     score_column: str | None = None,
+    features: Mapping[str, Any] | None = None,
+    weights: Mapping[str, Any] | None = None,
+    tau: float = 0.15,
 ) -> dict[str, Any]:
     """Return a software receipt. recoveryPercent is always null."""
 
     receipt = _base_receipt()
+    if features is not None or weights is not None:
+        receipt["prior"] = selectivity_prior(features, weights, tau)
+    if table is None:
+        if features is None and weights is None:
+            raise FlotationError("need a reagent table or a descriptor prior")
+        receipt["note"] = "PRIOR path; no reagent table; recovery not invented"
+        return receipt
     if not table.is_file():
         raise FlotationError(f"reagent table missing: {table}")
 
@@ -224,16 +260,46 @@ def build_receipt(
     return receipt
 
 
+def _load_mapping(path: Path, label: str) -> dict[str, Any]:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except OSError as exc:
+        raise FlotationError(f"{label} unreadable: {exc}") from exc
+    except json.JSONDecodeError as exc:
+        raise FlotationError(f"{label} is not JSON: {exc}") from exc
+    if not isinstance(payload, dict):
+        raise FlotationError(f"{label} must be a JSON object")
+    return payload
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="szl-frontier flotation",
-        description="MODELED flotation rank. Abstains on recovery percent.",
+        description="MODELED flotation rank and abstaining selectivity prior. Never recovery.",
     )
-    parser.add_argument("--table", type=Path, required=True)
+    parser.add_argument("--table", type=Path, default=None)
     parser.add_argument("--bench", type=Path, default=None)
     parser.add_argument("--score-column", default=None)
+    parser.add_argument("--features", type=Path, default=None)
+    parser.add_argument("--weights", type=Path, default=None)
+    parser.add_argument("--tau", type=float, default=0.15)
     args = parser.parse_args(argv)
-    receipt = build_receipt(args.table, args.bench, args.score_column)
+    if args.table is None and args.features is None:
+        parser.error("need --table or --features")
+    try:
+        features = _load_mapping(args.features, "features") if args.features is not None else None
+        weights = _load_mapping(args.weights, "weights") if args.weights is not None else None
+        receipt = build_receipt(
+            args.table,
+            args.bench,
+            args.score_column,
+            features,
+            weights,
+            args.tau,
+        )
+    except FlotationError as exc:
+        sys.stderr.write(f"{exc}\n")
+        return 2
     json.dump(receipt, sys.stdout, indent=2, sort_keys=True)
     sys.stdout.write("\n")
     if receipt["directive"] == "BLOCK":
