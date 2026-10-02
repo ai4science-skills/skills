@@ -4,7 +4,7 @@
     "name": "AI for Science community"
   },
   "description": "Community index of Claude skills for scientific work. Every entry is pinned to an exact commit and checked automatically.",
-  "version": "0.4.0",
+  "version": "0.5.0-rc.1",
   "plugins": [
     {
       "name": "szl-evidence-skills",
@@ -28,8 +28,8 @@
     {
       "name": "szl-science-skills",
       "repo": "szl-holdings/szl-skills",
-      "ref": "v0.4.0",
-      "sha": "b36160ea1d6b375670ea662cff6a2cc67cba0f40",
+      "ref": "8f7055a07fe58cb3f4eccac4a3365c190312cebe",
+      "sha": "8f7055a07fe58cb3f4eccac4a3365c190312cebe",
       "path": "skills",
       "skills": [
         "szl-research-anatomy",
@@ -54,9 +54,11 @@
         "szl-retrieval-eval",
         "szl-quantization-check",
         "szl-repo-pin",
-        "szl-result-fragility"
+        "szl-result-fragility",
+        "szl-outcome-preservation",
+        "szl-release-continuity"
       ],
-      "description": "Twenty-three SZL science skills: connected research memory and checks plus standalone scientific audits, pinned to the published v0.4.0 source. Offline by default.",
+      "description": "Twenty-five SZL science skills with integrated outcome preservation and release continuity, pinned to a signed source preview commit. This is not a published v0.5.0 release or an admitted security pipeline. Offline by default.",
       "maintainer": "betterwithage (SZL Holdings)",
       "license": "Apache-2.0",
       "hosted_services": [

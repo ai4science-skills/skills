@@ -35,6 +35,16 @@
     "sha256": "42ab6aad7fd2a101d00a574d92e6389f06a740b87bda0700a29e6f1d038c6838"
   },
   {
+    "path": "scripts/library/outcome_preservation.py",
+    "source": "skills/szl-outcome-preservation/kernel.py",
+    "sha256": "0710fd27d8dc8f456044f4cb936ad1dfb0b394c11dca62c6bb3ccdfa360ee55c"
+  },
+  {
+    "path": "scripts/library/release_continuity.py",
+    "source": "skills/szl-release-continuity/kernel.py",
+    "sha256": "f57af4c7569bbbd6e13837a1306a686eaf50521a35b26f4985bfa7925d2c05e3"
+  },
+  {
     "path": "scripts/library/calibration_reference.py",
     "source": "szl-holdings/szl-calibration@b2e317877abed98e70f9cf6730944a797837faf1/src/szl_calibration/metrics.py",
     "sha256": "d4df54a71dda5f646c8b49fa1043a634fa21c898f22f8e6984a5008d464844f0"

@@ -14,14 +14,19 @@ Claude Code:
 
 Then pick what you want. See [CATALOG.md](CATALOG.md) for every skill, its maintainer, license, pinned source, and any external service it contacts.
 
-Imported skills do not update automatically. Re-import when a new tag is announced.
+Imported skills do not update automatically. Claude Science now documents manual
+**Check for updates** on a GitHub repository's Imported menu. Review the source and
+selected changes before choosing Update; pinned releases and commits remain distinct.
 
 ## Current science pack
 
-The current catalog contains twenty-three SZL science skills, pinned to the published
-szl-holdings/szl-skills@v0.4.0 release and commit b36160ea1d6b375670ea662cff6a2cc67cba0f40.
+This proposed catalog contains twenty-five SZL science skills, pinned to signed source
+preview commit 8f7055a07fe58cb3f4eccac4a3365c190312cebe in szl-holdings/szl-skills.
+It prepares a community v0.5.0-rc.1 source inventory; no tag is created here. The separate
+security-prerequisites workflow remains BLOCKED and this preview is not an admitted release.
 The self-contained workbench connects living project memory, math, dataset, model, kernel
-and paired checks with retained capsules. Additional audits use their own CLIs, covering
+and paired checks plus scientific outcome preservation and release continuity, with retained
+capsules. Additional audits use their own CLIs, covering
 lineage, units, analysis plans, negative controls, evidence gates, retrieval, quantization,
 replication records, fragility, repository pins, receipts and reviewer handoffs. A separate
 offline CI step exercises every selected science CLI; the general importer remains static
@@ -34,7 +39,12 @@ Science, import:
 
 The existing community v0.2.0-rc.1 tag retains the historical eight-skill science pack.
 An updated community release must be tagged after its reviewed source is merged; importing
-the source line above already selects the published twenty-three-skill pack.
+the source line above selects the published twenty-three-skill pack, not this preview.
+
+The two preview additions catch scientific threshold changes despite small numerical errors,
+and preserve mismatches between intended source, registry artifacts and runtime readiness.
+They use supplied observations; their outputs do not authenticate measurements, verify
+attestations, certify releases or establish scientific validity.
 
 Normal workbench use is offline. Optional fetch-triage reads the pinned public synthetic
 study from Hugging Face, with no credentials or model weights. Actual Claude Science

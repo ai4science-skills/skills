@@ -28,16 +28,16 @@ class VendoredScienceTests(unittest.TestCase):
 
     def test_immutable_pin_and_generated_helpers_match(self):
         source = json.loads((PLUGIN / "SOURCE.json").read_text())
-        self.assertEqual(source["sha"], "b36160ea1d6b375670ea662cff6a2cc67cba0f40")
-        self.assertEqual(source["ref"], "v0.4.0")
+        self.assertEqual(source["sha"], "8f7055a07fe58cb3f4eccac4a3365c190312cebe")
+        self.assertEqual(source["ref"], source["sha"])
         registry = json.loads((ROOT / "registry.json").read_text())
         entry = next(p for p in registry["plugins"] if p["name"] == "szl-science-skills")
         present = {p.name for p in (PLUGIN / "skills").iterdir() if p.is_dir()}
         self.assertEqual(present, set(entry["skills"]))
-        self.assertEqual(len(present), 23)
+        self.assertEqual(len(present), 25)
         self.assertTrue({"szl-typesafe-ai", "szl-governed-decision"}.isdisjoint(present))
         records = json.loads((SKILL / "references" / "implementations.json").read_text())
-        self.assertEqual(len(records), 8)
+        self.assertEqual(len(records), 10)
         for record in records:
             raw = (SKILL / record["path"]).read_bytes()
             self.assertEqual(hashlib.sha256(raw).hexdigest(), record["sha256"])
@@ -99,8 +99,34 @@ class VendoredScienceTests(unittest.TestCase):
                     self.project.mkdir(parents=True, exist_ok=True)
                 process = subprocess.run([sys.executable, "-B", str(cli), *arguments], cwd=directory,
                                          capture_output=True, text=True, timeout=30)
-                self.assertEqual(process.returncode, 0, process.stderr)
-                self.assertIsInstance(json.loads(process.stdout), dict)
+                result = json.loads(process.stdout)
+                if name in {"szl-outcome-preservation", "szl-release-continuity"}:
+                    self.assertEqual(process.returncode, 1, process.stderr)
+                    self.assertIn(result["status"], {"REGRESSION_OR_GAP", "GAP_OR_CONFLICT"})
+                else:
+                    self.assertEqual(process.returncode, 0, process.stderr)
+                self.assertIsInstance(result, dict)
+
+    def test_new_checks_join_retained_workbench_and_invalidation(self):
+        self.execute("init")
+        path = self.project / "project.json"
+        project = json.loads(path.read_text())
+        for name in ("outcome-preservation", "release-continuity"):
+            relative = "inputs/" + name + ".json"
+            raw = (PLUGIN / "skills" / ("szl-" + name) / "assets" / "example.json").read_bytes()
+            (self.project / relative).write_bytes(raw)
+            project["artifacts"].append({"id": name, "kind": "code", "title": name, "path": relative})
+            project["checks"].append({"id": name + "-check", "type": name, "input": name, "depends_on": [name]})
+        path.write_text(json.dumps(project))
+        report = self.execute("run", 1)
+        self.assertTrue({"outcome-preservation-check", "release-continuity-check"} <= set(report["findings"]))
+        self.assertEqual(self.execute("check")["capsule"]["integrity"], "MATCH")
+        changed = self.project / "inputs/outcome-preservation.json"
+        doc = json.loads(changed.read_text()); doc["candidate_revision"] = "3" * 40
+        changed.write_text(json.dumps(doc))
+        observed = self.execute("check", 1)
+        self.assertEqual(observed["changed_sources"], ["outcome-preservation"])
+        self.assertTrue({"outcome-preservation-check", "run", "conclusion"} <= set(observed["recheck"]))
 
 
 if __name__ == "__main__":

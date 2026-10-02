@@ -20,7 +20,7 @@ LIMIT = 8 * 1024 * 1024
 TRIAGE_REVISION = "eb79a26a2934d5eaa667984720feacdcb90dcc28"
 TRIAGE_REPO = "SZLHOLDINGS/szl-triage-qwen3.5-0.8b-lora-study5"
 LIBRARIES = {name: runpy.run_path(str(HERE / "library" / (name + ".py")))
-             for name in ("anatomy", "math_claim", "dataset", "model", "kernel_compare", "capsule", "paired", "calibration_reference")}
+             for name in ("anatomy", "math_claim", "dataset", "model", "kernel_compare", "capsule", "paired", "calibration_reference", "outcome_preservation", "release_continuity")}
 
 
 def unique_keys(pairs):
@@ -136,7 +136,7 @@ def validate_project(project, root):
         paths.add(item["path"])
         known.add(item["id"])
     artifact_ids = {a["id"] for a in artifacts}
-    kinds = {"dataset", "binary-model", "categorical-model", "math", "kernel", "calibration-benchmark", "paired"}
+    kinds = {"dataset", "binary-model", "categorical-model", "math", "kernel", "calibration-benchmark", "paired", "outcome-preservation", "release-continuity"}
     for check in checks:
         if not isinstance(check, dict) or not isinstance(check.get("id"), str) or not re.fullmatch(r"[a-z][a-z0-9-]{0,63}", check["id"]) or check["id"] in known:
             raise ValueError("Check ids must be unique slugs")
@@ -269,11 +269,15 @@ def execute(check, artifacts, root):
         return benchmark(payload)
     if kind == "paired":
         return LIBRARIES["paired"]["qualify"](payload)
+    if kind == "outcome-preservation":
+        return LIBRARIES["outcome_preservation"]["szl_outcome_preservation"](payload)
+    if kind == "release-continuity":
+        return LIBRARIES["release_continuity"]["szl_release_continuity"](payload)
     raise ValueError("Unknown check type")
 
 
 def has_findings(report):
-    return (bool(report.get("issues")) or report.get("status") in {"NUMERICAL_MISMATCH", "NUMERICAL_COUNTEREXAMPLE", "REJECTED_LOCAL_COMPARISON"}
+    return (bool(report.get("issues")) or report.get("status") in {"NUMERICAL_MISMATCH", "NUMERICAL_COUNTEREXAMPLE", "REJECTED_LOCAL_COMPARISON", "REGRESSION_OR_GAP", "GAP_OR_CONFLICT"}
             or report.get("counterexample_count", 0) > 0 or report.get("invalid_outputs", 0) > 0)
 
 

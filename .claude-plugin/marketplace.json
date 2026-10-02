@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "Community index of Claude skills for scientific work. Every entry is pinned to an exact commit and checked automatically.",
-    "version": "0.4.0"
+    "version": "0.5.0-rc.1"
   },
   "plugins": [
     {
@@ -25,7 +25,7 @@
     },
     {
       "name": "szl-science-skills",
-      "description": "Twenty-three SZL science skills: connected research memory and checks plus standalone scientific audits, pinned to the published v0.4.0 source. Offline by default.",
+      "description": "Twenty-five SZL science skills with integrated outcome preservation and release continuity, pinned to a signed source preview commit. This is not a published v0.5.0 release or an admitted security pipeline. Offline by default.",
       "source": "./plugins/szl-science-skills",
       "strict": false,
       "skills": [
@@ -40,9 +40,11 @@
         "./skills/szl-math-claim-check",
         "./skills/szl-model-evaluation",
         "./skills/szl-negative-control-audit",
+        "./skills/szl-outcome-preservation",
         "./skills/szl-paired-science",
         "./skills/szl-quantization-check",
         "./skills/szl-refutation-ledger",
+        "./skills/szl-release-continuity",
         "./skills/szl-repo-pin",
         "./skills/szl-reproducibility-capsule",
         "./skills/szl-research-anatomy",
@@ -57,7 +59,7 @@
         "name": "betterwithage (SZL Holdings)"
       },
       "license": "Apache-2.0",
-      "homepage": "https://github.com/szl-holdings/szl-skills/tree/b36160ea1d6b375670ea662cff6a2cc67cba0f40"
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/8f7055a07fe58cb3f4eccac4a3365c190312cebe"
     }
   ]
 }

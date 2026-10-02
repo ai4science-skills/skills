@@ -6,8 +6,11 @@ license: Apache-2.0
 
 # SZL Science Workbench
 
-One project directory, every check, every byte hashed, every run kept. The workbench bundles the
-seven check implementations, so it works alone without the sibling skills, a service, or an install.
+One project directory, selected checks, every selected byte hashed, every run kept. The workbench
+bundles its own helper implementations for dataset, binary/categorical model, math, kernel,
+calibration, paired, outcome preservation and release continuity plus anatomy and capsules. Other science-pack audits use their own
+CLIs; the reviewer pack can read these retained runs. The workbench works alone without the
+sibling skills, a service, or an install.
 Read `references/project.md` for the project schema and evidence boundaries.
 
 ## Use when
