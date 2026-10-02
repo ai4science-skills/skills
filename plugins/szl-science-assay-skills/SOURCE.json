@@ -1,0 +1,17 @@
+{
+  "repo": "szl-holdings/szl-skills",
+  "ref": "7c9086e18cc0f653c77794d93bd586df4b445c4b",
+  "sha": "7c9086e18cc0f653c77794d93bd586df4b445c4b",
+  "path": "skills",
+  "files_sha256": {
+    "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "NOTICE": "021ac47ff117a126574e3ced3f4496b3b6e332854c683f93bd8acf2ce79c9106",
+    "skills/szl-assay-measurement-audit/SKILL.md": "8665f30cec7ff31f1e1db1722c575bd7be6d26623be069de458680254cb006fb",
+    "skills/szl-assay-measurement-audit/assets/control-failure.json": "759c3c3500df9cdfa0b29a249a1fe30e7c82037659a2758328878a3489079e91",
+    "skills/szl-assay-measurement-audit/assets/example.json": "b29f26ecb5a4e37c43e8e4ecd3cb9a5b5e9655bcdc4d5f5de8e11fce465a6dfe",
+    "skills/szl-assay-measurement-audit/kernel.py": "e825d98445608af280bb3988115c7e89feb9986643962ae501c915f519b3c49d",
+    "skills/szl-assay-measurement-audit/references/contract.md": "098825b7f0012c56ee5ce851b9ac6d7849aa11bb145561ebd198dbbf8434ceb2",
+    "skills/szl-assay-measurement-audit/references/provenance.md": "9379fda35c29ff89fc9f7ebd311cd3e556f74fa41af88afb4448b0a9298dda9b",
+    "skills/szl-assay-measurement-audit/scripts/run.py": "1c1d693804d1fd275a2f4958e7eaae026e0249759f258f8a395c01050b3c4551"
+  }
+}

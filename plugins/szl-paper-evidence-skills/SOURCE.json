@@ -1,0 +1,13 @@
+{
+  "repo": "szl-holdings/szl-skills",
+  "ref": "7c9086e18cc0f653c77794d93bd586df4b445c4b",
+  "sha": "7c9086e18cc0f653c77794d93bd586df4b445c4b",
+  "path": "skills",
+  "files_sha256": {
+    "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "NOTICE": "021ac47ff117a126574e3ced3f4496b3b6e332854c683f93bd8acf2ce79c9106",
+    "skills/szl-paper-evidence-audit/SKILL.md": "b1f82ac59c31b9c0dd9e58e047bd7957bc7c7f9fc81f231aa4a6cfea234125eb",
+    "skills/szl-paper-evidence-audit/assets/example-claims.json": "2b02536dfb135f8eb8f0ff5cbe8b2b8ade4ada9e3f47f8bd64869fdb83474492",
+    "skills/szl-paper-evidence-audit/scripts/audit.py": "f6ba3405f94aee80050bd048731d2e3bb892203cd89c574e44ff292f82de2621"
+  }
+}

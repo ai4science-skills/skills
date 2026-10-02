@@ -71,6 +71,48 @@
       },
       "license": "Apache-2.0",
       "homepage": "https://github.com/szl-holdings/szl-skills/tree/7c9086e18cc0f653c77794d93bd586df4b445c4b"
+    },
+    {
+      "name": "szl-science-assay-skills",
+      "description": "Offline assay-run audit for a declared increasing linear calibration, blank, QC and sample uncertainty. Synthetic fixtures; not method validation.",
+      "source": "./plugins/szl-science-assay-skills",
+      "strict": false,
+      "skills": [
+        "./skills/szl-assay-measurement-audit"
+      ],
+      "author": {
+        "name": "betterwithage (SZL Holdings)"
+      },
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/7c9086e18cc0f653c77794d93bd586df4b445c4b"
+    },
+    {
+      "name": "szl-science-replay-skills",
+      "description": "Offline CSV column-mean replay against a frozen reference. MATCH, divergence, or incomplete. No network.",
+      "source": "./plugins/szl-science-replay-skills",
+      "strict": false,
+      "skills": [
+        "./skills/szl-experiment-replay"
+      ],
+      "author": {
+        "name": "betterwithage (SZL Holdings)"
+      },
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/7c9086e18cc0f653c77794d93bd586df4b445c4b"
+    },
+    {
+      "name": "szl-paper-evidence-skills",
+      "description": "Offline PDF table/figure locator against pinned original and extracted bytes. Human visual review required.",
+      "source": "./plugins/szl-paper-evidence-skills",
+      "strict": false,
+      "skills": [
+        "./skills/szl-paper-evidence-audit"
+      ],
+      "author": {
+        "name": "betterwithage (SZL Holdings)"
+      },
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/7c9086e18cc0f653c77794d93bd586df4b445c4b"
     }
   ]
 }

@@ -39,6 +39,12 @@ rss.onlinelibrary.wiley.com, and www.jstor.org as literature links only. Import 
 from this index after merge, or the source repo at that commit. The eight-skill v0.2.0-rc.1
 pin is unchanged.
 
+Three further 1 MB families pin the same source commit: `szl-science-assay-skills`
+(`szl-assay-measurement-audit`), `szl-science-replay-skills` (`szl-experiment-replay`),
+and `szl-paper-evidence-skills` (`szl-paper-evidence-audit`). Each is offline except for
+declared literature or converter-doc hosts. None of them validate a method, replay
+supplied code, or certify a paper claim.
+
 Normal workbench use is offline. Optional fetch-triage reads the pinned public synthetic
 study from Hugging Face, with no credentials or model weights. Actual Claude Science
 registration and agent efficacy remain unverified; local/source CI checks do not establish
