@@ -47,6 +47,20 @@
       "hosted_services": [
         "huggingface.co - optional explicit fetch-triage downloads four pinned public synthetic-study files and records byte hashes; public artifact CDN redirects may occur; no credentials or private data sent. Normal init/run/check is offline."
       ]
+    },
+    {
+      "name": "szl-frontier-flotation",
+      "repo": "szl-holdings/szl-frontier",
+      "ref": "d47c988647641fbdd20711aac6148a34fcb97ef8",
+      "sha": "d47c988647641fbdd20711aac6148a34fcb97ef8",
+      "path": "docs/skills",
+      "skills": [
+        "flotation-selectivity-before-bench"
+      ],
+      "description": "MODELED flotation rank before the bench. Abstains on recovery percent. No hosted service.",
+      "maintainer": "betterwithage (SZL Holdings)",
+      "license": "Apache-2.0",
+      "hosted_services": []
     }
   ]
 }
