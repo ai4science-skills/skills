@@ -43,6 +43,20 @@
       },
       "license": "Apache-2.0",
       "homepage": "https://github.com/szl-holdings/szl-skills/tree/a314917286269630b053ea16f2d65acf1000bd8f"
+    },
+    {
+      "name": "szl-frontier-flotation",
+      "description": "MODELED flotation rank before the bench. Abstains on recovery percent. No hosted service.",
+      "source": "./plugins/szl-frontier-flotation",
+      "strict": false,
+      "skills": [
+        "./skills/flotation-selectivity-before-bench"
+      ],
+      "author": {
+        "name": "betterwithage (SZL Holdings)"
+      },
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/szl-holdings/szl-frontier/tree/d47c988647641fbdd20711aac6148a34fcb97ef8"
     }
   ]
 }

@@ -1,0 +1,11 @@
+{
+  "repo": "szl-holdings/szl-frontier",
+  "ref": "d47c988647641fbdd20711aac6148a34fcb97ef8",
+  "sha": "d47c988647641fbdd20711aac6148a34fcb97ef8",
+  "path": "docs/skills",
+  "files_sha256": {
+    "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "skills/flotation-selectivity-before-bench/SKILL.md": "af94efc5cc023437db242ec04124b81058a6b7f2cd96383f45b4e88a581f4dd2",
+    "skills/flotation-selectivity-before-bench/rank.py": "b098a578c68f3e47d44885fc2a61b8b8dc4fa5e48e2353e33f7d925b4d7f84a2"
+  }
+}
