@@ -57,6 +57,20 @@
       },
       "license": "Apache-2.0",
       "homepage": "https://github.com/szl-holdings/szl-frontier/tree/d47c988647641fbdd20711aac6148a34fcb97ef8"
+    },
+    {
+      "name": "szl-science-multiplicity-skills",
+      "description": "Complete-family Holm/BH multiplicity audit. HOLD if any planned result is missing. Offline; no hosted service.",
+      "source": "./plugins/szl-science-multiplicity-skills",
+      "strict": false,
+      "skills": [
+        "./skills/szl-multiplicity-audit"
+      ],
+      "author": {
+        "name": "betterwithage (SZL Holdings)"
+      },
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/7c9086e18cc0f653c77794d93bd586df4b445c4b"
     }
   ]
 }

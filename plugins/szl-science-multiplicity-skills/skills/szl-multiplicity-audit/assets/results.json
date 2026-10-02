@@ -1,0 +1,12 @@
+{
+  "schema": "szl.multiplicity.results.v1",
+  "family_id": "synthetic-primary",
+  "plan_sha256": "873760eef22c08c5b171474462b8d5540607b04c8c27402d95f76e6bba572c00",
+  "results": [
+    {"id": "a", "p_value": "0.001"},
+    {"id": "b", "p_value": "0.04"},
+    {"id": "c", "p_value": "0.02"},
+    {"id": "d", "p_value": "0.07"}
+  ],
+  "extra_attempts": []
+}

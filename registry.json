@@ -61,6 +61,24 @@
       "maintainer": "betterwithage (SZL Holdings)",
       "license": "Apache-2.0",
       "hosted_services": []
+    },
+    {
+      "name": "szl-science-multiplicity-skills",
+      "repo": "szl-holdings/szl-skills",
+      "ref": "7c9086e18cc0f653c77794d93bd586df4b445c4b",
+      "sha": "7c9086e18cc0f653c77794d93bd586df4b445c4b",
+      "path": "skills",
+      "skills": [
+        "szl-multiplicity-audit"
+      ],
+      "description": "Complete-family Holm/BH multiplicity audit. HOLD if any planned result is missing. Offline; no hosted service.",
+      "maintainer": "betterwithage (SZL Holdings)",
+      "license": "Apache-2.0",
+      "hosted_services": [
+        "doi.org - linked citations in the method contract; visiting fetches bibliographic records, not plan or results bytes",
+        "rss.onlinelibrary.wiley.com - linked Holm 1979 paper; visiting fetches publisher HTML, not plan or results bytes",
+        "www.jstor.org - linked Benjamini-Hochberg 1995 paper; visiting fetches publisher HTML, not plan or results bytes"
+      ]
     }
   ]
 }

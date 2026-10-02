@@ -30,6 +30,15 @@ Science, import:
 
     szl-holdings/szl-skills@v0.2.0-rc.1
 
+A fifth import family, `szl-science-multiplicity-skills`, pins `szl-multiplicity-audit`
+from szl-holdings/szl-skills at `7c9086e18cc0f653c77794d93bd586df4b445c4b`. It adjusts a
+complete declared family (Holm FWER or declared-assumption BH FDR) and returns HOLD with
+no adjusted values if any planned result is missing. It does not establish preregistration
+or scientific truth. The kernel itself is offline. The contract cites doi.org,
+rss.onlinelibrary.wiley.com, and www.jstor.org as literature links only. Import the family
+from this index after merge, or the source repo at that commit. The eight-skill v0.2.0-rc.1
+pin is unchanged.
+
 Normal workbench use is offline. Optional fetch-triage reads the pinned public synthetic
 study from Hugging Face, with no credentials or model weights. Actual Claude Science
 registration and agent efficacy remain unverified; local/source CI checks do not establish
