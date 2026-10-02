@@ -1,0 +1,58 @@
+{
+  "k": 5,
+  "qrels": {
+    "q1-crispr-offtarget": {
+      "d12": 2,
+      "d07": 1,
+      "d33": 1
+    },
+    "q2-organoid-protocol": {
+      "d02": 2
+    },
+    "q3-power-analysis": {
+      "d41": 1,
+      "d42": 1
+    },
+    "q4-reporting-guideline": {
+      "d50": 2,
+      "d51": 2
+    },
+    "q5-never-run": {
+      "d60": 1
+    }
+  },
+  "run": {
+    "q1-crispr-offtarget": [
+      "d12",
+      "d99",
+      "d07",
+      "d07",
+      "d20",
+      "d33"
+    ],
+    "q2-organoid-protocol": [
+      "d08",
+      "d02",
+      "d05"
+    ],
+    "q3-power-analysis": [
+      "d41",
+      "d42",
+      "d43"
+    ],
+    "q4-reporting-guideline": [
+      "d70",
+      "d71",
+      "d72",
+      "d73",
+      "d74"
+    ],
+    "q9-unjudged": [
+      "d01"
+    ]
+  },
+  "gates": {
+    "min_judged_queries": 5,
+    "min_ndcg": 0.5
+  }
+}

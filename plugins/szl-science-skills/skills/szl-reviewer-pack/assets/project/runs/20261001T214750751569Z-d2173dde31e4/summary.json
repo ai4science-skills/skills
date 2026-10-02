@@ -1,0 +1,48 @@
+{
+  "schema": "szl.science-run.v1",
+  "run_id": "20261001T214750751569Z-d2173dde31e4",
+  "created_at": "20261001T214750751569Z",
+  "completed": true,
+  "status": "COMPLETED_WITH_FINDINGS",
+  "input_scope": "SYNTHETIC",
+  "checks": {
+    "dataset-check": {
+      "type": "dataset",
+      "path": "runs/20261001T214750751569Z-d2173dde31e4/dataset-check.json",
+      "sha256": "3ce3fcaf45dcb36c5ca2e5446bfe7044d1c27ad62b488a38cd74751372cc74c0",
+      "findings": true
+    },
+    "model-check": {
+      "type": "binary-model",
+      "path": "runs/20261001T214750751569Z-d2173dde31e4/model-check.json",
+      "sha256": "5c99b278781c0929bdf9dff4255643d3b0668604e3f836c9d7a7604adf9da1b2",
+      "findings": false
+    },
+    "math-check": {
+      "type": "math",
+      "path": "runs/20261001T214750751569Z-d2173dde31e4/math-check.json",
+      "sha256": "a3d38f97bccea0050296cfa1955f87912212ca751fc45b5530c541e0ca701b1d",
+      "findings": true
+    },
+    "kernel-check": {
+      "type": "calibration-benchmark",
+      "path": "runs/20261001T214750751569Z-d2173dde31e4/kernel-check.json",
+      "sha256": "795ec15bbc5d832477d860fae43d912290eadd191c837bc8667f8c527e29fddc",
+      "findings": false
+    },
+    "paired-check": {
+      "type": "paired",
+      "path": "runs/20261001T214750751569Z-d2173dde31e4/paired-check.json",
+      "sha256": "1a7b0aa1cd459fdd303ac7e08e8edeebb9345d47ef61ca955f723ac5d5e06523",
+      "findings": true
+    }
+  },
+  "findings": [
+    "dataset-check",
+    "math-check",
+    "paired-check"
+  ],
+  "scientific_truth_verified": false,
+  "signed": false,
+  "lambda": "Conjecture 1 (OPEN)"
+}

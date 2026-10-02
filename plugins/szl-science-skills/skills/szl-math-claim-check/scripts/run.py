@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
+# Modified 2026-09-30: dispatch the bounded scope-contract mode.
 """Portable offline CLI; every skill contains its own identical copy."""
 import argparse
 import json
@@ -51,7 +52,9 @@ def main():
             return 0
         names = {"szl-research-anatomy": "szl_anatomy_assess", "szl-math-claim-check": "szl_check_math_cases",
                  "szl-dataset-readiness": "szl_audit_dataset", "szl-model-evaluation": "szl_evaluate_predictions"}
-        if skill_name in names:
+        if skill_name == "szl-math-claim-check" and payload.get("schema") == "szl.math-claim-scope.v1":
+            report = functions["szl_audit_math_scope"](payload)
+        elif skill_name in names:
             report = functions[names[skill_name]](**payload)
         elif skill_name == "szl-kernel-comparison":
             report = functions["szl_compare_kernel_runs"](payload)

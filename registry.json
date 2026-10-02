@@ -4,7 +4,7 @@
     "name": "AI for Science community"
   },
   "description": "Community index of Claude skills for scientific work. Every entry is pinned to an exact commit and checked automatically.",
-  "version": "0.2.0-rc.1",
+  "version": "0.4.0",
   "plugins": [
     {
       "name": "szl-evidence-skills",
@@ -28,24 +28,40 @@
     {
       "name": "szl-science-skills",
       "repo": "szl-holdings/szl-skills",
-      "ref": "v0.2.0-rc.1",
-      "sha": "a314917286269630b053ea16f2d65acf1000bd8f",
+      "ref": "v0.4.0",
+      "sha": "b36160ea1d6b375670ea662cff6a2cc67cba0f40",
       "path": "skills",
       "skills": [
-        "szl-science-workbench",
         "szl-research-anatomy",
         "szl-math-claim-check",
         "szl-dataset-readiness",
         "szl-model-evaluation",
         "szl-kernel-comparison",
         "szl-reproducibility-capsule",
-        "szl-paired-science"
+        "szl-science-workbench",
+        "szl-paired-science",
+        "szl-artifact-lineage",
+        "szl-unit-invariants",
+        "szl-negative-control-audit",
+        "szl-analysis-plan-audit",
+        "szl-evidence-gate",
+        "szl-cross-implementation-check",
+        "szl-analysis-mutation-test",
+        "szl-compute-energy-receipt",
+        "szl-session-receipt",
+        "szl-reviewer-pack",
+        "szl-refutation-ledger",
+        "szl-retrieval-eval",
+        "szl-quantization-check",
+        "szl-repo-pin",
+        "szl-result-fragility"
       ],
-      "description": "Integrated living research anatomy, scientific checks and reproducibility capsules; explicit prerelease, offline by default.",
+      "description": "Twenty-three SZL science skills: connected research memory and checks plus standalone scientific audits, pinned to the published v0.4.0 source. Offline by default.",
       "maintainer": "betterwithage (SZL Holdings)",
       "license": "Apache-2.0",
       "hosted_services": [
-        "huggingface.co - optional explicit fetch-triage downloads four pinned public synthetic-study files and records byte hashes; public artifact CDN redirects may occur; no credentials or private data sent. Normal init/run/check is offline."
+        "huggingface.co - optional explicit fetch-triage downloads four pinned public synthetic-study files and records byte hashes; public artifact CDN redirects may occur; no credentials or private data sent. Normal init/run/check is offline.",
+        "example.invalid - non-resolving synthetic citation in the refutation-ledger fixture; never contacted by the skill."
       ]
     }
   ]

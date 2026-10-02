@@ -1,0 +1,20 @@
+{
+  "status": "NUMERICAL_COUNTEREXAMPLE",
+  "case_count": 2,
+  "failures": [
+    {
+      "case": 0,
+      "inputs": [
+        0.25,
+        1
+      ],
+      "lhs": 0.5,
+      "rhs": 0.25
+    }
+  ],
+  "input_sha256": "7639a8afbc1fcbcc302258d12b7270468e72203eb739e9ca3a9faca518e829fe",
+  "proof_discharged": false,
+  "lambda_status": "Conjecture 1 (OPEN)",
+  "interpretation": "Floating-point observations under declared tolerances; inspect exact arithmetic and assumptions before mathematical refutation.",
+  "lhs_execution": "SZL_WEIGHTED_GEOMEAN"
+}

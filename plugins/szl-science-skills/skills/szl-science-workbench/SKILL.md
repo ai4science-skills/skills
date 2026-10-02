@@ -1,17 +1,22 @@
 ---
 name: szl-science-workbench
-description: Run an integrated local research project with living anatomy, mathematical checks, dataset leakage checks, binary or categorical model evaluation, numerical kernel comparisons, paired qualification and file capsules. Use to connect these checks, resume a project, or invalidate conclusions after inputs change.
+description: "Runs a resumable local research project that connects the SZL science checks (claim ledger, numerical math checks, dataset leakage audit, binary or categorical model scoring, kernel comparison, paired qualification, file capsule) over the project's actual bytes, records immutable runs, and invalidates downstream conclusions when any input changes. Use when the user wants all checks on one project directory, wants to resume or re-check a project, or asks 'what changed since last run'. Start here if unsure which single check to use. Not an experiment runner or a model trainer."
 license: Apache-2.0
 ---
 
 # SZL Science Workbench
 
-Use this skill for a scientist-owned project that can be resumed from files. It includes
-the seven underlying check implementations; it does not require sibling skill folders,
-an inference service or a particular install name. Read `references/project.md` for the
-project schema and evidence boundaries.
+One project directory, every check, every byte hashed, every run kept. The workbench bundles the
+seven check implementations, so it works alone without the sibling skills, a service, or an install.
+Read `references/project.md` for the project schema and evidence boundaries.
 
-Start a small synthetic demonstration in a new directory:
+## Use when
+
+- A lab wants leakage, calibration, math, kernel and paired checks on one dataset-plus-model project.
+- A result must be re-checked after new data, a code change or a corrected label.
+- A reviewer pack is needed later (szl-reviewer-pack reads this project's runs).
+
+## Quick start
 
 ```bash
 python scripts/workbench.py init ./research-project
@@ -19,15 +24,15 @@ python scripts/workbench.py run ./research-project
 python scripts/workbench.py check ./research-project
 ```
 
-`run` reads only the selected project files and records a new immutable run directory.
-Reports, actual file hashes, implementation hashes, a graph snapshot and a reproducibility
-capsule are retained together. Scientific failures remain findings; an execution error
-gives exit 2 and retains an ERROR record. `check` rereads the last run's inputs and code;
-changed, missing or unsafe paths invalidate dependent runs and conclusions and give exit 1.
-The newest run is selected by its retained UTC timestamp, never by a user-supplied latest
-pointer. A retained capsule and graph cannot authenticate themselves against replacement.
+The synthetic demo deliberately fails: `run` exits 1 with `COMPLETED_WITH_FINDINGS`
+(dataset leakage, a math counterexample, a rejected paired comparison; model and kernel checks clean)
+and writes `runs/<timestamp>-<digest>/` containing one report per check, actual file and implementation
+hashes, a graph snapshot and a reproducibility capsule. `check` re-reads the last run's inputs and code;
+changed, missing or unsafe paths invalidate dependent runs and conclusions and exit 1. Exit 2 is an
+execution or input error with a retained ERROR record. The newest run is chosen by its retained UTC
+timestamp, never by a user-supplied pointer.
 
-To evaluate the actual pinned public SZL triage study without downloading model weights:
+## The pinned public study
 
 ```bash
 python scripts/workbench.py fetch-triage ./triage-project
@@ -35,26 +40,26 @@ python scripts/workbench.py run ./triage-project
 python scripts/workbench.py check ./triage-project
 ```
 
-This opt-in command contacts huggingface.co for the declared frozen train/held files and
-saved baseline/seed-011 predictions, all at one exact revision. The data is synthetic;
-saved predictions are real model outputs according to the study's unsigned declarations.
-The categorical evaluator joins row ids to retained targets and recomputes correctness;
-it ignores saved correctness flags and never invents probabilities. Download receipts
-cover retrieved bytes, not model authenticity or data rights. No private second-brain
-records are fetched. Network errors stop the fetch and leave a visible incomplete project.
+This opt-in command contacts huggingface.co for four small frozen files of a public synthetic triage
+study (train and held rows, baseline and seed-011 predictions) at one exact revision; no model weights
+are downloaded. The categorical evaluator joins row ids to retained targets and recomputes correctness,
+ignoring saved correctness flags. Download receipts cover retrieved bytes, not model authenticity or
+data rights. Network errors stop the fetch and leave a visible incomplete project.
 
-In the synthetic demo, the kernel stage executes the pinned SZL calibration reference and
-the adapted helper on identical inputs, checks numerical agreement, then measures both
-on the local CPU. It records actual durations and code/input hashes. That measures these
-implementations on this input; it does not establish a GPU, energy or general speed claim.
-The paired stage retains its preregistration and independence declarations separately
-from numerical qualification. An unregistered demonstration cannot qualify as research.
+## How runs behave
 
-Change explicit inputs and run again to collect new evidence. Prior graph/run snapshots
-remain on disk. To add a claim or paper, update the project's graph with dependency ids;
-a rerun clears only the newly executed check nodes, never an unrelated claim's recheck flag.
-Keep Lambda as Conjecture 1 (OPEN). No helper promotes, deploys, merges or marks truth verified.
+`run` reads only the selected project files. In the demo the kernel stage executes the pinned
+calibration reference and the adapted helper on identical inputs, checks agreement, then times both
+on the local CPU: a measurement of these implementations on this input, not a GPU, energy or general
+speed claim. The paired stage keeps preregistration and independence declarations separate from
+numerical qualification; an unregistered demonstration cannot qualify as research. Change explicit
+inputs and run again to collect new evidence; prior snapshots stay on disk. To add a claim or paper,
+extend the project graph with dependency ids; a rerun clears only the check nodes it executed, never an
+unrelated claim's recheck flag. No helper promotes, deploys, merges or marks truth verified.
 
-Outside services: none during init/run/check; fetch-triage explicitly contacts
-huggingface.co and its public artifact CDN. Credentials: none. Runtime: Python 3.10+,
-standard library only. No packages, weights or arbitrary commands are installed or executed.
+## What it does not do
+
+Outside services: none during init, run or check; only fetch-triage contacts huggingface.co and its
+public CDN. Credentials: none. Runtime: Python 3.10+, standard library only. No packages, weights or
+arbitrary commands are installed or executed. A retained capsule and graph cannot authenticate
+themselves against wholesale replacement; keep a copy elsewhere when that matters.

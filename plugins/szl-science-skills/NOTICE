@@ -1,7 +1,7 @@
 SZL Skills
 Copyright (c) 2026 SZL Holdings. Licensed under the Apache License, Version 2.0.
 
-skills/typesafe-ai is an overlay on the official TypeSafe agent skill
+skills/szl-typesafe-ai is an overlay on the official TypeSafe agent skill
 (https://github.com/typesafe-ai/skills), which is MIT licensed. The MIT
 copyright and permission notice of that project apply to the portions derived from it.
 

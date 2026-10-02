@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "Community index of Claude skills for scientific work. Every entry is pinned to an exact commit and checked automatically.",
-    "version": "0.2.0-rc.1"
+    "version": "0.4.0"
   },
   "plugins": [
     {
@@ -25,24 +25,39 @@
     },
     {
       "name": "szl-science-skills",
-      "description": "Integrated living research anatomy, scientific checks and reproducibility capsules; explicit prerelease, offline by default.",
+      "description": "Twenty-three SZL science skills: connected research memory and checks plus standalone scientific audits, pinned to the published v0.4.0 source. Offline by default.",
       "source": "./plugins/szl-science-skills",
       "strict": false,
       "skills": [
+        "./skills/szl-analysis-mutation-test",
+        "./skills/szl-analysis-plan-audit",
+        "./skills/szl-artifact-lineage",
+        "./skills/szl-compute-energy-receipt",
+        "./skills/szl-cross-implementation-check",
         "./skills/szl-dataset-readiness",
+        "./skills/szl-evidence-gate",
         "./skills/szl-kernel-comparison",
         "./skills/szl-math-claim-check",
         "./skills/szl-model-evaluation",
+        "./skills/szl-negative-control-audit",
         "./skills/szl-paired-science",
+        "./skills/szl-quantization-check",
+        "./skills/szl-refutation-ledger",
+        "./skills/szl-repo-pin",
         "./skills/szl-reproducibility-capsule",
         "./skills/szl-research-anatomy",
-        "./skills/szl-science-workbench"
+        "./skills/szl-result-fragility",
+        "./skills/szl-retrieval-eval",
+        "./skills/szl-reviewer-pack",
+        "./skills/szl-science-workbench",
+        "./skills/szl-session-receipt",
+        "./skills/szl-unit-invariants"
       ],
       "author": {
         "name": "betterwithage (SZL Holdings)"
       },
       "license": "Apache-2.0",
-      "homepage": "https://github.com/szl-holdings/szl-skills/tree/a314917286269630b053ea16f2d65acf1000bd8f"
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/b36160ea1d6b375670ea662cff6a2cc67cba0f40"
     }
   ]
 }

@@ -1,0 +1,32 @@
+{
+  "schema": "szl.artifact-lineage.v1",
+  "artifacts": [
+    {"id": "raw-v1", "kind": "source", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+    {"id": "normalized-v1", "kind": "derived", "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+    {"id": "summary-v1", "kind": "derived", "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"}
+  ],
+  "required_stages": ["normalize", "summarize"],
+  "observed_digests": {
+    "raw-v1": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "normalized-v1": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "summary-v1": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+  },
+  "stages": [
+    {
+      "id": "normalize", "operation": "Synthetic centering of a selected measurement table",
+      "code_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "config_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "required_inputs": ["raw-v1"],
+      "inputs": [{"artifact": "raw-v1", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}],
+      "outputs": [{"artifact": "normalized-v1", "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}]
+    },
+    {
+      "id": "summarize", "operation": "Synthetic mean of the centered table",
+      "code_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "config_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "required_inputs": ["normalized-v1"],
+      "inputs": [{"artifact": "normalized-v1", "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}],
+      "outputs": [{"artifact": "summary-v1", "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"}]
+    }
+  ]
+}

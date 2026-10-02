@@ -1,0 +1,13 @@
+{
+  "schema": "szl.unit-invariants.v1",
+  "quantities": [
+    {"id": "length-m", "unit": "m", "dimension": [1,0,0,0,0,0,0], "values": ["1", "2"], "range_si": {"min": "0", "max": "3"}},
+    {"id": "length-cm", "unit": "cm", "dimension": [1,0,0,0,0,0,0], "values": ["100", "200"], "range_si": {"min": "0", "max": "3"}},
+    {"id": "duration", "unit": "s", "dimension": [0,0,1,0,0,0,0], "values": ["2", "2"], "range_si": {"min": "1", "max": "3"}},
+    {"id": "speed", "unit": "m/s", "dimension": [1,0,-1,0,0,0,0], "values": ["0.5", "1"], "range_si": {"min": "0", "max": "2"}}
+  ],
+  "invariants": [
+    {"id": "length-conversion", "operation": "equal", "operands": ["length-m"], "result": "length-cm", "atol_si": "0", "rtol": "0"},
+    {"id": "speed-definition", "operation": "ratio", "operands": ["length-m", "duration"], "result": "speed", "atol_si": "0", "rtol": "0"}
+  ]
+}

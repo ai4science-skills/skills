@@ -1,0 +1,8 @@
+{
+  "project": "cohort-reanalysis-2026",
+  "repos": [
+    {"name": "analysis", "path": "code/analysis"},
+    {"name": "data-prep", "path": "code/prep"},
+    {"name": "shared-utils", "path": "vendor/labutils"}
+  ]
+}

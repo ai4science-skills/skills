@@ -1,0 +1,111 @@
+{
+  "schema": "szl.analysis-plan-audit.v1",
+  "plan": {
+    "id": "synthetic-fixed-plan",
+    "version": 1,
+    "frozen_at": "2026-01-01T00:00:00Z",
+    "hypotheses": [
+      {
+        "id": "h1",
+        "statement": "Prespecified computational comparison of two synthetic estimators.",
+        "primary_metric": "mse",
+        "direction": "LOWER",
+        "estimand": "Mean per-series paired mean-squared-error difference on synthetic held-out signals.",
+        "sample_unit": "series",
+        "group_unit": "series",
+        "split_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "alpha": 0.05,
+        "family": "primary",
+        "practical_margin": 0.1,
+        "exclusions": [
+          {
+            "id": "nonfinite-input",
+            "criterion": "Exclude a series only when its input violates the predeclared finite-input contract."
+          }
+        ]
+      }
+    ],
+    "families": [
+      {
+        "id": "primary",
+        "method": "NONE",
+        "alpha": 0.05,
+        "size": 1
+      }
+    ],
+    "stopping_rule": {
+      "kind": "FIXED_ATTEMPTS",
+      "maximum_attempts": 2
+    },
+    "scheduled_attempts": [
+      {
+        "id": "attempt-1",
+        "hypothesis_id": "h1"
+      },
+      {
+        "id": "attempt-2",
+        "hypothesis_id": "h1"
+      }
+    ]
+  },
+  "run": {
+    "plan_id": "synthetic-fixed-plan",
+    "plan_version": 1,
+    "plan_sha256": "88a1b774400cfea1dfa12c7df73b46cd5ad793862a9f0ec7fd47f84924c94dc1",
+    "started_at": "2026-01-01T01:00:00Z",
+    "completed_at": "2026-01-01T02:00:00Z",
+    "precommit_declared": true,
+    "hypotheses": [
+      {
+        "id": "h1",
+        "statement": "Prespecified computational comparison of two synthetic estimators.",
+        "primary_metric": "mse",
+        "direction": "LOWER",
+        "estimand": "Mean per-series paired mean-squared-error difference on synthetic held-out signals.",
+        "sample_unit": "series",
+        "group_unit": "series",
+        "split_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "alpha": 0.05,
+        "family": "primary",
+        "practical_margin": 0.1,
+        "exclusions": [
+          {
+            "id": "nonfinite-input",
+            "criterion": "Exclude a series only when its input violates the predeclared finite-input contract."
+          }
+        ]
+      }
+    ],
+    "families": [
+      {
+        "id": "primary",
+        "method": "NONE",
+        "alpha": 0.05,
+        "size": 1
+      }
+    ],
+    "stopping_rule": {
+      "kind": "FIXED_ATTEMPTS",
+      "maximum_attempts": 2
+    },
+    "attempts": [
+      {
+        "id": "attempt-1",
+        "hypothesis_id": "h1",
+        "status": "SUCCESS",
+        "recorded_at": "2026-01-01T01:15:00Z",
+        "result_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "failure_reason": null
+      },
+      {
+        "id": "attempt-2",
+        "hypothesis_id": "h1",
+        "status": "FAILED",
+        "recorded_at": "2026-01-01T01:45:00Z",
+        "result_sha256": null,
+        "failure_reason": "Synthetic fixture intentionally retains a declared numerical failure."
+      }
+    ]
+  },
+  "deviations": []
+}

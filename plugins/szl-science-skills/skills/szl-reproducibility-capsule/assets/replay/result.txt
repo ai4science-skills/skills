@@ -1,0 +1,1 @@
+SYNTHETIC result; no experiment was executed.

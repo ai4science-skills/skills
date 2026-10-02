@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-"""Portable offline CLI; every skill contains its own identical copy."""
+# Modified 2026-09-30: original attempt-ledger CLI extensions to SZL baseline
+# 9668f1571315e93ca2059b9a44f12beef483532d.
+"""Portable offline scoring and attempt-ledger CLI."""
 import argparse
 import json
 import pathlib
@@ -40,6 +42,15 @@ def main():
         if match is None:
             raise ValueError("Missing skill name")
         skill_name = match.group(1)
+        if skill_name == "szl-model-evaluation" and "planned_attempts" in payload:
+            report = functions["szl_audit_attempts"](**payload)
+            output = json.dumps(report, indent=2, ensure_ascii=False, allow_nan=False) + "\n"
+            if args.output:
+                with args.output.open("x", encoding="utf-8") as file:
+                    file.write(output)
+            else:
+                sys.stdout.write(output)
+            return 0
         if skill_name == "szl-model-evaluation" and "records" in payload:
             report = functions["szl_evaluate_categories"](**payload)
             output = json.dumps(report, indent=2, ensure_ascii=False, allow_nan=False) + "\n"

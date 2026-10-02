@@ -1,43 +1,49 @@
 ---
 name: szl-reproducibility-capsule
-description: Create and verify a portable manifest binding explicitly selected research inputs, code and outputs to exact bytes. Use for experiment handoffs, replay records, reproducibility checks or detecting changes since a saved run.
+description: "Creates an exact-byte manifest (path, size, SHA-256) for the explicitly selected files of an experiment, verifies them later as changed / missing / unsafe, and validates a bounded replay declaration (inputs, source, environment, plan, outputs) without executing anything. Use when handing an analysis to a collaborator, archiving a result, preparing a replication or when the user asks 'did anything change since the run'. Not a container, not a signature, and it does not reproduce the experiment."
 license: Apache-2.0
 ---
 
 # Reproducibility capsule
 
-Select exact inputs, source, environment specification, command description, seed, parameters,
-results and interpretation to retain. Use a declared project root and explicit file list;
-never recursively sweep a workspace or include credentials, person records or unrelated data.
-Metadata is visible in the manifest and is not automatically redacted.
+Pick the files that define an experiment and freeze their bytes. Later, prove they are the same
+bytes or list exactly which ones moved. Python 3.10+, stdlib, offline.
 
-Call `szl_make_capsule(root, files, metadata)` from `kernel.py`. Files use canonical relative
-POSIX paths such as data/observations.csv; absolute paths, traversal, symlinks and junctions
-are refused. The manifest stores paths, sizes and streaming SHA-256 hashes, not file contents.
-It does not package the files; use the scientist's chosen artifact store or sharing channel.
-Keep an independent manifest/digest copy when integrity across sessions matters.
+## Use when
 
-Call `szl_verify_capsule(root, capsule)` on retained files. Report MATCH, CHANGED, MISSING and
-unsafe/unreadable paths. Unsigned manifests detect changes relative to a retained copy; an
-attacker who replaces the whole manifest can replace its digest too. `authentic: false`
-stays false even when all bytes match. Actual SZL receipt signing is a separate integration
-requiring a real key and verifier. Never relabel a digest as a signature.
+- Archiving the input tables, scripts, environment file and reference outputs behind a figure.
+- A collaborator re-runs your pipeline and gets different numbers: verify the capsule first.
+- Preparing a replay package for a separate sandbox review with declared seed and limits.
 
-Record exact environment and replay limits. Use deterministic equality only where supported;
-otherwise preserve predeclared scientific tolerances. Matching files is not a reproduced
-experiment, correct scientific conclusion or sound proof. The helper never executes recorded
-commands or installs dependencies.
+## Quick start
 
 ```bash
 python scripts/run.py assets/example.json --root .
 ```
 
-Creation input contains `files`, optional `metadata`; verification accepts the saved capsule.
-`--output` writes a new file exclusively. The synthetic example hashes included protocol
-notes; select your own project root/files for real work.
+Creates a `szl.reproducibility-capsule.v1` record listing `assets/protocol.txt` (270 bytes, its
+SHA-256), the synthetic metadata, `signed: false` and a `capsule_sha256`. Verification on retained
+bytes reports changed, missing and unsafe or unreadable files separately. `assets/replay-example.json`
+adds a replay declaration over the files in `assets/replay`.
 
-This follows SZL's honest unsigned-receipt and exact-artifact conventions. It does not
-perform publication or cryptographic signing. Lambda is Conjecture 1 (OPEN).
-Outside services/credentials: none. No uploads, model loading or laboratory actions.
+## Creating and verifying
 
-Runtime: Python 3.10+; stdlib; offline; no signing key required.
+`szl_make_capsule(root, files, metadata=None, replay=None)` accepts plain path lists or role-tagged
+entries (`path` plus `role`). Paths must be canonical relative POSIX paths, unique, within hard
+count and byte bounds; traversal, symlinks, junctions, reparse points and credential-like names
+are refused. `szl_verify_capsule(root, capsule)` re-hashes. All bytes matching plus a complete,
+valid replay declaration yields `replay_ready: true`, meaning prepared for a separate sandbox review;
+`execution: NOT_RUN`, `capability_denial: DECLARED_ONLY` and `tolerance_application: NOT_RUN` stay
+explicit. Read `references/contracts.md` before authoring a replay.
+
+Keep an independently retained copy of the manifest when integrity across sessions matters: an
+unsigned self-digest cannot detect replacement of the whole manifest. `authentic: false` stays false
+even when every byte matches; real signing needs a key and a verifier (see szl-session-receipt for the
+optional signing path).
+
+## What it does not do
+
+Never executes argv or source, installs dependencies, launches processes, applies numerical
+comparisons to outputs, or inspects file contents for secrets (credential-name guards look at names).
+Limits: 128 files, 8 MiB per file, 32 MiB total. It cannot prove source safety, enforce a sandbox or
+verify preregistration. Hashes are not signatures; readiness is not reproduction.

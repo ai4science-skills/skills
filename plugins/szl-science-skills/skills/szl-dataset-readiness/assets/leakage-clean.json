@@ -1,0 +1,16 @@
+{
+  "rows": [
+    {"case_id": "train-a", "entity_id": "synthetic-A", "signal": 1, "split": "train", "observation_time": "2026-01-01T00:00:00Z", "label_available_at": "2026-01-02T00:00:00Z", "prediction_time": "2026-01-01T01:00:00Z"},
+    {"case_id": "test-a", "entity_id": "synthetic-B", "signal": 2, "split": "test", "observation_time": "2026-01-03T00:00:00Z", "label_available_at": "2026-01-04T00:00:00Z", "prediction_time": "2026-01-03T01:00:00Z"}
+  ],
+  "feature_columns": ["signal"],
+  "metadata": {"source_revision": "synthetic-fixture-v2", "license": "Apache-2.0", "evidence_class": "SYNTHETIC"},
+  "leakage_spec": {
+    "schema": "szl.dataset-leakage/v1",
+    "row_id_column": "case_id",
+    "entity_columns": ["entity_id"],
+    "temporal": {"observation_time_column": "observation_time", "label_available_at_column": "label_available_at", "prediction_time_column": "prediction_time", "training_splits": ["train"], "evaluation_splits": ["test"], "split_order": ["train", "test"]},
+    "expected_transform_ids": ["scale"],
+    "transforms": [{"id": "scale", "fit_row_ids": ["train-a"], "fit_split_ids": ["train"], "allowed_fit_splits": ["train"]}]
+  }
+}

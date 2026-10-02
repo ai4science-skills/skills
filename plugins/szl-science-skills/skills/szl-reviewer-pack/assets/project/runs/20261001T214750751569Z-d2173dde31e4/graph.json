@@ -1,0 +1,276 @@
+{
+  "schema": "szl.research-anatomy.v1",
+  "nodes": [
+    {
+      "id": "question",
+      "kind": "question",
+      "title": "What evidence supports this selected scientific workflow?"
+    },
+    {
+      "id": "lambda",
+      "kind": "claim",
+      "title": "Lambda uniqueness",
+      "claim_state": "Conjecture 1 (OPEN)"
+    },
+    {
+      "id": "conclusion",
+      "kind": "claim",
+      "title": "Research conclusions require scientist review",
+      "depends_on": [
+        "run"
+      ],
+      "claim_state": "UNKNOWN"
+    },
+    {
+      "id": "dataset",
+      "kind": "dataset",
+      "title": "dataset",
+      "artifact_path": "inputs/dataset.json",
+      "sha256": "a75b11f7c0c04fe7288d2ddeacaaf19864748029f46b8fa6f07917345a65a444",
+      "generated": true
+    },
+    {
+      "id": "predictions",
+      "kind": "dataset",
+      "title": "predictions",
+      "artifact_path": "inputs/predictions.json",
+      "sha256": "0bbeaec46b0a8e988a52df5f1b090564d70cbb92504b849dbefe2f64c0450076",
+      "generated": true
+    },
+    {
+      "id": "math",
+      "kind": "dataset",
+      "title": "math",
+      "artifact_path": "inputs/math.json",
+      "sha256": "a537b458a56c46542a29ddbeb3cf93bea542fa68d7c054bb298756a5f6a220d0",
+      "generated": true
+    },
+    {
+      "id": "paired",
+      "kind": "dataset",
+      "title": "paired",
+      "artifact_path": "inputs/paired.json",
+      "sha256": "e7bbde01eb78b7109aee928a44fcbbb96bdde2cb98f325cca12378f2563e9d20",
+      "generated": true
+    },
+    {
+      "id": "implementation",
+      "kind": "code",
+      "title": "Observed workbench implementations",
+      "sha256": "f248ce18f0d30187b19818567b7a275e59a289e0a8e7061e614732d61d7cc31d",
+      "generated": true
+    },
+    {
+      "id": "project-plan",
+      "kind": "code",
+      "title": "Declared project plan",
+      "artifact_path": "project.json",
+      "sha256": "423d3dc951edaff875ab18e877b4a48195cead2ae0015d864a2df350f77ce800",
+      "generated": true
+    },
+    {
+      "id": "graph-template",
+      "kind": "code",
+      "title": "Declared research graph",
+      "artifact_path": "graph.json",
+      "sha256": "a2922a57d798d0ac971b424e6060318ceecf5ad0293afc6afc359db46505200a",
+      "generated": true
+    },
+    {
+      "id": "dataset-check",
+      "kind": "run",
+      "title": "dataset check",
+      "depends_on": [
+        "dataset",
+        "implementation",
+        "project-plan",
+        "graph-template"
+      ],
+      "sha256": "3ce3fcaf45dcb36c5ca2e5446bfe7044d1c27ad62b488a38cd74751372cc74c0",
+      "artifact_path": "runs/20261001T214750751569Z-d2173dde31e4/dataset-check.json",
+      "generated": true,
+      "needs_recheck": false,
+      "claim_state": "COMPUTED_ON_SELECTED_INPUTS"
+    },
+    {
+      "id": "model-check",
+      "kind": "run",
+      "title": "binary-model check",
+      "depends_on": [
+        "predictions",
+        "dataset-check",
+        "implementation",
+        "project-plan",
+        "graph-template"
+      ],
+      "sha256": "5c99b278781c0929bdf9dff4255643d3b0668604e3f836c9d7a7604adf9da1b2",
+      "artifact_path": "runs/20261001T214750751569Z-d2173dde31e4/model-check.json",
+      "generated": true,
+      "needs_recheck": false,
+      "claim_state": "COMPUTED_ON_SELECTED_INPUTS"
+    },
+    {
+      "id": "math-check",
+      "kind": "run",
+      "title": "math check",
+      "depends_on": [
+        "math",
+        "implementation",
+        "project-plan",
+        "graph-template"
+      ],
+      "sha256": "a3d38f97bccea0050296cfa1955f87912212ca751fc45b5530c541e0ca701b1d",
+      "artifact_path": "runs/20261001T214750751569Z-d2173dde31e4/math-check.json",
+      "generated": true,
+      "needs_recheck": false,
+      "claim_state": "COMPUTED_ON_SELECTED_INPUTS"
+    },
+    {
+      "id": "kernel-check",
+      "kind": "run",
+      "title": "calibration-benchmark check",
+      "depends_on": [
+        "predictions",
+        "model-check",
+        "implementation",
+        "project-plan",
+        "graph-template"
+      ],
+      "sha256": "795ec15bbc5d832477d860fae43d912290eadd191c837bc8667f8c527e29fddc",
+      "artifact_path": "runs/20261001T214750751569Z-d2173dde31e4/kernel-check.json",
+      "generated": true,
+      "needs_recheck": false,
+      "claim_state": "COMPUTED_ON_SELECTED_INPUTS"
+    },
+    {
+      "id": "paired-check",
+      "kind": "run",
+      "title": "paired check",
+      "depends_on": [
+        "paired",
+        "kernel-check",
+        "implementation",
+        "project-plan",
+        "graph-template"
+      ],
+      "sha256": "1a7b0aa1cd459fdd303ac7e08e8edeebb9345d47ef61ca955f723ac5d5e06523",
+      "artifact_path": "runs/20261001T214750751569Z-d2173dde31e4/paired-check.json",
+      "generated": true,
+      "needs_recheck": false,
+      "claim_state": "COMPUTED_ON_SELECTED_INPUTS"
+    },
+    {
+      "id": "run",
+      "kind": "run",
+      "title": "Completed selected checks",
+      "generated": true,
+      "depends_on": [
+        "dataset-check",
+        "model-check",
+        "math-check",
+        "kernel-check",
+        "paired-check"
+      ],
+      "sha256": "e0067c1231f6d0ab8675555349e52c62fc99b21175c62fb1b3cab9958302959b",
+      "needs_recheck": false
+    }
+  ],
+  "history": [
+    {
+      "id": "question",
+      "previous": null,
+      "replacement_sha256": "bd4bbd6bc638beca022bab1c41fecffc61eebf4af857f1e7e8d69528b0886270",
+      "signed": false
+    },
+    {
+      "id": "lambda",
+      "previous": null,
+      "replacement_sha256": "ae7770d4addcb793b634ffd8d78ed6d4b93949b216cf522a24c0e317c96aeda0",
+      "signed": false
+    },
+    {
+      "id": "conclusion",
+      "previous": null,
+      "replacement_sha256": "9efb557db7bfbb4e4cfbd593216cb8445f26d6180c82caeface268fcf44ac1a0",
+      "signed": false
+    },
+    {
+      "id": "dataset",
+      "previous": null,
+      "replacement_sha256": "6a1b5dda987579a1612f3dade1be994a5b7522f73c8b9baddcc82782d093b1e0",
+      "signed": false
+    },
+    {
+      "id": "predictions",
+      "previous": null,
+      "replacement_sha256": "d78b2e15a0c0d3befd77abb2dfcfd0da9875e7bc5ba6531fa697cf6335f33a83",
+      "signed": false
+    },
+    {
+      "id": "math",
+      "previous": null,
+      "replacement_sha256": "902e42eebb792f6e2eccebcdf07f4c1b5c66388333097143046a0dcf7074429b",
+      "signed": false
+    },
+    {
+      "id": "paired",
+      "previous": null,
+      "replacement_sha256": "8d3862a03f29f2cab7c5734f9fe9d089dbb9f2380727de4263fae54a5c67c386",
+      "signed": false
+    },
+    {
+      "id": "implementation",
+      "previous": null,
+      "replacement_sha256": "2f23e9268994574387ce68d2cfebd33572717c02ca85a5582650bd9043f812a1",
+      "signed": false
+    },
+    {
+      "id": "project-plan",
+      "previous": null,
+      "replacement_sha256": "eddfb8a75d594dbea9c32ac38dfd7f0c7a9efd397161ab95e757ce8e97083853",
+      "signed": false
+    },
+    {
+      "id": "graph-template",
+      "previous": null,
+      "replacement_sha256": "a292ca70c6c6710dbe087e9377afe33a2233777bca16f68eba1196eab77b8095",
+      "signed": false
+    },
+    {
+      "id": "dataset-check",
+      "previous": null,
+      "replacement_sha256": "761b49e221a5b3a0c754bc1424fd9ba7979cf1e4550a4666673a39e15eff2677",
+      "signed": false
+    },
+    {
+      "id": "model-check",
+      "previous": null,
+      "replacement_sha256": "0eae71373217fd9aee56e54b9004956009bb3c20e6fff3730c9564639f3f42f0",
+      "signed": false
+    },
+    {
+      "id": "math-check",
+      "previous": null,
+      "replacement_sha256": "735c5808f6383bf2ad8a22481d08bae8cf836320afda29fbafc9a72142430207",
+      "signed": false
+    },
+    {
+      "id": "kernel-check",
+      "previous": null,
+      "replacement_sha256": "0fdbad40531d6590fd7f979212d127f0f84b32fc27d79521cf85623761704e1c",
+      "signed": false
+    },
+    {
+      "id": "paired-check",
+      "previous": null,
+      "replacement_sha256": "80085706ae9007f4362f941a401dd76170de7e99ede3e8cdc20a11dea392a242",
+      "signed": false
+    },
+    {
+      "id": "run",
+      "previous": null,
+      "replacement_sha256": "b2b22738e9b9c9cbc500ad062e478e53c9c6602eeeba67936516e66f4471daaa",
+      "signed": false
+    }
+  ]
+}

@@ -16,19 +16,25 @@ Then pick what you want. See [CATALOG.md](CATALOG.md) for every skill, its maint
 
 Imported skills do not update automatically. Re-import when a new tag is announced.
 
-## Science pack prerelease
+## Current science pack
 
-The catalog adds an explicit prerelease of eight connected SZL science skills, pinned to
-szl-holdings/szl-skills@v0.2.0-rc.1 and its immutable commit. The self-contained workbench
-connects living project memory, numerical math checks, dataset leakage checks, model
-evaluation, kernel comparison, paired qualification and retained file capsules. A separate
-offline CI step exercises this selected pack; the general importer remains static and
-never executes downloaded skill code.
+The current catalog contains twenty-three SZL science skills, pinned to the published
+szl-holdings/szl-skills@v0.4.0 release and commit b36160ea1d6b375670ea662cff6a2cc67cba0f40.
+The self-contained workbench connects living project memory, math, dataset, model, kernel
+and paired checks with retained capsules. Additional audits use their own CLIs, covering
+lineage, units, analysis plans, negative controls, evidence gates, retrieval, quantization,
+replication records, fragility, repository pins, receipts and reviewer handoffs. A separate
+offline CI step exercises every selected science CLI; the general importer remains static
+and never executes downloaded skill code.
 
 The stable import above remains available. To try just the source science pack in Claude
 Science, import:
 
-    szl-holdings/szl-skills@v0.2.0-rc.1
+    szl-holdings/szl-skills@v0.4.0
+
+The existing community v0.2.0-rc.1 tag retains the historical eight-skill science pack.
+An updated community release must be tagged after its reviewed source is merged; importing
+the source line above already selects the published twenty-three-skill pack.
 
 Normal workbench use is offline. Optional fetch-triage reads the pinned public synthetic
 study from Hugging Face, with no credentials or model weights. Actual Claude Science
