@@ -55,6 +55,20 @@ study from Hugging Face, with no credentials or model weights. Actual Claude Sci
 registration and agent efficacy remain unverified; local/source CI checks do not establish
 them. Setup and pilot instructions are in the source repository. No automatic update occurs.
 
+The separate `szl-science-rc3-additions` family selects six further skills from
+[the v0.5.0-rc.3 source prerelease](https://github.com/szl-holdings/szl-skills/releases/tag/v0.5.0-rc.3)
+at `baf0160e1acb2bee0de3c2324211d8d95e1b68b1`: outcome preservation, release continuity,
+skill update review, figure-data contract, research change impact and uncertainty lineage.
+It leaves all existing source pins unchanged. The SVG namespace `www.w3.org` and
+the synthetic update-review hostname `api.example.org` are inert identifiers,
+not contacted services; no credentials are needed. Each skill retains its own
+scope limits, source contract and synthetic example. Numerical uncertainty uses
+a bounded declared first-order model, not validated measurement coverage.
+
+The current security-prerequisites scaffold remains **BLOCKED**. Functional
+importer checks, source hashes and local synthetic execution do not establish
+independent security admission, scientific validity or Claude Science registration.
+
 ## What every skill must pass
 
 | Check | Why |
