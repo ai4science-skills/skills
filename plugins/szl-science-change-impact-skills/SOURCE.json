@@ -1,0 +1,15 @@
+{
+  "repo": "szl-holdings/szl-skills",
+  "ref": "baf0160e1acb2bee0de3c2324211d8d95e1b68b1",
+  "sha": "baf0160e1acb2bee0de3c2324211d8d95e1b68b1",
+  "path": "skills",
+  "files_sha256": {
+    "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "NOTICE": "021ac47ff117a126574e3ced3f4496b3b6e332854c683f93bd8acf2ce79c9106",
+    "skills/szl-research-change-impact/SKILL.md": "212aecb6c9a4d5ab7193393dc67b30c05a323f787bb16d44ec19c86a6e72179e",
+    "skills/szl-research-change-impact/assets/example.json": "eaa5cd729fc6af56461888a87dc94670a48ef73a8f248c9b781dae5f81efb018",
+    "skills/szl-research-change-impact/kernel.py": "d4c8ea107a7cd458c0eeb345984db40aef524bcac1e322a1de6a34e714d79fbe",
+    "skills/szl-research-change-impact/references/contract.md": "bc37d43417c595c867e985d6444adf9803eec5391e153ad2e5e8fc0f895f3ec7",
+    "skills/szl-research-change-impact/scripts/run.py": "cda97559a71ab50d16d2763f7b13e3e8c602f2557319483933f35295af827a3b"
+  }
+}

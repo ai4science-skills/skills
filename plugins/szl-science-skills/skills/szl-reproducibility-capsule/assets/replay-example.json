@@ -1,0 +1,21 @@
+{
+  "files": [
+    {"path": "assets/replay/input.txt", "role": "input"},
+    {"path": "assets/replay/analysis.py", "role": "source"},
+    {"path": "assets/replay/environment.json", "role": "environment"},
+    {"path": "assets/replay/plan.json", "role": "analysis_plan"},
+    {"path": "assets/replay/result.txt", "role": "output"}
+  ],
+  "metadata": {"evidence_class": "SYNTHETIC", "experiment": "NO_EXPERIMENT_EXECUTED"},
+  "replay": {
+    "schema": "szl.offline-replay.v1",
+    "argv": ["python", "assets/replay/analysis.py", "--seed", "7"],
+    "environment": {"path": "assets/replay/environment.json", "sha256": "9e53a7bf9f7e689b58768a655c34dd411059f5f801f318871eb21c102ad74960"},
+    "analysis_plan": {"path": "assets/replay/plan.json", "sha256": "56a14674f15569da3e84c461fcb02950e07e8ba6749d07450e348ea551896698"},
+    "seed": 7,
+    "limits": {"network": "denied", "process_spawn": "denied", "secret_access": "denied", "max_seconds": 30, "max_memory_mib": 128},
+    "expected_outputs": [
+      {"path": "assets/replay/result.txt", "sha256": "4fbb536756e1258952e18bbc3bd6f9130da70297604ea7af2b7f73d7f5e9d3f3", "comparison": {"mode": "exact_bytes"}}
+    ]
+  }
+}

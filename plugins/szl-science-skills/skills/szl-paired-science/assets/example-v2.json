@@ -1,0 +1,205 @@
+{
+  "schema": "szl.paired-science/v2",
+  "source_revision": "1111111111111111111111111111111111111111",
+  "dataset_sha256": "4a1227a16549c049dc596754b13666e1b0fc861e1a6065cf2707d2f44a8b229d",
+  "plan_sha256": "b95965701bdee34bac41b86060bf414041ff8ed798f8c7cbbb05e669ff4fc7ed",
+  "input_scope": "SYNTHETIC",
+  "pre_registered": true,
+  "independent_pairs": true,
+  "alpha": 0.05,
+  "minimum_normalized_improvement": 0.2,
+  "identity_control_tolerance": 0,
+  "train_ids": [
+    "train-a"
+  ],
+  "test_ids": [
+    "test-a"
+  ],
+  "tasks": [
+    {
+      "id": "toy",
+      "loss_unit": "meters",
+      "training_scale": 2,
+      "scale_scope": "TRAIN_ONLY",
+      "expected_trial_ids": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "trials": [
+        {
+          "id": "0",
+          "baseline_loss": 2,
+          "treatment_loss": 1,
+          "identity_control_loss": 2,
+          "baseline_predictions_sha256": "11a09bb124d7e2a81bab6fc25bfc64a9fd149461e8b8f4af135f912840aa403c",
+          "treatment_predictions_sha256": "611dfe42e0fd62523a428d0eb0ea5f190103d1a3a90896d9ae7029f6b9409d96",
+          "identity_control_predictions_sha256": "11a09bb124d7e2a81bab6fc25bfc64a9fd149461e8b8f4af135f912840aa403c"
+        },
+        {
+          "id": "1",
+          "baseline_loss": 2,
+          "treatment_loss": 1,
+          "identity_control_loss": 2,
+          "baseline_predictions_sha256": "9e361b282e4ba2c0559cd54cd8dded79642668b2cf4501bc57609ad676ea8b6e",
+          "treatment_predictions_sha256": "ae9b9c7f93a471097918aa01da83f7792b42e0a8515a44cf55693a0494a39bdf",
+          "identity_control_predictions_sha256": "9e361b282e4ba2c0559cd54cd8dded79642668b2cf4501bc57609ad676ea8b6e"
+        },
+        {
+          "id": "2",
+          "baseline_loss": 2,
+          "treatment_loss": 1,
+          "identity_control_loss": 2,
+          "baseline_predictions_sha256": "54851fabc6e9481dcf32ad991901c807bea37aa3465a0aaf673aede2399d82f8",
+          "treatment_predictions_sha256": "f791ba2ae6e0e1d636282f5735e7c5b48132b3401a4a5642d0a06d73d50f3817",
+          "identity_control_predictions_sha256": "54851fabc6e9481dcf32ad991901c807bea37aa3465a0aaf673aede2399d82f8"
+        },
+        {
+          "id": "3",
+          "baseline_loss": 2,
+          "treatment_loss": 1,
+          "identity_control_loss": 2,
+          "baseline_predictions_sha256": "ee8921a12dfc559013d70d201856e54ef21159772b391fa4b336d0e6da8c8fb2",
+          "treatment_predictions_sha256": "562ec75b0defb50d56458104fbdcd3325abf24ffdf3e338b981d229114ff87f6",
+          "identity_control_predictions_sha256": "ee8921a12dfc559013d70d201856e54ef21159772b391fa4b336d0e6da8c8fb2"
+        },
+        {
+          "id": "4",
+          "baseline_loss": 2,
+          "treatment_loss": 1,
+          "identity_control_loss": 2,
+          "baseline_predictions_sha256": "39544ee266ab96971411067018fde22246517cc66c9ab76eb7e40a5c36d2ea02",
+          "treatment_predictions_sha256": "7a1e11c2556808fbdf2dcc8f78ee34b439cf22559ccfc070aa6a1fb7976f8c4c",
+          "identity_control_predictions_sha256": "39544ee266ab96971411067018fde22246517cc66c9ab76eb7e40a5c36d2ea02"
+        }
+      ]
+    }
+  ],
+  "bindings": {
+    "schema": "szl.paired-bindings/v1",
+    "cases": [
+      {
+        "id": "train-a",
+        "input": {
+          "utf8": "synthetic training signal",
+          "sha256": "574ea19abd297245728a3f5356030b79ac9687be4e7f9092dce66342a7cbfdc0"
+        },
+        "target": {
+          "utf8": "0",
+          "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+        }
+      },
+      {
+        "id": "test-a",
+        "input": {
+          "utf8": "synthetic evaluation signal",
+          "sha256": "763443725fc5c3574145ff50050c85533acd11fbd34849301f07475d2b897c56"
+        },
+        "target": {
+          "utf8": "0",
+          "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+        }
+      }
+    ],
+    "corpus": {
+      "utf8": "Synthetic corpus fixture; no external scientific evidence.",
+      "sha256": "4a1227a16549c049dc596754b13666e1b0fc861e1a6065cf2707d2f44a8b229d"
+    },
+    "scorer": {
+      "utf8": "{\"schema\":\"szl.scorer/v1\",\"tasks\":[{\"loss_unit\":\"meters\",\"metric\":\"mae\",\"task_id\":\"toy\"}]}",
+      "sha256": "bafa9e3e55863ef767195356aa643a2c12d0cdcebb66452b8b494b7fdfd4e99b"
+    },
+    "normalization": {
+      "utf8": "{\"schema\":\"szl.normalization/v1\",\"tasks\":[{\"records\":[{\"case_id\":\"train-a\",\"prediction\":2}],\"task_id\":\"toy\"}]}",
+      "sha256": "ced432ca2ef08d49833ff93f0020f23d5f8963e915ffc0e7838dc4fe0f7deab1"
+    },
+    "plan": {
+      "utf8": "{\"alpha\":0.05,\"artifact_digests\":{\"case_bindings_sha256\":\"a66874e4c58ae439db80d18854ce59f2f760a5ee8b9ef3dae609218a6b923e0d\",\"corpus_sha256\":\"4a1227a16549c049dc596754b13666e1b0fc861e1a6065cf2707d2f44a8b229d\",\"normalization_sha256\":\"ced432ca2ef08d49833ff93f0020f23d5f8963e915ffc0e7838dc4fe0f7deab1\",\"scorer_sha256\":\"bafa9e3e55863ef767195356aa643a2c12d0cdcebb66452b8b494b7fdfd4e99b\"},\"identity_control_tolerance\":0,\"independent_pairs\":true,\"input_scope\":\"SYNTHETIC\",\"minimum_normalized_improvement\":0.2,\"pre_registered\":true,\"schema\":\"szl.paired-plan/v1\",\"source_revision\":\"1111111111111111111111111111111111111111\",\"tasks\":[{\"expected_trial_ids\":[\"0\",\"1\",\"2\",\"3\",\"4\"],\"id\":\"toy\",\"loss_unit\":\"meters\",\"scale_scope\":\"TRAIN_ONLY\",\"training_scale\":2}],\"test_ids\":[\"test-a\"],\"train_ids\":[\"train-a\"]}",
+      "sha256": "b95965701bdee34bac41b86060bf414041ff8ed798f8c7cbbb05e669ff4fc7ed"
+    },
+    "trials": [
+      {
+        "task_id": "toy",
+        "trial_id": "0",
+        "baseline": {
+          "utf8": "{\"corpus_sha256\":\"4a1227a16549c049dc596754b13666e1b0fc861e1a6065cf2707d2f44a8b229d\",\"input_sha256\":\"1de1c0fd217278f376b041435c1a6cbd6dea4f7f2c1e4568eafa5077c9019e4a\",\"normalization_sha256\":\"ced432ca2ef08d49833ff93f0020f23d5f8963e915ffc0e7838dc4fe0f7deab1\",\"predictions\":[{\"case_id\":\"test-a\",\"value\":2}],\"schema\":\"szl.predictions/v1\",\"scorer_sha256\":\"bafa9e3e55863ef767195356aa643a2c12d0cdcebb66452b8b494b7fdfd4e99b\",\"target_sha256\":\"e00b364773367e77cdd2d4c274368b0c2f78af819749673ca3a38dec01f6846a\",\"task_id\":\"toy\",\"trial_id\":\"0\"}",
+          "sha256": "11a09bb124d7e2a81bab6fc25bfc64a9fd149461e8b8f4af135f912840aa403c"
+        },
+        "treatment": {
+          "utf8": "{\"corpus_sha256\":\"4a1227a16549c049dc596754b13666e1b0fc861e1a6065cf2707d2f44a8b229d\",\"input_sha256\":\"1de1c0fd217278f376b041435c1a6cbd6dea4f7f2c1e4568eafa5077c9019e4a\",\"normalization_sha256\":\"ced432ca2ef08d49833ff93f0020f23d5f8963e915ffc0e7838dc4fe0f7deab1\",\"predictions\":[{\"case_id\":\"test-a\",\"value\":1}],\"schema\":\"szl.predictions/v1\",\"scorer_sha256\":\"bafa9e3e55863ef767195356aa643a2c12d0cdcebb66452b8b494b7fdfd4e99b\",\"target_sha256\":\"e00b364773367e77cdd2d4c274368b0c2f78af819749673ca3a38dec01f6846a\",\"task_id\":\"toy\",\"trial_id\":\"0\"}",
+          "sha256": "611dfe42e0fd62523a428d0eb0ea5f190103d1a3a90896d9ae7029f6b9409d96"
+        },
+        "identity_control": {
+          "utf8": "{\"corpus_sha256\":\"4a1227a16549c049dc596754b13666e1b0fc861e1a6065cf2707d2f44a8b229d\",\"input_sha256\":\"1de1c0fd217278f376b041435c1a6cbd6dea4f7f2c1e4568eafa5077c9019e4a\",\"normalization_sha256\":\"ced432ca2ef08d49833ff93f0020f23d5f8963e915ffc0e7838dc4fe0f7deab1\",\"predictions\":[{\"case_id\":\"test-a\",\"value\":2}],\"schema\":\"szl.predictions/v1\",\"scorer_sha256\":\"bafa9e3e55863ef767195356aa643a2c12d0cdcebb66452b8b494b7fdfd4e99b\",\"target_sha256\":\"e00b364773367e77cdd2d4c274368b0c2f78af819749673ca3a38dec01f6846a\",\"task_id\":\"toy\",\"trial_id\":\"0\"}",
+          "sha256": "11a09bb124d7e2a81bab6fc25bfc64a9fd149461e8b8f4af135f912840aa403c"
+        }
+      },
+      {
+        "task_id": "toy",
+        "trial_id": "1",
+        "baseline": {
+          "utf8": "{\"corpus_sha256\":\"4a1227a16549c049dc596754b13666e1b0fc861e1a6065cf2707d2f44a8b229d\",\"input_sha256\":\"1de1c0fd217278f376b041435c1a6cbd6dea4f7f2c1e4568eafa5077c9019e4a\",\"normalization_sha256\":\"ced432ca2ef08d49833ff93f0020f23d5f8963e915ffc0e7838dc4fe0f7deab1\",\"predictions\":[{\"case_id\":\"test-a\",\"value\":2}],\"schema\":\"szl.predictions/v1\",\"scorer_sha256\":\"bafa9e3e55863ef767195356aa643a2c12d0cdcebb66452b8b494b7fdfd4e99b\",\"target_sha256\":\"e00b364773367e77cdd2d4c274368b0c2f78af819749673ca3a38dec01f6846a\",\"task_id\":\"toy\",\"trial_id\":\"1\"}",
+          "sha256": "9e361b282e4ba2c0559cd54cd8dded79642668b2cf4501bc57609ad676ea8b6e"
+        },
+        "treatment": {
+          "utf8": "{\"corpus_sha256\":\"4a1227a16549c049dc596754b13666e1b0fc861e1a6065cf2707d2f44a8b229d\",\"input_sha256\":\"1de1c0fd217278f376b041435c1a6cbd6dea4f7f2c1e4568eafa5077c9019e4a\",\"normalization_sha256\":\"ced432ca2ef08d49833ff93f0020f23d5f8963e915ffc0e7838dc4fe0f7deab1\",\"predictions\":[{\"case_id\":\"test-a\",\"value\":1}],\"schema\":\"szl.predictions/v1\",\"scorer_sha256\":\"bafa9e3e55863ef767195356aa643a2c12d0cdcebb66452b8b494b7fdfd4e99b\",\"target_sha256\":\"e00b364773367e77cdd2d4c274368b0c2f78af819749673ca3a38dec01f6846a\",\"task_id\":\"toy\",\"trial_id\":\"1\"}",
+          "sha256": "ae9b9c7f93a471097918aa01da83f7792b42e0a8515a44cf55693a0494a39bdf"
+        },
+        "identity_control": {
+          "utf8": "{\"corpus_sha256\":\"4a1227a16549c049dc596754b13666e1b0fc861e1a6065cf2707d2f44a8b229d\",\"input_sha256\":\"1de1c0fd217278f376b041435c1a6cbd6dea4f7f2c1e4568eafa5077c9019e4a\",\"normalization_sha256\":\"ced432ca2ef08d49833ff93f0020f23d5f8963e915ffc0e7838dc4fe0f7deab1\",\"predictions\":[{\"case_id\":\"test-a\",\"value\":2}],\"schema\":\"szl.predictions/v1\",\"scorer_sha256\":\"bafa9e3e55863ef767195356aa643a2c12d0cdcebb66452b8b494b7fdfd4e99b\",\"target_sha256\":\"e00b364773367e77cdd2d4c274368b0c2f78af819749673ca3a38dec01f6846a\",\"task_id\":\"toy\",\"trial_id\":\"1\"}",
+          "sha256": "9e361b282e4ba2c0559cd54cd8dded79642668b2cf4501bc57609ad676ea8b6e"
+        }
+      },
+      {
+        "task_id": "toy",
+        "trial_id": "2",
+        "baseline": {
+          "utf8": "{\"corpus_sha256\":\"4a1227a16549c049dc596754b13666e1b0fc861e1a6065cf2707d2f44a8b229d\",\"input_sha256\":\"1de1c0fd217278f376b041435c1a6cbd6dea4f7f2c1e4568eafa5077c9019e4a\",\"normalization_sha256\":\"ced432ca2ef08d49833ff93f0020f23d5f8963e915ffc0e7838dc4fe0f7deab1\",\"predictions\":[{\"case_id\":\"test-a\",\"value\":2}],\"schema\":\"szl.predictions/v1\",\"scorer_sha256\":\"bafa9e3e55863ef767195356aa643a2c12d0cdcebb66452b8b494b7fdfd4e99b\",\"target_sha256\":\"e00b364773367e77cdd2d4c274368b0c2f78af819749673ca3a38dec01f6846a\",\"task_id\":\"toy\",\"trial_id\":\"2\"}",
+          "sha256": "54851fabc6e9481dcf32ad991901c807bea37aa3465a0aaf673aede2399d82f8"
+        },
+        "treatment": {
+          "utf8": "{\"corpus_sha256\":\"4a1227a16549c049dc596754b13666e1b0fc861e1a6065cf2707d2f44a8b229d\",\"input_sha256\":\"1de1c0fd217278f376b041435c1a6cbd6dea4f7f2c1e4568eafa5077c9019e4a\",\"normalization_sha256\":\"ced432ca2ef08d49833ff93f0020f23d5f8963e915ffc0e7838dc4fe0f7deab1\",\"predictions\":[{\"case_id\":\"test-a\",\"value\":1}],\"schema\":\"szl.predictions/v1\",\"scorer_sha256\":\"bafa9e3e55863ef767195356aa643a2c12d0cdcebb66452b8b494b7fdfd4e99b\",\"target_sha256\":\"e00b364773367e77cdd2d4c274368b0c2f78af819749673ca3a38dec01f6846a\",\"task_id\":\"toy\",\"trial_id\":\"2\"}",
+          "sha256": "f791ba2ae6e0e1d636282f5735e7c5b48132b3401a4a5642d0a06d73d50f3817"
+        },
+        "identity_control": {
+          "utf8": "{\"corpus_sha256\":\"4a1227a16549c049dc596754b13666e1b0fc861e1a6065cf2707d2f44a8b229d\",\"input_sha256\":\"1de1c0fd217278f376b041435c1a6cbd6dea4f7f2c1e4568eafa5077c9019e4a\",\"normalization_sha256\":\"ced432ca2ef08d49833ff93f0020f23d5f8963e915ffc0e7838dc4fe0f7deab1\",\"predictions\":[{\"case_id\":\"test-a\",\"value\":2}],\"schema\":\"szl.predictions/v1\",\"scorer_sha256\":\"bafa9e3e55863ef767195356aa643a2c12d0cdcebb66452b8b494b7fdfd4e99b\",\"target_sha256\":\"e00b364773367e77cdd2d4c274368b0c2f78af819749673ca3a38dec01f6846a\",\"task_id\":\"toy\",\"trial_id\":\"2\"}",
+          "sha256": "54851fabc6e9481dcf32ad991901c807bea37aa3465a0aaf673aede2399d82f8"
+        }
+      },
+      {
+        "task_id": "toy",
+        "trial_id": "3",
+        "baseline": {
+          "utf8": "{\"corpus_sha256\":\"4a1227a16549c049dc596754b13666e1b0fc861e1a6065cf2707d2f44a8b229d\",\"input_sha256\":\"1de1c0fd217278f376b041435c1a6cbd6dea4f7f2c1e4568eafa5077c9019e4a\",\"normalization_sha256\":\"ced432ca2ef08d49833ff93f0020f23d5f8963e915ffc0e7838dc4fe0f7deab1\",\"predictions\":[{\"case_id\":\"test-a\",\"value\":2}],\"schema\":\"szl.predictions/v1\",\"scorer_sha256\":\"bafa9e3e55863ef767195356aa643a2c12d0cdcebb66452b8b494b7fdfd4e99b\",\"target_sha256\":\"e00b364773367e77cdd2d4c274368b0c2f78af819749673ca3a38dec01f6846a\",\"task_id\":\"toy\",\"trial_id\":\"3\"}",
+          "sha256": "ee8921a12dfc559013d70d201856e54ef21159772b391fa4b336d0e6da8c8fb2"
+        },
+        "treatment": {
+          "utf8": "{\"corpus_sha256\":\"4a1227a16549c049dc596754b13666e1b0fc861e1a6065cf2707d2f44a8b229d\",\"input_sha256\":\"1de1c0fd217278f376b041435c1a6cbd6dea4f7f2c1e4568eafa5077c9019e4a\",\"normalization_sha256\":\"ced432ca2ef08d49833ff93f0020f23d5f8963e915ffc0e7838dc4fe0f7deab1\",\"predictions\":[{\"case_id\":\"test-a\",\"value\":1}],\"schema\":\"szl.predictions/v1\",\"scorer_sha256\":\"bafa9e3e55863ef767195356aa643a2c12d0cdcebb66452b8b494b7fdfd4e99b\",\"target_sha256\":\"e00b364773367e77cdd2d4c274368b0c2f78af819749673ca3a38dec01f6846a\",\"task_id\":\"toy\",\"trial_id\":\"3\"}",
+          "sha256": "562ec75b0defb50d56458104fbdcd3325abf24ffdf3e338b981d229114ff87f6"
+        },
+        "identity_control": {
+          "utf8": "{\"corpus_sha256\":\"4a1227a16549c049dc596754b13666e1b0fc861e1a6065cf2707d2f44a8b229d\",\"input_sha256\":\"1de1c0fd217278f376b041435c1a6cbd6dea4f7f2c1e4568eafa5077c9019e4a\",\"normalization_sha256\":\"ced432ca2ef08d49833ff93f0020f23d5f8963e915ffc0e7838dc4fe0f7deab1\",\"predictions\":[{\"case_id\":\"test-a\",\"value\":2}],\"schema\":\"szl.predictions/v1\",\"scorer_sha256\":\"bafa9e3e55863ef767195356aa643a2c12d0cdcebb66452b8b494b7fdfd4e99b\",\"target_sha256\":\"e00b364773367e77cdd2d4c274368b0c2f78af819749673ca3a38dec01f6846a\",\"task_id\":\"toy\",\"trial_id\":\"3\"}",
+          "sha256": "ee8921a12dfc559013d70d201856e54ef21159772b391fa4b336d0e6da8c8fb2"
+        }
+      },
+      {
+        "task_id": "toy",
+        "trial_id": "4",
+        "baseline": {
+          "utf8": "{\"corpus_sha256\":\"4a1227a16549c049dc596754b13666e1b0fc861e1a6065cf2707d2f44a8b229d\",\"input_sha256\":\"1de1c0fd217278f376b041435c1a6cbd6dea4f7f2c1e4568eafa5077c9019e4a\",\"normalization_sha256\":\"ced432ca2ef08d49833ff93f0020f23d5f8963e915ffc0e7838dc4fe0f7deab1\",\"predictions\":[{\"case_id\":\"test-a\",\"value\":2}],\"schema\":\"szl.predictions/v1\",\"scorer_sha256\":\"bafa9e3e55863ef767195356aa643a2c12d0cdcebb66452b8b494b7fdfd4e99b\",\"target_sha256\":\"e00b364773367e77cdd2d4c274368b0c2f78af819749673ca3a38dec01f6846a\",\"task_id\":\"toy\",\"trial_id\":\"4\"}",
+          "sha256": "39544ee266ab96971411067018fde22246517cc66c9ab76eb7e40a5c36d2ea02"
+        },
+        "treatment": {
+          "utf8": "{\"corpus_sha256\":\"4a1227a16549c049dc596754b13666e1b0fc861e1a6065cf2707d2f44a8b229d\",\"input_sha256\":\"1de1c0fd217278f376b041435c1a6cbd6dea4f7f2c1e4568eafa5077c9019e4a\",\"normalization_sha256\":\"ced432ca2ef08d49833ff93f0020f23d5f8963e915ffc0e7838dc4fe0f7deab1\",\"predictions\":[{\"case_id\":\"test-a\",\"value\":1}],\"schema\":\"szl.predictions/v1\",\"scorer_sha256\":\"bafa9e3e55863ef767195356aa643a2c12d0cdcebb66452b8b494b7fdfd4e99b\",\"target_sha256\":\"e00b364773367e77cdd2d4c274368b0c2f78af819749673ca3a38dec01f6846a\",\"task_id\":\"toy\",\"trial_id\":\"4\"}",
+          "sha256": "7a1e11c2556808fbdf2dcc8f78ee34b439cf22559ccfc070aa6a1fb7976f8c4c"
+        },
+        "identity_control": {
+          "utf8": "{\"corpus_sha256\":\"4a1227a16549c049dc596754b13666e1b0fc861e1a6065cf2707d2f44a8b229d\",\"input_sha256\":\"1de1c0fd217278f376b041435c1a6cbd6dea4f7f2c1e4568eafa5077c9019e4a\",\"normalization_sha256\":\"ced432ca2ef08d49833ff93f0020f23d5f8963e915ffc0e7838dc4fe0f7deab1\",\"predictions\":[{\"case_id\":\"test-a\",\"value\":2}],\"schema\":\"szl.predictions/v1\",\"scorer_sha256\":\"bafa9e3e55863ef767195356aa643a2c12d0cdcebb66452b8b494b7fdfd4e99b\",\"target_sha256\":\"e00b364773367e77cdd2d4c274368b0c2f78af819749673ca3a38dec01f6846a\",\"task_id\":\"toy\",\"trial_id\":\"4\"}",
+          "sha256": "39544ee266ab96971411067018fde22246517cc66c9ab76eb7e40a5c36d2ea02"
+        }
+      }
+    ]
+  }
+}
