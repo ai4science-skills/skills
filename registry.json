@@ -159,6 +159,20 @@
         "pmc.ncbi.nlm.nih.gov - clustered-replication literature link; visiting fetches HTML, not study bytes",
         "example.invalid - fixture hostname in the refutation ledger; no network request is made"
       ]
+    },
+    {
+      "name": "szl-science-design-skills",
+      "repo": "szl-holdings/szl-skills",
+      "ref": "372ff2d4fa72053151aeb77d3e1973090fdc07ab",
+      "sha": "372ff2d4fa72053151aeb77d3e1973090fdc07ab",
+      "path": "skills",
+      "skills": [
+        "szl-experiment-contract"
+      ],
+      "description": "Offline prospective experiment-contract draft and structural checker; researcher review required, with no preregistration, experiment execution, inference, or efficacy claim.",
+      "maintainer": "betterwithage (SZL Holdings)",
+      "license": "Apache-2.0",
+      "hosted_services": []
     }
   ]
 }
