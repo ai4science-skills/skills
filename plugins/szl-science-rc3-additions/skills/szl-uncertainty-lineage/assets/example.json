@@ -1,0 +1,16 @@
+{
+  "schema": "szl.uncertainty-lineage/v1",
+  "inputs": {
+    "length": {"value": 2.0, "sigma": 0.1},
+    "width": {"value": 3.0, "sigma": 0.2}
+  },
+  "correlation": {
+    "mode": "correlation_matrix",
+    "order": ["length", "width"],
+    "matrix": [[1.0, 0.25], [0.25, 1.0]]
+  },
+  "nodes": [
+    {"id": "area", "op": "multiply", "args": ["length", "width"]}
+  ],
+  "targets": ["area"]
+}

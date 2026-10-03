@@ -173,6 +173,28 @@
       "maintainer": "betterwithage (SZL Holdings)",
       "license": "Apache-2.0",
       "hosted_services": []
+    },
+    {
+      "name": "szl-science-rc3-additions",
+      "repo": "szl-holdings/szl-skills",
+      "ref": "v0.5.0-rc.3",
+      "sha": "baf0160e1acb2bee0de3c2324211d8d95e1b68b1",
+      "path": "skills",
+      "skills": [
+        "szl-outcome-preservation",
+        "szl-release-continuity",
+        "szl-skill-update-review",
+        "szl-figure-data-contract",
+        "szl-research-change-impact",
+        "szl-uncertainty-lineage"
+      ],
+      "description": "Six offline checks from the rc.3 source prerelease: retained outcomes, release bindings, skill updates, figure-data replay, research change impact and declared first-order uncertainty. Synthetic examples; no scientific-validity or host-registration claim.",
+      "maintainer": "betterwithage (SZL Holdings)",
+      "license": "Apache-2.0",
+      "hosted_services": [
+        "www.w3.org - SVG namespace identifier in figure-data-contract only; no network request or study data sent",
+        "api.example.org - inert example hostname in the skill-update-review synthetic fixture; no network request or credential sent"
+      ]
     }
   ]
 }

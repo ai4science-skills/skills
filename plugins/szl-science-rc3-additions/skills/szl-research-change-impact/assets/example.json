@@ -1,0 +1,27 @@
+{
+  "schema": "szl.research-change-impact.v1",
+  "as_of": "2026-10-01T00:00:00Z",
+  "required_claims": ["conclusion", "unrelated"],
+  "baseline": {
+    "schema": "szl.research-anatomy.v1",
+    "nodes": [
+      {"id": "data", "kind": "dataset", "title": "Synthetic selected data", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+      {"id": "evaluation", "kind": "run", "title": "Retained synthetic evaluation", "depends_on": ["data"], "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+      {"id": "conclusion", "kind": "claim", "title": "A claim requiring scientist review", "depends_on": ["evaluation"]},
+      {"id": "unrelated", "kind": "claim", "title": "A separate unresolved claim"}
+    ]
+  },
+  "current": {
+    "schema": "szl.research-anatomy.v1",
+    "nodes": [
+      {"id": "data", "kind": "dataset", "title": "Synthetic selected data", "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"},
+      {"id": "evaluation", "kind": "run", "title": "Retained synthetic evaluation", "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+      {"id": "conclusion", "kind": "claim", "title": "A claim requiring scientist review", "depends_on": ["evaluation"]},
+      {"id": "unrelated", "kind": "claim", "title": "A separate unresolved claim"}
+    ]
+  },
+  "observed_digests": {
+    "data": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "evaluation": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  }
+}
