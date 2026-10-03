@@ -1,0 +1,31 @@
+{
+  "schema": "szl.experiment-contract.input/v1",
+  "study_id": "synthetic-sensor-comparison",
+  "fields": {
+    "question": "Does the proposed filter reduce false alarms on independent synthetic sensor series?",
+    "population": "Synthetic sensor series generated from the declared fixture family.",
+    "intervention": "Run the proposed filter on each series.",
+    "comparator": "Run the fixed baseline filter on the same series.",
+    "primary_metric": "false_alarm_rate",
+    "direction": "LOWER",
+    "estimand": "Mean paired false-alarm-rate difference per independent series.",
+    "experimental_unit": "series",
+    "allocation_unit": "series",
+    "analysis_unit": "series",
+    "control": "Use a no-signal series with the same nuisance noise generator.",
+    "measurement_window": "One fixed 1000-sample window per held-out series.",
+    "exclusion_rule": "Exclude a series only for the prespecified nonfinite-input failure.",
+    "falsifier": "No reduction in the primary metric beyond the prespecified useful margin.",
+    "harm_limit": "Stop if false negatives increase above the prespecified safety threshold.",
+    "cheapest_decisive_measurement": "Run the paired filters on one sealed synthetic development batch before planning the held-out study.",
+    "dependence_plan": null
+  },
+  "assumptions": [
+    {
+      "id": "independent-series",
+      "statement": "Series are independently generated at the study unit.",
+      "check": "Inspect generator seeds and group identifiers before fitting or testing."
+    }
+  ],
+  "source_ids": ["synthetic-fixture-v1"]
+}
