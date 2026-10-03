@@ -1,0 +1,15 @@
+{
+  "repo": "szl-holdings/szl-skills",
+  "ref": "372ff2d4fa72053151aeb77d3e1973090fdc07ab",
+  "sha": "372ff2d4fa72053151aeb77d3e1973090fdc07ab",
+  "path": "skills",
+  "files_sha256": {
+    "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "NOTICE": "021ac47ff117a126574e3ced3f4496b3b6e332854c683f93bd8acf2ce79c9106",
+    "skills/szl-experiment-contract/SKILL.md": "b079c6f41c454e5c90462f880af02636c9e7c6e10f7e4ca41f77ccae8402a685",
+    "skills/szl-experiment-contract/assets/example.json": "192820c8b84639b17ffa02cb0404b2f391815dd1b766323c1285c87e4264e626",
+    "skills/szl-experiment-contract/kernel.py": "8ce3e8086c6ee62cd0e57e56375d4d6e303f89aa568d758636358ca90c1f02ff",
+    "skills/szl-experiment-contract/references/contract.md": "2986b576129eb9e646fa4604efb77b9edba3bd714357d113cdc94274cae6375d",
+    "skills/szl-experiment-contract/scripts/run.py": "5e8c78d7038a84f6ef7e1e0763f7d07fd3f768dab60f7f538e72a12ef832ad33"
+  }
+}
