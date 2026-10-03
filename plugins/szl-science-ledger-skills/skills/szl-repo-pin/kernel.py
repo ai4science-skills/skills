@@ -22,7 +22,7 @@ import hashlib
 import json
 import os
 import subprocess
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 
 SCHEMA = "szl.repo-pin.v1"
 
@@ -32,9 +32,21 @@ def szl_canonical(value) -> str:
 
 
 def _safe(root: Path, relative: str) -> Path:
-    if not isinstance(relative, str) or not relative or relative.startswith(("/", "\\")) or ".." in Path(relative).parts:
+    if not isinstance(relative, str) or not relative:
+        raise ValueError("repo paths must be relative to the root: %r" % (relative,))
+    windows_path = PureWindowsPath(relative)
+    if windows_path.drive or windows_path.root or ".." in windows_path.parts:
         raise ValueError("repo paths must be relative to the root and may not contain ..: %r" % (relative,))
-    return root / relative
+    try:
+        base = root.resolve()
+        path = (base / relative).resolve()
+    except (OSError, RuntimeError) as error:
+        raise ValueError("repo path cannot be resolved under the root: %r" % (relative,)) from error
+    try:
+        path.relative_to(base)
+    except ValueError:
+        raise ValueError("repo path escapes the root: %r" % (relative,))
+    return path
 
 
 def _git(path: Path, *args) -> tuple[int, str]:
@@ -43,13 +55,17 @@ def _git(path: Path, *args) -> tuple[int, str]:
                               env={"GIT_TERMINAL_PROMPT": "0", "PATH": os.environ.get("PATH", ""), "HOME": os.environ.get("HOME", "")})
     except (OSError, subprocess.TimeoutExpired) as error:
         return 127, str(error)
-    return done.returncode, (done.stdout or "").strip()
+    output = done.stdout or ""
+    return done.returncode, output[:-1] if output.endswith("\n") else output
 
 
 def szl_inspect_repo(root: Path, relative: str) -> dict:
     path = _safe(root, relative)
     if not path.is_dir():
         return {"path": relative, "state": "MISSING"}
+    code, top = _git(path, "rev-parse", "--show-toplevel")
+    if code != 0 or not top or Path(top).resolve() != path:
+        return {"path": relative, "state": "NOT_A_REPOSITORY", "detail": "path is not a repository root"}
     code, head = _git(path, "rev-parse", "HEAD")
     if code != 0 or len(head) != 40:
         return {"path": relative, "state": "NOT_A_REPOSITORY", "detail": head[:200]}
@@ -86,8 +102,27 @@ def szl_make_pin(root, declaration: dict) -> dict:
 
 def szl_verify_pin(root, pin: dict) -> dict:
     root = Path(root)
-    if not isinstance(pin, dict) or pin.get("schema") != SCHEMA or not isinstance(pin.get("repos"), list):
+    if (not isinstance(pin, dict) or pin.get("schema") != SCHEMA or
+            pin.get("status") != "PINNED" or not isinstance(pin.get("repos"), list) or
+            not pin["repos"] or pin.get("not_pinnable") != []):
         return {"status": "ERROR", "error": "not a %s pin" % SCHEMA}
+    names, pairs = set(), []
+    for recorded in pin["repos"]:
+        if not isinstance(recorded, dict):
+            return {"status": "ERROR", "error": "pin repos must be objects"}
+        name, head = recorded.get("name"), recorded.get("head")
+        changes = recorded.get("uncommitted_changes")
+        if (not isinstance(name, str) or not name or name in names or
+                not isinstance(recorded.get("path"), str) or not recorded["path"] or
+                recorded.get("state") != "CLEAN" or type(changes) is not int or changes != 0 or
+                not isinstance(head, str) or len(head) != 40 or
+                any(c not in "0123456789abcdef" for c in head)):
+            return {"status": "ERROR", "error": "pin has an invalid clean repository record"}
+        names.add(name)
+        pairs.append([name, head])
+    expected = hashlib.sha256(szl_canonical(sorted(pairs, key=lambda pair: pair[0])).encode("utf-8")).hexdigest()
+    if pin.get("composite_sha256") != expected:
+        return {"status": "ERROR", "error": "pin composite digest does not match its repositories"}
     rows = []
     for recorded in pin["repos"]:
         try:

@@ -1,0 +1,9 @@
+{
+  "schema": "szl.figure-data-contract.v1",
+  "data": "assets/data.csv",
+  "id_column": "id",
+  "x": {"column": "dose", "unit": "mg"},
+  "y": {"column": "response", "unit": "a.u."},
+  "kind": "scatter",
+  "caption": {"n": 3, "x_min": "1", "x_max": "3", "y_min": "2", "y_max": "6"}
+}

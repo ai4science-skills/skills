@@ -1,49 +1,56 @@
 ---
 name: szl-math-claim-check
-description: Turn a mathematical claim into explicit assumptions, numerical checks and proof obligations. Use for conjectures, invariant tests, formula validation, counterexample searches, or distinguishing Lean-checked results from numerical observations.
+description: "Checks a mathematical claim two ways: numerically, by testing declared cases under fixed tolerances and recording counterexamples; and structurally, by auditing a theorem-to-code claim's bindings (exact proposition, domain, assumptions, checker log, custom axioms) without trusting a PROVEN label. Use when a formula, inequality, conservation law or 'we proved that' statement is offered as evidence, when a Lean or Coq result is cited for a runtime, or when a derivation looks too convenient. Not a theorem prover and not a CAS."
 license: Apache-2.0
 ---
 
 # Mathematical claim checking
 
-Write the exact statement, quantifiers, domain, units and assumptions before testing.
-Separate definitions, assumptions, cited theorems, conjectures and proof obligations.
-Prefer a small falsifying example to many successful random samples.
+Write the exact statement, quantifiers, domain and assumptions. Separate definitions, cited
+theorems, conjectures, numerical observations and remaining proof obligations, then let the helper
+record what the evidence actually covers. Python 3.10+, stdlib, offline.
 
-- Inspect the actual formula and its domain. Include zeros, boundaries, extreme scales and
-  zero weights when permitted. Fix tolerances before the run.
-- Derive or execute the calculation in a reviewed local implementation. Cases contain
-  `inputs`, `lhs` and `rhs`. Call `szl_check_math_cases` from `kernel.py` with an explicit
-  equal, le or ge relation. Do not eval a formula string from a paper or dataset.
-- Inspect rounding, units and domain membership before interpreting an apparent failure.
-  Use rational or high-precision arithmetic where useful. A numerical discrepancy is not
-  automatically an exact mathematical refutation.
-- For Lean, inspect the pinned project, toolchain and dependency lock. Run the relevant
-  target if available; inspect sorry, admit and the theorem's assumptions, including
-  `#print axioms`. Retain command, exit status and revision. A repository's PROVEN label
-  does not replace those observations.
+## Use when
 
-`szl_weighted_geomean(axes, weights)` is a strict [0,1] numerical helper. A zero-valued axis
-with positive weight pins the aggregate to zero; a zero weight ignores its axis. This differs
-deliberately from older SZL gates that veto every zero axis regardless of weight; never
-silently substitute it into a production gate. Lambda uniqueness remains **Conjecture 1 (OPEN)**.
-NO_COUNTEREXAMPLE_IN_TESTED_CASES is not a theorem or proof of uniqueness.
+- A manuscript asserts an identity or bound "for all x in [0,1]" and you want cases at zeros,
+  boundaries and extreme scales tested under declared tolerances.
+- A repository says a property is PROVEN and a runtime relies on it; you need the proposition bytes,
+  the checker log and the axiom list bound to that claim rather than a text search for `sorry`.
+- Two groups disagree about whether a reported formula holds on the published numbers.
 
-Return the statement, assumptions, source revision, tested domain, failures with inputs,
-and remaining proof obligations.
+## Quick start
 
 ```bash
 python scripts/run.py assets/example.json
+python scripts/run.py assets/scope-example.json
 ```
 
-Input supplies `claim`, `cases`, optional `relation`, `atol`, `rtol`. The example tests the
-false statement that the geometric mean always equals the minimum.
+The numerical example tests a deliberately false claim (that a weighted geometric mean always equals
+the minimum) and returns `"status": "NUMERICAL_COUNTEREXAMPLE"` with the failing case
+`inputs [0.25, 1], lhs 0.5, rhs 0.25` and `proof_discharged: false`. The scope example returns
+`"status": "STRUCTURAL_CHECKS_PASSED"` with statement, proposition and log digests and, again,
+`proof_discharged: false`: structure passing is not a proof.
 
-SZL anchors: [formula source](https://github.com/szl-holdings/szl-formulas/tree/65c800b59249f27559de575bc66f5054fa585fa5),
-[Lean source](https://github.com/szl-holdings/lutar-lean/tree/ff4bfecbf6585677f75684c72dd4014c78135366),
-[formula dataset](https://huggingface.co/datasets/SZLHOLDINGS/canonical-formulas-v1/tree/99c45c0989676f9a842a707ab5af60f1e2de99ce).
-The helper does not run those projects automatically or certify proof status.
-Outside services: none offline. Optional source retrieval sends identifiers to GitHub or
-Hugging Face; only private sources require credentials.
+## Numerical cases
 
-Runtime: Python 3.10+ offline; Lean is optional and must already be available for formal checking.
+Use `szl_check_math_cases(claim, cases, relation, atol, rtol)`. Cases supply reviewed `inputs`, `lhs`,
+`rhs`; fix tolerances and the tested domain before looking at results. A clean run establishes only
+`NO_COUNTEREXAMPLE_IN_TESTED_CASES`. Inspect exact arithmetic and rounding before treating a
+discrepancy as a mathematical refutation. The bundled `szl_weighted_geomean` helper accepts axes in
+[0,1] and nonnegative weights summing to one; a zero axis with positive weight pins the result to zero.
+The report also records that the uniqueness of that aggregator is an open conjecture, so nobody can
+cite the demo as a theorem.
+
+## Theorem-to-runtime scope
+
+Read `references/scope-contract.md`. Supply immutable source, toolchain and dependency observations,
+the theorem symbol, proposition bytes, the retained checker log and its transitive axiom observations.
+`szl_audit_math_scope(contract)` checks bindings, missing assumptions, interval extensions, one-way
+claims presented as iff, unfinished proofs, custom axioms and numeric boundary review. It reads
+supplied records only and never invokes a prover or evaluates a formula.
+
+## What it does not do
+
+No symbolic proof checking, no arbitrary predicates (named real intervals only), no external service,
+model or GPU call. Input is capped at 8 MiB. Failures are retained; unrun evaluation is `NOT_MEASURED`.
+Source pins and rights boundaries are in `references/provenance.md`.

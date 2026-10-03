@@ -1,6 +1,11 @@
 # Paired comparison protocol
 
-The input is one UTF-8 JSON object, at most 1 MiB, with schema `szl.paired-science/v1`. Duplicate object keys, NaN, and infinity are invalid. Run:
+Modified 2026-09-30. This reference preserves the legacy v1 inference contract.
+For evidence-bound v2 use [binding-contract.md](binding-contract.md) first. v1
+retains its historical qualification status with `binding_status: DECLARED`;
+without actual bytes and a separate frozen lock that status is declaration-only.
+
+The input is one UTF-8 JSON object, at most 1 MiB and 64 structural nesting levels, with schema `szl.paired-science/v1`. Duplicate object keys, NaN, and infinity are invalid. Brackets inside quoted strings do not count as structural nesting. Run:
 
 ```
 python skills/szl-paired-science/scripts/qualify.py experiment.json

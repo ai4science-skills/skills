@@ -14,46 +14,41 @@ Claude Code:
 
 Then pick what you want. See [CATALOG.md](CATALOG.md) for every skill, its maintainer, license, pinned source, and any external service it contacts.
 
-Imported skills do not update automatically. Re-import when a new tag is announced.
+Imported skills do not update automatically. Review available changes in the target application before choosing an update.
 
-## Science pack prerelease
+## Current source preview
 
-The catalog adds an explicit prerelease of eight connected SZL science skills, pinned to
-szl-holdings/szl-skills@v0.2.0-rc.1 and its immutable commit. The self-contained workbench
-connects living project memory, numerical math checks, dataset leakage checks, model
-evaluation, kernel comparison, paired qualification and retained file capsules. A separate
-offline CI step exercises this selected pack; the general importer remains static and
-never executes downloaded skill code.
+This proposed update pins all 35 science skills to the reviewed source commit
+`baf0160e1acb2bee0de3c2324211d8d95e1b68b1`. The eight integrated workbench skills
+remain in `szl-science-skills`; nineteen standalone core checks are in
+`szl-science-ledger-skills`. Separate families contain experiment design,
+multiplicity, assay audit, two replay/figure checks, paper evidence,
+research change impact and uncertainty lineage. Each vendored plugin remains
+below 1 MiB. The two evidence skills and flotation skill retain their separate pins.
 
-The stable import above remains available. To try just the source science pack in Claude
-Science, import:
+This is a source preview, not a released tag or security admission. The independent
+security-prerequisites pipeline is still BLOCKED. Review selected code and external
+service declarations before importing; credentials are not required by these offline
+science CLIs. An optional explicit workbench fetch reads a pinned public synthetic
+study and records hashes without downloading model weights.
 
-    szl-holdings/szl-skills@v0.2.0-rc.1
+In Claude Science, GitHub import uses a repository URL and reads its default branch.
+Import `https://github.com/ai4science-skills/skills` after an owner-approved merge;
+for a fixed reviewed source use separately verified per-skill ZIPs from
+szl-holdings/szl-skills. Do not assume that a GitHub import accepts a tag suffix.
+The registry and SOURCE manifests retain exact commits and resource hashes.
+Actual Claude Science registration and agent efficacy remain UNKNOWN.
 
-A fifth import family, `szl-science-multiplicity-skills`, pins `szl-multiplicity-audit`
-from szl-holdings/szl-skills at `7c9086e18cc0f653c77794d93bd586df4b445c4b`. It adjusts a
-complete declared family (Holm FWER or declared-assumption BH FDR) and returns HOLD with
-no adjusted values if any planned result is missing. It does not establish preregistration
-or scientific truth. The kernel itself is offline. The contract cites doi.org,
-rss.onlinelibrary.wiley.com, and www.jstor.org as literature links only. Import the family
-from this index after merge, or the source repo at that commit. The eight-skill v0.2.0-rc.1
-pin is unchanged.
+The [current Claude Science documentation](https://claude.com/docs/claude-science/connectors-and-skills)
+describes manual **Check for updates**. Imported skills do not update automatically.
+Our offline update-preview tool compares captured catalogs, source changes, declared
+services and name collisions before a researcher chooses an update; it performs no
+application import, rename or installation. See [update-preview.md](docs/update-preview.md).
 
-Three further 1 MB families pin the same source commit: `szl-science-assay-skills`
-(`szl-assay-measurement-audit`), `szl-science-replay-skills` (`szl-experiment-replay`),
-and `szl-paper-evidence-skills` (`szl-paper-evidence-audit`). Each is offline except for
-declared literature or converter-doc hosts. None of them validate a method, replay
-supplied code, or certify a paper claim.
-
-`szl-science-ledger-skills` pins the remaining sixteen v0.5.0-rc.1 evidence-ledger
-skills at the same commit. The eight-skill v0.2.0-rc.1 workbench pin is unchanged.
-Literature hosts are journals.plos.org and pmc.ncbi.nlm.nih.gov; example.invalid is a
-fixture hostname only.
-
-Normal workbench use is offline. Optional fetch-triage reads the pinned public synthetic
-study from Hugging Face, with no credentials or model weights. Actual Claude Science
-registration and agent efficacy remain unverified; local/source CI checks do not establish
-them. Setup and pilot instructions are in the source repository. No automatic update occurs.
+The explicit SZL smoke step executes only this selected science source. The general
+importer and static passport never execute imported skill code. A retained negative
+finding, readable figure or matching replay is not scientific validation, a formal
+proof, model promotion or a production deployment. Lambda is Conjecture 1 (OPEN).
 
 ## What every skill must pass
 

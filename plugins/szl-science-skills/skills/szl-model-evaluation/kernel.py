@@ -1,10 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
+# Modified 2026-09-30: original attempt-ledger extensions to SZL baseline
+# 9668f1571315e93ca2059b9a44f12beef483532d; metric attribution below retained.
 # Metrics adapted from szl-holdings/szl-calibration, metrics.py at
 # b2e317877abed98e70f9cf6730944a797837faf1. Copyright 2026 SZL Holdings.
 """Binary prediction metrics; no model loading, training, or network access."""
 import hashlib
 import json
 import math
+import re
 
 
 def szl_binary_metrics(probabilities, labels, n_bins=10, threshold=0.5):
@@ -125,3 +128,101 @@ def szl_evaluate_categories(records, held_rows, label_set, metadata=None):
             "prediction_model_binding": "DECLARED_ONLY", "held_out_status": "DECLARED_ONLY",
             "declared_metadata": meta, "promotion_effect": "NONE", "energy_joules": None,
             "scope": "Saved parsed outputs and exact evidence-list order; stored correctness flags ignored"}
+
+
+def szl_audit_attempts(planned_attempts, attempts, n_bins=10, threshold=0.5,
+                       expected_plan_sha256=None, metadata=None):
+    """Audit a bounded binary evaluation plan without dropping failed attempts.
+
+    Labels come from the retained plan, never from an attempt's output. Missing
+    observations remain in the planned denominator; probability metrics apply
+    only to successful outputs and are explicitly conditional on their coverage.
+    """
+    if not isinstance(planned_attempts, list) or not 1 <= len(planned_attempts) <= 10000:
+        raise ValueError("Declare between 1 and 10000 planned attempts")
+    if not isinstance(attempts, list) or len(attempts) > 10000:
+        raise ValueError("Supply at most 10000 observed attempts")
+    # Validate settings even when every output is missing or invalid.
+    szl_binary_metrics([0.5], [0], n_bins, threshold)
+    plan, row_labels = {}, {}
+    for item in planned_attempts:
+        if not isinstance(item, dict) or set(item) != {"attempt_id", "row_id", "label"}:
+            raise ValueError("A planned attempt requires only attempt_id, row_id and label")
+        for key in ("attempt_id", "row_id"):
+            if not isinstance(item[key], str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}", item[key]):
+                raise ValueError("Attempt and row ids must be bounded identifier strings")
+        if item["attempt_id"] in plan or type(item["label"]) is not int or item["label"] not in (0, 1):
+            raise ValueError("Planned attempt ids must be unique and labels binary integers")
+        if item["row_id"] in row_labels and row_labels[item["row_id"]] != item["label"]:
+            raise ValueError("Repeated row ids must retain the same label")
+        row_labels[item["row_id"]] = item["label"]
+        plan[item["attempt_id"]] = dict(item)
+    ordered_plan = [plan[key] for key in sorted(plan)]
+    plan_sha256 = hashlib.sha256(json.dumps(ordered_plan, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+    if expected_plan_sha256 is not None:
+        if not isinstance(expected_plan_sha256, str) or not re.fullmatch(r"[0-9a-f]{64}", expected_plan_sha256) or expected_plan_sha256 != plan_sha256:
+            raise ValueError("Retained plan digest does not match the supplied plan")
+    statuses = ("success", "invalid_output", "timeout", "failed", "aborted", "unavailable")
+    observed = {}
+    for item in attempts:
+        if not isinstance(item, dict) or set(item) - {"attempt_id", "row_id", "status", "probability", "reason"}:
+            raise ValueError("Unknown observed-attempt fields")
+        attempt_id = item.get("attempt_id")
+        if not isinstance(attempt_id, str) or attempt_id not in plan or attempt_id in observed:
+            raise ValueError("Observed attempt ids must be planned and unique")
+        if item.get("row_id") != plan[attempt_id]["row_id"] or item.get("status") not in statuses:
+            raise ValueError("Observed row binding or status is invalid")
+        if item["status"] == "success":
+            szl_binary_metrics([item.get("probability")], [plan[attempt_id]["label"]], n_bins, threshold)
+            if "reason" in item:
+                raise ValueError("A successful output cannot also declare a failure reason")
+        else:
+            if "probability" in item or not isinstance(item.get("reason"), str) or not 1 <= len(item["reason"]) <= 1024:
+                raise ValueError("Non-success attempts need a bounded reason and no probability")
+        observed[attempt_id] = dict(item)
+    meta = {} if metadata is None else metadata
+    if not isinstance(meta, dict) or len(json.dumps(meta, sort_keys=True, allow_nan=False).encode()) > 65536:
+        raise ValueError("metadata must be a JSON object of at most 64 KiB")
+    counts = {status: 0 for status in statuses + ("missing",)}
+    ledger, probabilities, labels, correct = [], [], [], 0
+    for planned in ordered_plan:
+        item = observed.get(planned["attempt_id"])
+        status = item["status"] if item else "missing"
+        counts[status] += 1
+        entry = dict(planned, status=status)
+        if item:
+            if status == "success":
+                probability = item["probability"]
+                probabilities.append(probability)
+                labels.append(planned["label"])
+                entry["probability"] = probability
+                entry["correct"] = int(probability >= threshold) == planned["label"]
+                correct += int(entry["correct"])
+            else:
+                entry["reason"] = item["reason"]
+        ledger.append(entry)
+    n = len(ordered_plan)
+    attempted = n - counts["missing"] - counts["unavailable"]
+    completed = counts["success"] + counts["invalid_output"]
+    digest_record = {"plan": ordered_plan, "ledger": ledger, "n_bins": n_bins,
+                     "threshold": threshold, "metadata": meta}
+    issues = ["MISSING_ATTEMPT_RECORDS"] if counts["missing"] else []
+    issues += ["NON_SUCCESS_ATTEMPTS"] if counts["success"] != n else []
+    return {"status": "COMPLETE_ATTEMPT_LEDGER" if not counts["missing"] else "INCOMPLETE_ATTEMPT_LEDGER",
+            "planned": n, "recorded": len(observed), "attempted": attempted, "completed": completed,
+            "successful": counts["success"], "distinct_rows": len(row_labels), "status_counts": counts,
+            "attempted_rate": attempted / n, "completion_rate": completed / n,
+            "successful_output_rate": counts["success"] / n,
+            "planned_accuracy": {"numerator": correct, "denominator": n, "value": correct / n,
+                                 "failure_policy": "COUNT_NON_SUCCESS_AS_INCORRECT"},
+            "conditional_probability_metrics": szl_binary_metrics(probabilities, labels, n_bins, threshold) if probabilities else None,
+            "probability_metric_coverage": {"numerator": counts["success"], "denominator": n},
+            "plan_sha256": plan_sha256,
+            "plan_binding": "MATCHED_RETAINED_DIGEST" if expected_plan_sha256 is not None else "DECLARED_ONLY",
+            "input_sha256": hashlib.sha256(json.dumps(digest_record, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest(),
+            "ledger": ledger, "issues": sorted(issues), "declared_metadata": meta,
+            "model_loaded": False, "prediction_model_binding": "NOT_VERIFIED", "held_out_status": "DECLARED_ONLY",
+            "scientific_performance": "NOT_MEASURED", "promotion_effect": "NONE", "energy_joules": None,
+            "limitations": ["Repeated rows are repeated attempts, not independent scientific samples",
+                            "Success-only probability metrics can be selection biased; missing probabilities are never imputed",
+                            "Statuses, held-out construction and model origin are supplied declarations"]}

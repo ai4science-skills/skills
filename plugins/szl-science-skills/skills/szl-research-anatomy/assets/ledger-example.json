@@ -1,0 +1,19 @@
+{
+  "graph": {
+    "schema": "szl.research-anatomy.v1",
+    "project": "SYNTHETIC contradictory normalization observations",
+    "as_of": "2026-09-30T12:00:00Z",
+    "nodes": [
+      {"id": "support", "kind": "paper", "title": "SYNTHETIC support", "source_revision": "fixture-v1", "observed_at": "2026-09-01T00:00:00Z", "expires_at": "2026-10-01T00:00:00Z"},
+      {"id": "contradiction", "kind": "run", "title": "SYNTHETIC contrary observation", "depends_on": ["support"]},
+      {"id": "conclusion", "kind": "claim", "title": "SYNTHETIC disputed conclusion"},
+      {"id": "next-run", "kind": "decision", "title": "SYNTHETIC next comparison", "depends_on": ["conclusion"]},
+      {"id": "old-source", "kind": "paper", "title": "SYNTHETIC expired source", "observed_at": "2026-08-01T00:00:00Z", "expires_at": "2026-09-30T12:00:00Z"},
+      {"id": "old-claim", "kind": "claim", "title": "SYNTHETIC outdated conclusion", "depends_on": ["old-source"]}
+    ],
+    "evidence_links": [
+      {"claim": "conclusion", "evidence": "support", "relation": "supports"},
+      {"claim": "conclusion", "evidence": "contradiction", "relation": "contradicts"}
+    ]
+  }
+}

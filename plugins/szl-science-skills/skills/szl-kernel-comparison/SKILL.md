@@ -1,46 +1,50 @@
 ---
 name: szl-kernel-comparison
-description: Compare a numerical kernel with a reference for output shape, finite values, declared tolerances and comparable timing evidence. Use when validating scientific optimizations or assessing a CPU, CUDA or tensor-kernel speedup claim.
+description: "Compares a candidate numerical implementation against a reference on identical inputs: shape agreement, finite values, elementwise tolerance, and a median speedup only when both timings were taken under declared identical conditions. Use when the user claims a faster or GPU-accelerated kernel, a vectorized rewrite, a new solver or a compiled replacement 'gives the same results', or when reviewing a speedup table. Not a profiler, and it does not measure energy."
 license: Apache-2.0
 ---
 
 # Numerical kernel comparison
 
-Fix operation, reference, candidate revision, shapes, dtype, tolerance and representative
-inputs before running. Review source before executing; pin immutable source revisions.
-Do not load quarantined joblib/pickle files or treat a kernel card as trained weights.
+A speedup claim has two halves: the numbers still agree, and the timing was fair. This helper
+checks the first exactly and refuses to report the second unless the measurement contexts match.
+Python 3.10+, stdlib, offline; accelerator libraries are optional and user-supplied.
 
-Call `szl_compare_kernel_runs(record)` from `kernel.py`. Supply `reference_output`,
-`candidate_output`, `atol`, `rtol`. Nested shapes must agree and values must be finite.
-Agreement means `abs(candidate-reference) <= atol + rtol*abs(reference)`. Include edge
-shapes, zeros, extreme values and production layouts when relevant.
+## Use when
 
-For timing, use actual runs with warmup and at least three repeats. Address order/thermal
-effects, for example with alternating order. `szl_time_callable` measures an already reviewed
-user-supplied callable. Pass device synchronization for asynchronous accelerators; CPU time
-around an unsynchronized launch is not GPU execution time. Avoid machine identifiers and
-unrelated workloads.
+- A Numba, JAX, CUDA or Triton rewrite of a scoring function, force field or FFT step is proposed.
+- A paper table shows "3.2x faster" without stating warmup, repeats, threads or synchronization.
+- Two solvers are supposed to agree to 1e-6 on edge shapes, zeros and extreme values.
 
-For a median ratio supply `reference_seconds`, `candidate_seconds` and identical
-`reference_context`, `candidate_context` with hardware, dtype, input_sha256, threads, warmup,
-synchronized and measurement_method. These declarations are recorded, not authenticated.
-Numerical mismatch or absent/different context suppresses the ratio. A passing comparison
-covers only these inputs; it does not establish universal equivalence or general acceleration.
+## Quick start
 
 ```bash
 python scripts/run.py assets/example.json
 ```
 
-The example mismatches one value and has no timings. Energy stays null; the helper does
-not measure energy. Keep a separate actual energy artifact if that claim matters.
+The example returns `"status": "NUMERICAL_MISMATCH"` on a 2x2 output with one element off by 0.1
+(`mismatch_indexes [3]`, `atol 1e-06`), `timing_contexts_match: false` and `median_speedup: null`,
+because a mismatching kernel gets no speed credit. `energy_joules` stays null; this helper does not
+measure energy.
 
-SZL sources to investigate:
+## Preparing a comparison
+
+Fix the operation, reference, candidate revision, shapes, dtype, tolerance and representative inputs
+first. Call `szl_compare_kernel_runs(record)` from `kernel.py` with `reference_output`,
+`candidate_output`, `atol`, `rtol`. Agreement means `abs(candidate - reference) <= atol + rtol*abs(reference)`
+on nested shapes that match and finite values.
+
+For timing, use real runs with warmup and at least three repeats, alternate order against thermal
+drift, and synchronize asynchronous devices (CPU time around an unsynchronized launch is not GPU
+time). Supply `reference_seconds`, `candidate_seconds` and identical `reference_context` and
+`candidate_context` (hardware, dtype, input digest, threads, warmup, synchronized, measurement method).
+Declarations are recorded, not authenticated. `szl_time_callable` times an already reviewed callable.
+
+## What it does not do
+
+A passing comparison covers these inputs only, not universal equivalence or general acceleration.
+It does not install packages, load quarantined pickle or joblib files, or treat a kernel card as
+trained weights. Optional source retrieval sends only repository and revision identifiers; nothing
+is bundled that contacts a service. Related SZL sources, for inspection rather than installation:
 [kernel suite](https://github.com/szl-holdings/szl-kernels/tree/7b59de18d35b1edca3c54a4647fb324b918563a8),
 [invariants](https://github.com/szl-holdings/szl-invariants/tree/e9621c5d95e1b6a336981346e473980cfe2d037b).
-The pack provides a comparison harness, not installed kernels or a published benchmark.
-
-Outside services: none bundled. Optional source retrieval sends repo/revision identifiers
-to GitHub/Hugging Face. No credential is required offline. Loading this skill does not
-authorize remote-code trust, package installation or an accelerator workload.
-
-Runtime: Python 3.10+ offline; accelerator libraries are optional and user-supplied.

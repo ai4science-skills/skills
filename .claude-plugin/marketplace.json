@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "Community index of Claude skills for scientific work. Every entry is pinned to an exact commit and checked automatically.",
-    "version": "0.2.0-rc.1"
+    "version": "0.5.0-preview.20261003"
   },
   "plugins": [
     {
@@ -25,7 +25,7 @@
     },
     {
       "name": "szl-science-skills",
-      "description": "Integrated living research anatomy, scientific checks and reproducibility capsules; explicit prerelease, offline by default.",
+      "description": "Eight integrated workbench skills at the current source preview; retained evidence and dependency invalidation. Offline by default.",
       "source": "./plugins/szl-science-skills",
       "strict": false,
       "skills": [
@@ -42,7 +42,7 @@
         "name": "betterwithage (SZL Holdings)"
       },
       "license": "Apache-2.0",
-      "homepage": "https://github.com/szl-holdings/szl-skills/tree/a314917286269630b053ea16f2d65acf1000bd8f"
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/baf0160e1acb2bee0de3c2324211d8d95e1b68b1"
     },
     {
       "name": "szl-frontier-flotation",
@@ -60,7 +60,7 @@
     },
     {
       "name": "szl-science-multiplicity-skills",
-      "description": "Complete-family Holm/BH multiplicity audit. HOLD if any planned result is missing. Offline; no hosted service.",
+      "description": "One bounded offline complete-family multiplicity audit. Holm FWER or declared-assumption BH FDR; HOLD if any planned result is missing. Plan hash is not preregistration.",
       "source": "./plugins/szl-science-multiplicity-skills",
       "strict": false,
       "skills": [
@@ -70,11 +70,11 @@
         "name": "betterwithage (SZL Holdings)"
       },
       "license": "Apache-2.0",
-      "homepage": "https://github.com/szl-holdings/szl-skills/tree/7c9086e18cc0f653c77794d93bd586df4b445c4b"
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/baf0160e1acb2bee0de3c2324211d8d95e1b68b1"
     },
     {
       "name": "szl-science-assay-skills",
-      "description": "Offline assay-run audit for a declared increasing linear calibration, blank, QC and sample uncertainty. Synthetic fixtures; not method validation.",
+      "description": "One bounded offline assay-run audit for a researcher-declared increasing linear calibration, blank, QC and sample uncertainty disclosures. Synthetic fixtures only; not method validation or clinical qualification.",
       "source": "./plugins/szl-science-assay-skills",
       "strict": false,
       "skills": [
@@ -84,25 +84,26 @@
         "name": "betterwithage (SZL Holdings)"
       },
       "license": "Apache-2.0",
-      "homepage": "https://github.com/szl-holdings/szl-skills/tree/7c9086e18cc0f653c77794d93bd586df4b445c4b"
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/baf0160e1acb2bee0de3c2324211d8d95e1b68b1"
     },
     {
       "name": "szl-science-replay-skills",
-      "description": "Offline CSV column-mean replay against a frozen reference. MATCH, divergence, or incomplete. No network.",
+      "description": "Two bounded offline replay skills: pin and rerun a CSV mean, or render and inspect a declared CSV-to-SVG figure with point and caption evidence. No supplied code, network or credentials.",
       "source": "./plugins/szl-science-replay-skills",
       "strict": false,
       "skills": [
-        "./skills/szl-experiment-replay"
+        "./skills/szl-experiment-replay",
+        "./skills/szl-figure-data-contract"
       ],
       "author": {
         "name": "betterwithage (SZL Holdings)"
       },
       "license": "Apache-2.0",
-      "homepage": "https://github.com/szl-holdings/szl-skills/tree/7c9086e18cc0f653c77794d93bd586df4b445c4b"
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/baf0160e1acb2bee0de3c2324211d8d95e1b68b1"
     },
     {
       "name": "szl-paper-evidence-skills",
-      "description": "Offline PDF table/figure locator against pinned original and extracted bytes. Human visual review required.",
+      "description": "One offline PDF evidence locator skill: pin original and extracted bytes, match complete table-cell or figure-caption text, and require human visual review. No credentials required.",
       "source": "./plugins/szl-paper-evidence-skills",
       "strict": false,
       "skills": [
@@ -112,11 +113,11 @@
         "name": "betterwithage (SZL Holdings)"
       },
       "license": "Apache-2.0",
-      "homepage": "https://github.com/szl-holdings/szl-skills/tree/7c9086e18cc0f653c77794d93bd586df4b445c4b"
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/baf0160e1acb2bee0de3c2324211d8d95e1b68b1"
     },
     {
       "name": "szl-science-ledger-skills",
-      "description": "Sixteen offline evidence-ledger science skills from szl-skills@7c9086e1. Completes the v0.5.0-rc.1 family beside the eight-skill v0.2.0-rc.1 workbench pin.",
+      "description": "Nineteen core science audit tools including outcome preservation, release continuity and offline skill update review. Source preview; no host registration or scientific qualification claimed.",
       "source": "./plugins/szl-science-ledger-skills",
       "strict": false,
       "skills": [
@@ -128,24 +129,27 @@
         "./skills/szl-cross-implementation-check",
         "./skills/szl-evidence-gate",
         "./skills/szl-negative-control-audit",
+        "./skills/szl-outcome-preservation",
         "./skills/szl-quantization-check",
         "./skills/szl-refutation-ledger",
+        "./skills/szl-release-continuity",
         "./skills/szl-repo-pin",
         "./skills/szl-result-fragility",
         "./skills/szl-retrieval-eval",
         "./skills/szl-reviewer-pack",
         "./skills/szl-session-receipt",
+        "./skills/szl-skill-update-review",
         "./skills/szl-unit-invariants"
       ],
       "author": {
         "name": "betterwithage (SZL Holdings)"
       },
       "license": "Apache-2.0",
-      "homepage": "https://github.com/szl-holdings/szl-skills/tree/7c9086e18cc0f653c77794d93bd586df4b445c4b"
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/baf0160e1acb2bee0de3c2324211d8d95e1b68b1"
     },
     {
       "name": "szl-science-design-skills",
-      "description": "Offline prospective experiment-contract draft and structural checker; researcher review required, with no preregistration, experiment execution, inference, or efficacy claim.",
+      "description": "One bounded offline prospective experiment-contract draft: expose missing controls, units, falsifier, harm limit and cheapest decisive measurement. No preregistration, execution, inference or credentials.",
       "source": "./plugins/szl-science-design-skills",
       "strict": false,
       "skills": [
@@ -155,7 +159,35 @@
         "name": "betterwithage (SZL Holdings)"
       },
       "license": "Apache-2.0",
-      "homepage": "https://github.com/szl-holdings/szl-skills/tree/372ff2d4fa72053151aeb77d3e1973090fdc07ab"
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/baf0160e1acb2bee0de3c2324211d8d95e1b68b1"
+    },
+    {
+      "name": "szl-science-change-impact-skills",
+      "description": "One offline research change-impact skill: compare retained dependency graphs and supplied artifact digests, preserve withdrawn dependencies and required claims, and plan reassessment. No experiment execution, services or credentials.",
+      "source": "./plugins/szl-science-change-impact-skills",
+      "strict": false,
+      "skills": [
+        "./skills/szl-research-change-impact"
+      ],
+      "author": {
+        "name": "betterwithage (SZL Holdings)"
+      },
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/baf0160e1acb2bee0de3c2324211d8d95e1b68b1"
+    },
+    {
+      "name": "szl-science-uncertainty-skills",
+      "description": "One bounded offline first-order uncertainty-lineage skill for declared arithmetic graphs and complete input correlations. Exact decimal correlation PSD check; synthetic fixtures only. No unit, coverage, scientific-truth, network or credential verification.",
+      "source": "./plugins/szl-science-uncertainty-skills",
+      "strict": false,
+      "skills": [
+        "./skills/szl-uncertainty-lineage"
+      ],
+      "author": {
+        "name": "betterwithage (SZL Holdings)"
+      },
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/baf0160e1acb2bee0de3c2324211d8d95e1b68b1"
     }
   ]
 }

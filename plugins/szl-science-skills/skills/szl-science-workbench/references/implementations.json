@@ -2,22 +2,22 @@
   {
     "path": "scripts/library/anatomy.py",
     "source": "skills/szl-research-anatomy/kernel.py",
-    "sha256": "ac4fee0ca05dbf9777032bed6f858df8528476682ad4b5c9a102bd5bf1d818fe"
+    "sha256": "abc6ae213eb972534a8d97dc310dfdabaa2b61e41a96044dd564d8ff998963eb"
   },
   {
     "path": "scripts/library/math_claim.py",
     "source": "skills/szl-math-claim-check/kernel.py",
-    "sha256": "5b311d16ceb045f9e68d74cd75dca93be615217f24fb7e9e9a6a6666ce922aaf"
+    "sha256": "0d10b2bd1a064976f3a1d7ccc50b16ec6de081026004cd043d97af0127d1d69c"
   },
   {
     "path": "scripts/library/dataset.py",
     "source": "skills/szl-dataset-readiness/kernel.py",
-    "sha256": "e38cc24145a4cf69b21653ad4b3f206bb8bd6e2497129dacbda401785107cae4"
+    "sha256": "cf410eeaecc4159ec29568dbfe82e1f46bc00ba29ba8f37e7b324e15aa7dc891"
   },
   {
     "path": "scripts/library/model.py",
     "source": "skills/szl-model-evaluation/kernel.py",
-    "sha256": "00a276529eba76e7291a41f709048744c182494fb97a75812732b614c4cd819e"
+    "sha256": "bd8754c77a962eed07061a7b57d9894ccafbb39604cfc52d5db20e5052bf15e0"
   },
   {
     "path": "scripts/library/kernel_compare.py",
@@ -27,12 +27,22 @@
   {
     "path": "scripts/library/capsule.py",
     "source": "skills/szl-reproducibility-capsule/kernel.py",
-    "sha256": "0cd3532c8debaf209d76614484f133dec3f24fda6464026b2f0acae00af3fe4f"
+    "sha256": "dd25c6fd6f094446119dd9c3c6368c1bf96b9f8706c909a50f00e6a79a4f9546"
   },
   {
     "path": "scripts/library/paired.py",
     "source": "skills/szl-paired-science/scripts/qualify.py",
-    "sha256": "b75e0da8151ba2bca8a2528733e8a93511d83a0ac697cd0e1bedda2cd35e9910"
+    "sha256": "42ab6aad7fd2a101d00a574d92e6389f06a740b87bda0700a29e6f1d038c6838"
+  },
+  {
+    "path": "scripts/library/outcome_preservation.py",
+    "source": "skills/szl-outcome-preservation/kernel.py",
+    "sha256": "0710fd27d8dc8f456044f4cb936ad1dfb0b394c11dca62c6bb3ccdfa360ee55c"
+  },
+  {
+    "path": "scripts/library/release_continuity.py",
+    "source": "skills/szl-release-continuity/kernel.py",
+    "sha256": "f57af4c7569bbbd6e13837a1306a686eaf50521a35b26f4985bfa7925d2c05e3"
   },
   {
     "path": "scripts/library/calibration_reference.py",

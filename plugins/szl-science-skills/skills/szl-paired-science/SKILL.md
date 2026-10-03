@@ -1,17 +1,49 @@
 ---
 name: szl-paired-science
-description: Qualify a paired scientific benchmark from complete per-trial losses, training-only normalization, an identity negative control, and exact input hashes. Use for comparing algorithms or model checkpoints before making a measured improvement claim.
+description: "Qualifies a paired before/after or A/B comparison offline: binds the predictions to separately frozen inputs, targets, corpus, scorer and training-only normalization by byte digest, checks every case is complete and unsubstituted, recomputes MAE/MSE, requires an identity negative control, and applies the declared sign-flip procedure with a minimum effect. Use when a candidate model, assay protocol or pipeline change is claimed to beat a baseline on the same cases, or when a reviewer asks whether the comparison was paired and preregistered. Not a general statistics package."
 license: Apache-2.0
 ---
 
-Use this skill when a researcher needs a reproducible comparison from supplied measurements. It works offline with Python 3.9 or later and contacts no external service.
+# Paired science
 
-Read `references/protocol.md` to prepare the declared experimental plan and measurements. Run `scripts/qualify.py` on the JSON file. The helper rejects missing or duplicated pairs, overlapping train/test identifiers, nonfinite losses, zero normalization scales, failed identity controls, and incomplete provenance declarations. It reports each task in its own dimensionless scale and applies a declared minimum effect and a conservative multiple-task correction to exact paired sign-flip tests.
+"Our new method beats the baseline" is a paired claim: same cases, frozen inputs, declared scorer,
+declared minimum effect, and a control that should show nothing. This helper checks all of that
+from bytes and refuses to qualify a comparison whose inputs cannot be bound. Python 3.9+, stdlib, offline.
 
-Treat the helper's output as **local comparison evidence**. The plan, independence, train-only scale, source, and dataset identifiers are researcher declarations; the helper cannot establish that they are true merely by checking their syntax. Inspect the underlying prediction files, split construction, plan timestamp, dependencies, hardware, wall time, and memory evidence before using those declarations. Do not combine unrelated units as a raw mean or treat correlated horizons as independent experimental replications.
+## Use when
 
-An identity negative control uses the baseline predictions unchanged. Its losses must match the baseline within the plan's tolerance. A treatment that appears to improve under this control is a measurement or pairing fault requiring investigation.
+- A fine-tuned model is compared with its base on the same held-out cases.
+- A new assay normalization is claimed to reduce error on matched samples.
+- A reviewer asks whether the test set, scorer and normalization were frozen before predictions
+  were seen.
 
-For a real checkpoint tested on synthetic signals, retain both facts: **real checkpoint, synthetic inputs**. A successful local result does not establish performance on external data, a novel scientific contribution, clinical suitability, independent replication, or production admission. Hashes establish which bytes were checked; they are not signatures or proof of rights. Never replace a failed or unavailable measurement with an estimate.
+## Quick start
 
-The helper does not train, download models, execute supplied code, upload data, publish results, change a gate, or grant permission to use third-party data. A researcher must decide which experiment is appropriate and obtain any required data rights.
+```bash
+python scripts/qualify.py assets/example-v2.json --expected-manifest-sha256 bddba992b16c38934cbabe184cbf4bb97e21c24247fdc5295660672163b72e9f
+```
+
+The bundled synthetic experiment returns `"status": "QUALIFIED_LOCAL_COMPARISON"` with
+`"binding": "VERIFIED_INLINE_BYTES"` over 6 pairs. Change one byte of a case, drop a pair, or omit the
+expected digest and it returns `REJECTED_LOCAL_COMPARISON`. The digest above comes from
+`assets/fixture-lock.json`, the separately frozen lock for this toy example only.
+
+## Protocol
+
+Read `references/binding-contract.md` to prepare v2 evidence. Obtain the expected manifest digest
+from a separately frozen input/target/corpus/scorer/normalization source before looking at the
+predictions; never derive it from the predictions themselves or refresh it to make a failure pass.
+The helper checks supplied byte digests, case membership, frozen-manifest continuity and prediction
+envelope bindings, then recomputes supported losses and training scale. Missing bytes or an absent
+lock stay `DECLARED` and block inference.
+
+After binding succeeds, `references/protocol.md` fixes the identity control, minimum effect and exact
+sign-flip procedure. Do not count correlated horizons as independent replications or average unrelated
+units. v1 inputs are still accepted and explicitly report declaration-only binding.
+
+## What it does not do
+
+It never verifies the expected digest's authenticity, model consumption, plan timing or independence;
+those need separate evidence. No supplied code, model, provider, network or GPU is executed. A qualified
+comparison grants no production admission, data rights, novelty, clinical suitability or replication.
+Scientific performance stays `NOT_MEASURED`.
