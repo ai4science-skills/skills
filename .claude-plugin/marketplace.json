@@ -142,6 +142,20 @@
       },
       "license": "Apache-2.0",
       "homepage": "https://github.com/szl-holdings/szl-skills/tree/7c9086e18cc0f653c77794d93bd586df4b445c4b"
+    },
+    {
+      "name": "szl-science-design-skills",
+      "description": "Offline prospective experiment-contract draft and structural checker; researcher review required, with no preregistration, experiment execution, inference, or efficacy claim.",
+      "source": "./plugins/szl-science-design-skills",
+      "strict": false,
+      "skills": [
+        "./skills/szl-experiment-contract"
+      ],
+      "author": {
+        "name": "betterwithage (SZL Holdings)"
+      },
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/372ff2d4fa72053151aeb77d3e1973090fdc07ab"
     }
   ]
 }
