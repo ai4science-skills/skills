@@ -33,9 +33,11 @@ pin for reading with `show`; the tests build real temporary repositories.
 
 ## Rules
 
-- Paths are relative to `--root` and may not escape it.
+- Paths are relative to `--root`; drive-qualified paths, traversal, and links that resolve outside it are refused.
+- Each declared path must be the Git worktree root itself; Git's ancestor-repository discovery does not count.
 - A repository is `CLEAN` only when `git status --porcelain --untracked-files=all` is empty.
 - The composite digest is SHA-256 over the sorted (name, HEAD) pairs; it is `null` when any repository is not clean.
+- `verify` returns `MATCH` only for an internally consistent `PINNED` record; an earlier dirty or incomplete record is not a pin.
 - Origin URLs are read from local configuration for the record and never contacted.
 
 ## What it will not tell you

@@ -1,0 +1,13 @@
+{
+  "planned_attempts": [
+    {"attempt_id": "synthetic-1", "row_id": "synthetic-row-1", "label": 0},
+    {"attempt_id": "synthetic-2", "row_id": "synthetic-row-2", "label": 1},
+    {"attempt_id": "synthetic-3", "row_id": "synthetic-row-3", "label": 1}
+  ],
+  "attempts": [
+    {"attempt_id": "synthetic-1", "row_id": "synthetic-row-1", "status": "success", "probability": 0.1},
+    {"attempt_id": "synthetic-2", "row_id": "synthetic-row-2", "status": "success", "probability": 0.9},
+    {"attempt_id": "synthetic-3", "row_id": "synthetic-row-3", "status": "timeout", "reason": "Synthetic timeout fixture; no inference performed"}
+  ],
+  "metadata": {"evidence_class": "SYNTHETIC", "model": "NO_MODEL_RUN"}
+}

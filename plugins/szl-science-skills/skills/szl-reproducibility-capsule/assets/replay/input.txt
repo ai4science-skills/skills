@@ -1,0 +1,1 @@
+SYNTHETIC input fixture; no observations or dataset rows.

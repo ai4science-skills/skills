@@ -4,7 +4,7 @@
 (SYNTHETIC, EXTERNAL or MIXED), unique artifacts and ordered checks. Each artifact declares
 id, kind, title and a canonical relative path. Each check declares id, type, input and
 depends_on artifact/check ids. Supported types are dataset, binary-model, categorical-model,
-math, kernel, calibration-benchmark and paired. Inputs are bounded JSON documents;
+math, kernel, calibration-benchmark, paired, outcome-preservation and release-continuity. Inputs are bounded JSON documents;
 categorical-model additionally names prediction and held-out JSONL artifacts explicitly.
 Dataset inputs can name a rows_file JSONL artifact instead of embedding rows.
 The implemented field is rows_files: each selection declares artifact and split, and can

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-"""Portable offline CLI; every skill contains its own identical copy."""
+# Modified 2026-09-30: original bounded replay-declaration CLI extensions to SZL baseline
+# 9668f1571315e93ca2059b9a44f12beef483532d.
+"""Portable offline manifest CLI; replay declarations are never executed."""
 import argparse
 import json
 import pathlib

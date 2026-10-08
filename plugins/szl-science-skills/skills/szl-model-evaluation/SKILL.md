@@ -1,57 +1,51 @@
 ---
 name: szl-model-evaluation
-description: Evaluate binary probabilities or saved categorical triage outputs while recording model, data and split evidence separately. Use for scientific classifiers, scored-prediction comparisons, or checking held-out evidence behind a model-quality claim.
+description: "Scores binary predictions (Brier, log loss, ECE, MCE, AUROC, accuracy, reliability bins, per-cohort) or saved categorical outputs joined to retained targets, and audits a multi-run evaluation plan so failed, timed-out, invalid and missing attempts stay in the denominator. Use when the user reports held-out model quality, asks whether a classifier is calibrated, or when a 'best of N runs' number needs its full attempt ledger. Not for regression, survival or multiclass metrics, and it does not run inference."
 license: Apache-2.0
 ---
 
-# Model evaluation with evidence boundaries
+# Model evaluation with complete denominators
 
-Establish the scientific task, target population and operating threshold. Distinguish trained
-weights, adapters, executable software and cards. Record model revision, base/adapter binding,
-tokenizer/config, inference settings, dataset revision, split construction and possible
-training overlap. A filename or reachable model page does not establish these bindings.
+A success-only score is a different number from a whole-plan score. This skill computes both and
+keeps every attempt visible. Python 3.10+, stdlib, offline. The calibration metrics are adapted from
+the Apache-2.0 [SZL calibration implementation](https://github.com/szl-holdings/szl-calibration/blob/b2e317877abed98e70f9cf6730944a797837faf1/src/szl_calibration/metrics.py).
 
-Use actual saved predictions when available. Do not silently replace the selected model.
-Paid inference or large downloads are separate actions; the bundled helper scores supplied
-predictions only.
+## Use when
 
-Call `szl_evaluate_predictions(probabilities, labels, n_bins, threshold, groups, metadata)`
-from `kernel.py`. It supports binary integer labels 0/1 and positive-class probabilities.
-Metrics: Brier, clipped log loss, ECE/MCE, tie-aware AUROC, accuracy, confusion counts and
-reliability bins. Cohorts use the same settings. Bins compare mean positive probability with
-positive frequency, not confidence of the predicted class. Multiclass, regression, survival
-and general generative tasks need different metrics.
+- "Is this diagnostic classifier calibrated, or just accurate?" (ECE/MCE with reliability bins).
+- A paper reports accuracy from the three runs that finished and not the two that crashed.
+- Saved categorical outputs (triage labels, cell-type calls) need rescoring against retained targets
+  instead of trusting stored correctness flags.
+- A cohort breakdown is needed (by site, sex, device) without re-running the model.
 
-For saved SZL triage outputs, call `szl_evaluate_categories(records, held_rows, label_set, metadata)`.
-It requires one prediction per retained held-out row id, exact target/family matches and a
-declared label set. It recomputes label/state/evidence correctness from `parsed`, ignores saved
-correctness flags and includes invalid outputs in the denominator. It reports categorical
-confusion and exact-match accuracy, never fake binary probabilities. It verifies the target
-join to these retained files; it does not authenticate the model that generated the records.
-The CLI routes an input with `records` to this evaluator.
-
-Declare thresholds and bins before comparison; separate tuning from final evaluation. Show
-denominators. AUROC is null for a single-class cohort, never an invented 0 or 1. Small cohorts
-and lack of confidence intervals limit interpretation. The helper cannot authenticate the
-prediction/model binding or held-out split; inspect those artifacts separately. No promotion,
-readiness certificate or general performance claim follows from this computation.
+## Quick start
 
 ```bash
 python scripts/run.py assets/example.json
+python scripts/run.py assets/attempts-example.json
 ```
 
-Input: `probabilities`, `labels`, optional `n_bins`, `threshold`, `groups`, `metadata`.
-The example is synthetic, not a result for any SZL model. Attach actual reports and input
-digests to the scientist's research memory when persistent evidence is wanted.
+The first synthetic fixture returns `"status": "COMPUTED_ON_SUPPLIED_PREDICTIONS"` with
+`brier 0.025`, `log_loss 0.164`, `ece 0.15`, `mce 0.2`, `auroc 1.0`, `accuracy 1.0`, a confusion
+matrix and five reliability bins. The second routes to the attempt ledger and returns
+`"status": "INCOMPLETE_ATTEMPT_LEDGER"`: planned 7, recorded 6, attempted 5, completed 2,
+successful 1, planned accuracy 1/7 with every non-success counted as incorrect.
 
-Metrics adapt the actual
-[SZL calibration implementation](https://github.com/szl-holdings/szl-calibration/blob/b2e317877abed98e70f9cf6730944a797837faf1/src/szl_calibration/metrics.py)
-to Claude Science's kernel constraints. Existing SZL models are candidates for task-specific
-evaluation, not automatically qualified substitutes.
+## Three modes, one entry point
 
-Outside services/credentials: none offline. Optional metadata lookups contact GitHub/Hugging
-Face. Requested inference sends selected inputs to the chosen provider and requires that
-provider's credential; do not transmit private data merely to score predictions. Energy
-remains null without actual measurement.
+Inputs containing `planned_attempts` route to the ledger (`szl_audit_attempts`), inputs with
+`records` route to categorical scoring (`szl_evaluate_categories`), everything else routes to
+binary scoring (`szl_evaluate_predictions`). Read `references/contracts.md` for field names.
 
-Runtime: Python 3.10+; offline; no model weights or inference provider required.
+Before interpreting any score, fix the target population, retained labels, split construction
+and predeclared threshold and bin count. Keep observed outputs separate from declarations about
+model revision, tokenizer, inference settings and training overlap. Single-class AUROC is null.
+Repeated row ids are repeated attempts, not independent samples. A retained plan digest detects
+changed plan bytes; it does not prove preregistration.
+
+## What it does not do
+
+No provider calls, model loading, downloads, uploads or promotion. It cannot verify model origin,
+split independence or status declarations, and never imputes probabilities for missing attempts.
+Conditional metrics over successful outputs must not be reported as whole-plan performance.
+Agent efficacy and scientific performance remain `NOT_MEASURED`; energy is null without a measurement.
