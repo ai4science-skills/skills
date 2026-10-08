@@ -30,6 +30,15 @@ class SyncError(ValueError):
     pass
 
 
+class RollbackError(SyncError):
+    """Recovery was incomplete; the generated staging path must be retained."""
+
+    def __init__(self, recovery_path):
+        self.recovery_path = recovery_path
+        super().__init__("rollback incomplete; backups retained at "
+                         + json.dumps(str(recovery_path)))
+
+
 def unique_object(pairs):
     result = {}
     for key, value in pairs:
@@ -263,8 +272,9 @@ def main():
         if path.exists() or path.is_symlink():
             reject_links(path)
     # Prepare and audit a complete generation before touching previous output.
-    with tempfile.TemporaryDirectory(prefix=".sync-stage-", dir=ROOT) as temporary:
-        staged = pathlib.Path(temporary)
+    staged = pathlib.Path(tempfile.mkdtemp(prefix=".sync-stage-", dir=ROOT))
+    preserve_stage = False
+    try:
         for entry in registry["plugins"]:
             verify_ref(entry)
             files = prepare(entry, fetch(entry["repo"], entry["sha"]))
@@ -294,21 +304,38 @@ def main():
                     os.replace(destination, backup)
                 moved.append((destination, backup))
                 os.replace(staged / relative, destination)
-        except BaseException:
+        except BaseException as original:
+            # Preserve every remaining backup if recovery is interrupted or any
+            # destination cannot be restored. Never auto-clean an incomplete rollback.
+            preserve_stage = True
+            rollback_failed = False
             for destination, backup in reversed(moved):
-                if destination.is_dir():
-                    shutil.rmtree(destination)
-                elif destination.exists():
-                    destination.unlink()
-                if backup.exists():
-                    os.replace(backup, destination)
+                try:
+                    if destination.is_dir():
+                        shutil.rmtree(destination)
+                    elif destination.exists():
+                        destination.unlink()
+                    if backup.exists():
+                        os.replace(backup, destination)
+                except BaseException:
+                    rollback_failed = True
+            if rollback_failed:
+                raise RollbackError(staged) from original
+            preserve_stage = False
             raise
+    finally:
+        if not preserve_stage:
+            shutil.rmtree(staged)
     print("synced %d plugin(s), %d skill(s); static checks only" % (len(registry["plugins"]), count))
 
 
 if __name__ == "__main__":
     try:
         main()
+    except RollbackError as error:
+        # Only the generated recovery path is reported, with controls escaped.
+        print("sync failed: " + str(error), file=sys.stderr)
+        sys.exit(1)
     except (ValueError, OSError, tarfile.TarError) as error:
         # Never include request headers, credentials, or untrusted content.
         print("sync failed: " + type(error).__name__, file=sys.stderr)

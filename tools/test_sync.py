@@ -263,5 +263,60 @@ class ImporterTests(unittest.TestCase):
             self.assertEqual(before, after)
 
 
+    def test_failed_rollback_retains_original_bytes_and_continues_other_restores(self):
+        for failed_operation in ("remove_directory", "remove_file", "restore"):
+            with self.subTest(failed_operation=failed_operation), tempfile.TemporaryDirectory() as temporary:
+                root = pathlib.Path(temporary)
+                install_fixture(root)
+                before = {p.relative_to(root).as_posix(): p.read_bytes()
+                          for p in root.rglob("*") if p.is_file()}
+                skill = "plugins/toy-plugin/skills/toy-skill/SKILL.md"
+                candidate = archive({"repo/skills/toy-skill/SKILL.md":
+                                     before[skill] + b"New synthetic generation.\n"})
+                actual_replace, actual_rmtree = sync.os.replace, sync.shutil.rmtree
+                actual_unlink = pathlib.Path.unlink
+
+                def replace(source, destination):
+                    source, destination = pathlib.Path(source), pathlib.Path(destination)
+                    if source == root / "CATALOG.md":
+                        raise OSError("synthetic forward replacement failure")
+                    if (failed_operation == "restore"
+                            and source.parent.name == ".claude-plugin"
+                            and source.parent.parent.name == "backup"
+                            and destination == root / ".claude-plugin/marketplace.json"):
+                        raise OSError("synthetic rollback restoration failure")
+                    return actual_replace(source, destination)
+
+                def rmtree(path, *args, **kwargs):
+                    if failed_operation == "remove_directory" and pathlib.Path(path) == root / "plugins":
+                        raise OSError("synthetic rollback directory removal failure")
+                    return actual_rmtree(path, *args, **kwargs)
+
+                def unlink(path, *args, **kwargs):
+                    if failed_operation == "remove_file" and path == root / ".claude-plugin/marketplace.json":
+                        raise OSError("synthetic rollback file removal failure")
+                    return actual_unlink(path, *args, **kwargs)
+
+                with patch.object(sync, "ROOT", root), patch.object(sync, "verify_ref"), \
+                        patch.object(sync, "fetch", return_value=candidate), \
+                        patch.object(sync.os, "replace", side_effect=replace), \
+                        patch.object(sync.shutil, "rmtree", side_effect=rmtree), \
+                        patch.object(pathlib.Path, "unlink", unlink), self.assertRaises(Exception) as caught:
+                    sync.main()
+
+                retained = list(root.glob(".sync-stage-*"))
+                self.assertEqual(len(retained), 1, "failed recovery must retain the backups")
+                recovery = retained[0]
+                self.assertEqual(caught.exception.recovery_path, recovery)
+                self.assertIn(json.dumps(str(recovery)), str(caught.exception))
+                for relative, expected in before.items():
+                    locations = (root / relative, recovery / "backup" / relative)
+                    self.assertTrue(any(p.is_file() and p.read_bytes() == expected for p in locations),
+                                    f"original bytes lost: {relative}")
+                if failed_operation != "remove_directory":
+                    self.assertEqual((root / skill).read_bytes(), before[skill],
+                                     "one failed restoration must not stop other restores")
+
+
 if __name__ == "__main__":
     unittest.main()
