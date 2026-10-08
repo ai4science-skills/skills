@@ -107,6 +107,72 @@ class SnapshotTests(unittest.TestCase):
             ))
             wrapped.assert_not_called()
 
+    def _synthetic_stat(self, **overrides):
+        fields = dict(
+            st_dev=7, st_ino=11, st_mode=stat.S_IFREG | 0o600, st_size=7,
+            st_mtime=2, st_mtime_ns=2_000_000_000,
+            st_ctime=1, st_ctime_ns=1_000_000_000,
+            st_birthtime=1, st_birthtime_ns=1_000_000_000,
+        )
+        fields.update(overrides)
+        return SimpleNamespace(**fields)
+
+    def _mocked_read(self, expected, opened, after, *, platform_name="nt"):
+        target = self.root / "synthetic"
+        handle = MagicMock()
+        handle.__enter__.return_value = handle
+        handle.read.side_effect = [b"content", b""]
+        handle.fileno.return_value = 123
+        with patch("static_io.os.name", platform_name), patch(
+            "static_io.os.open", return_value=123,
+        ), patch("static_io.os.fstat", side_effect=[opened, after]), patch(
+            "static_io.os.fdopen", return_value=handle,
+        ), patch("static_io.os.close"):
+            return _read_regular(target, expected, 100)
+
+    def test_windows_cross_api_ctime_difference_preserves_same_file(self) -> None:
+        expected = self._synthetic_stat()
+        opened = self._synthetic_stat(st_ctime=3, st_ctime_ns=3_000_000_000)
+        self.assertEqual(self._mocked_read(expected, opened, opened), b"content")
+
+    def test_older_windows_without_birthtime_uses_matching_ctime(self) -> None:
+        expected = self._synthetic_stat()
+        opened = self._synthetic_stat()
+        for info in (expected, opened):
+            del info.st_birthtime
+            del info.st_birthtime_ns
+        self.assertEqual(self._mocked_read(expected, opened, opened), b"content")
+        changed = self._synthetic_stat(st_ctime=3, st_ctime_ns=3_000_000_000)
+        del changed.st_birthtime
+        del changed.st_birthtime_ns
+        self.assert_reason("input-changed-before-read", lambda: self._mocked_read(
+            expected, changed, changed,
+        ))
+
+    def test_windows_changed_birthtime_prevents_read(self) -> None:
+        expected = self._synthetic_stat()
+        opened = self._synthetic_stat(
+            st_birthtime=4, st_birthtime_ns=4_000_000_000,
+        )
+        self.assert_reason("input-changed-before-read", lambda: self._mocked_read(
+            expected, opened, opened,
+        ))
+
+    def test_windows_descriptor_ctime_change_during_read_is_rejected(self) -> None:
+        expected = self._synthetic_stat()
+        opened = self._synthetic_stat(st_ctime=3, st_ctime_ns=3_000_000_000)
+        after = self._synthetic_stat(st_ctime=4, st_ctime_ns=4_000_000_000)
+        self.assert_reason("input-changed-during-read", lambda: self._mocked_read(
+            expected, opened, after,
+        ))
+
+    def test_posix_cross_api_ctime_change_is_rejected(self) -> None:
+        expected = self._synthetic_stat()
+        opened = self._synthetic_stat(st_ctime=3, st_ctime_ns=3_000_000_000)
+        self.assert_reason("input-changed-before-read", lambda: self._mocked_read(
+            expected, opened, opened, platform_name="posix",
+        ))
+
     def test_total_count_and_depth_limits(self) -> None:
         (self.root / "a").write_bytes(b"123")
         (self.root / "b").write_bytes(b"456")
