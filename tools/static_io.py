@@ -64,11 +64,21 @@ def _is_link_or_reparse(info: os.stat_result) -> bool:
     )
 
 
-def _stat_signature(info: os.stat_result) -> tuple[Any, ...]:
+def _stat_signature(
+    info: os.stat_result, *, cross_api: bool = False,
+) -> tuple[Any, ...]:
+    change_time = getattr(info, "st_ctime_ns", info.st_ctime)
+    if cross_api and os.name == "nt":
+        # Windows Python 3.12 can report creation time through lstat and
+        # metadata-change time through fstat. Birth time has common semantics.
+        # Older Windows Python uses creation time for both ctime fields.
+        change_time = getattr(
+            info, "st_birthtime_ns", getattr(info, "st_birthtime", change_time),
+        )
     return (
         info.st_dev, info.st_ino, info.st_mode, info.st_size,
         getattr(info, "st_mtime_ns", info.st_mtime),
-        getattr(info, "st_ctime_ns", info.st_ctime),
+        change_time,
     )
 
 
@@ -118,7 +128,9 @@ def _read_regular(path: Path, expected: os.stat_result, limit: int) -> bytes:
         opened = os.fstat(descriptor)
         if not stat.S_ISREG(opened.st_mode) or _is_link_or_reparse(opened):
             raise AuditBoundaryError("non-regular-file", path)
-        if _stat_signature(opened) != _stat_signature(expected):
+        if _stat_signature(opened, cross_api=True) != _stat_signature(
+            expected, cross_api=True,
+        ):
             raise AuditBoundaryError("input-changed-before-read", path)
         if opened.st_size > limit:
             raise AuditBoundaryError("byte-limit", path)
