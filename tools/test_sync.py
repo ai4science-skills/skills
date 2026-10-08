@@ -123,10 +123,34 @@ class ImporterTests(unittest.TestCase):
             sync.prepare(candidate, archive())
 
     def test_ref_resolves_to_exact_commit(self):
-        with patch.object(sync, "bounded_get", return_value=json.dumps({"sha": "2" * 40}).encode()), self.assertRaises(sync.SyncError):
+        with patch.object(sync, "bounded_get", return_value=b"2" * 40), self.assertRaises(sync.SyncError):
             sync.verify_ref(entry())
-        with patch.object(sync, "bounded_get", return_value=json.dumps({"sha": "1" * 40}).encode()):
+        for value in (b"1" * 40, b"1" * 40 + b"\n"):
+            with self.subTest(value=value), patch.object(sync, "bounded_get", return_value=value) as get:
+                sync.verify_ref(entry())
+                get.assert_called_once_with("https://api.github.com/repos/example/science/commits/v1.0.0",
+                                            41, accept="application/vnd.github.sha")
+
+    def test_ref_sha_media_type_refuses_json_and_malformed_responses(self):
+        for value in (json.dumps({"sha": "1" * 40}).encode(), b"1" * 39, b"1" * 40 + b"x",
+                      b"1" * 40 + b"\n\n", b"A" * 40, b"\xff" * 40):
+            with self.subTest(value=value), patch.object(sync, "bounded_get", return_value=value), self.assertRaises(sync.SyncError):
+                sync.verify_ref(entry())
+
+    def test_sha_media_type_is_sent_without_unbounding_the_read(self):
+        from unittest.mock import MagicMock
+        url = "https://api.github.com/repos/example/science/commits/v1.0.0"
+        response = MagicMock()
+        response.status = 200
+        response.geturl.return_value = url
+        response.read.return_value = b"1" * 40
+        response.__enter__.return_value = response
+        opener = MagicMock()
+        opener.open.return_value = response
+        with patch.object(sync.urllib.request, "build_opener", return_value=opener):
             sync.verify_ref(entry())
+        self.assertEqual(opener.open.call_args.args[0].get_header("Accept"), "application/vnd.github.sha")
+        response.read.assert_called_once_with(42)
 
     def test_redirects_and_external_source_urls_refused(self):
         with self.assertRaises(sync.SyncError):
@@ -145,6 +169,23 @@ class ImporterTests(unittest.TestCase):
             path = root / "plugins/toy-plugin/skills/toy-skill/SKILL.md"
             path.write_bytes(path.read_bytes() + b"changed")
             self.assertTrue(any("hashes" in failure for failure in check.audit(root)[0]))
+
+    def test_fixture_directory_reference_is_valid_but_file_named_directory_is_not(self):
+        for reference, member, valid in (("assets/replay", "assets/replay/protocol.txt", True),
+                                         ("assets/example.json", "assets/example.json/protocol.txt", False)):
+            with self.subTest(reference=reference), tempfile.TemporaryDirectory() as temporary:
+                root = pathlib.Path(temporary)
+                install_fixture(root)
+                md = (root / "plugins/toy-plugin/skills/toy-skill/SKILL.md").read_bytes()
+                candidate = archive({"repo/skills/toy-skill/SKILL.md": md + ("See `" + reference + "`.\n").encode(),
+                                     "repo/skills/toy-skill/" + member: b"Synthetic protocol\n"})
+                with patch.object(sync, "ROOT", root), patch.object(sync, "verify_ref"), patch.object(sync, "fetch", return_value=candidate):
+                    if valid:
+                        sync.main()
+                        self.assertEqual(check.audit(root)[0], [])
+                    else:
+                        with self.assertRaises(sync.SyncError):
+                            sync.main()
 
     def test_stale_market_security_metadata_rejected(self):
         with tempfile.TemporaryDirectory() as temporary:

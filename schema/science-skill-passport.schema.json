@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ai4s:science-skill-passport:v0",
+  "title": "Static skill preview, not execution or scientific approval",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "decision", "source", "skill", "access", "observations"],
+  "properties": {
+    "schema": {"const": "ai4s.science-skill-passport/v0"},
+    "decision": {"const": "STATIC_PREVIEW_ONLY"},
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["repo", "ref", "commit", "license_declared", "maintainer_declared", "source_manifest_sha256"],
+      "properties": {
+        "repo": {"type": "string"},
+        "ref": {"type": "string"},
+        "commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+        "license_declared": {"type": "string"},
+        "maintainer_declared": {"type": "string"},
+        "source_manifest_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "skill": {
+      "type": "object", "additionalProperties": false,
+      "required": ["plugin", "name", "entrypoint_sha256", "vendored_file_count", "fixture_candidates"],
+      "properties": {
+        "plugin": {"type": "string"},
+        "name": {"type": "string"},
+        "entrypoint_sha256": {"$ref": "#/$defs/sha256"},
+        "vendored_file_count": {"type": "integer", "minimum": 1},
+        "fixture_candidates": {
+          "type": "array",
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["path", "sha256", "synthetic_status"],
+            "properties": {
+              "path": {"type": "string"},
+              "sha256": {"$ref": "#/$defs/sha256"},
+              "synthetic_status": {"const": "NOT_VERIFIED"}
+            }
+          }
+        }
+      }
+    },
+    "access": {
+      "type": "object", "additionalProperties": false,
+      "required": ["service_declarations", "credential_requirements", "dynamic_destinations"],
+      "properties": {
+        "service_declarations": {"type": "array", "items": {"type": "string"}},
+        "credential_requirements": {"const": "UNSTRUCTURED_REVIEW_REQUIRED"},
+        "dynamic_destinations": {"const": "NOT_CHECKED"}
+      }
+    },
+    "observations": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_bytes", "skill_execution", "claude_science_import", "scientific_validity"],
+      "properties": {
+        "source_bytes": {"const": "MATCHED_LOCAL_MANIFEST"},
+        "skill_execution": {"const": "NOT_RUN"},
+        "claude_science_import": {"const": "NOT_OBSERVED"},
+        "scientific_validity": {"const": "NOT_EVALUATED"}
+      }
+    }
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}
+}

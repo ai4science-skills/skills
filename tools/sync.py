@@ -147,11 +147,13 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
         raise SyncError("redirect refused")
 
 
-def bounded_get(url, limit):
+def bounded_get(url, limit, accept=None):
     parsed = urllib.parse.urlsplit(url)
     if parsed.scheme != "https" or parsed.hostname not in {"api.github.com", "codeload.github.com"} or parsed.username or parsed.password or parsed.port:
         raise SyncError("source URL is outside the GitHub allowlist")
     headers = {"User-Agent": "ai4science-skills-sync"}
+    if accept is not None:
+        headers["Accept"] = accept
     token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
     if token and parsed.hostname == "api.github.com":
         headers["Authorization"] = "Bearer " + token
@@ -167,8 +169,11 @@ def bounded_get(url, limit):
 
 def verify_ref(entry):
     ref = urllib.parse.quote(entry["ref"], safe="")
-    resolved = read_json(bounded_get("https://api.github.com/repos/%s/commits/%s" % (entry["repo"], ref), 128 * 1024))
-    if resolved.get("sha") != entry["sha"]:
+    # GitHub's SHA media type omits the potentially large commit diff. Keep the
+    # response bounded to the 40-character hash plus an optional final newline.
+    resolved = bounded_get("https://api.github.com/repos/%s/commits/%s" % (entry["repo"], ref),
+                           41, accept="application/vnd.github.sha")
+    if not re.fullmatch(rb"[a-f0-9]{40}\n?", resolved) or resolved[:40].decode("ascii") != entry["sha"]:
         raise SyncError("source ref does not resolve to declared commit")
 
 
