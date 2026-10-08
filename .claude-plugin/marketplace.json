@@ -156,6 +156,25 @@
       },
       "license": "Apache-2.0",
       "homepage": "https://github.com/szl-holdings/szl-skills/tree/372ff2d4fa72053151aeb77d3e1973090fdc07ab"
+    },
+    {
+      "name": "szl-science-rc3-additions",
+      "description": "Six offline checks from the rc.3 source prerelease: retained outcomes, release bindings, skill updates, figure-data replay, research change impact and declared first-order uncertainty. Synthetic examples; no scientific-validity or host-registration claim.",
+      "source": "./plugins/szl-science-rc3-additions",
+      "strict": false,
+      "skills": [
+        "./skills/szl-figure-data-contract",
+        "./skills/szl-outcome-preservation",
+        "./skills/szl-release-continuity",
+        "./skills/szl-research-change-impact",
+        "./skills/szl-skill-update-review",
+        "./skills/szl-uncertainty-lineage"
+      ],
+      "author": {
+        "name": "betterwithage (SZL Holdings)"
+      },
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/baf0160e1acb2bee0de3c2324211d8d95e1b68b1"
     }
   ]
 }
