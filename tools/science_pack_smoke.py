@@ -80,10 +80,13 @@ class VendoredScienceTests(unittest.TestCase):
         registry = json.loads((ROOT / "registry.json").read_text())
         entries = [p for p in registry["plugins"] if p["repo"] == "szl-holdings/szl-skills" and p["name"] != "szl-evidence-skills"]
         names = [name for entry in entries for name in entry["skills"]]
-        self.assertEqual(len(names), 35)
+        self.assertEqual(len(names), 37)
         self.assertEqual(len(names), len(set(names)))
+        post_rc3 = "b8e259c43f01190a306657c2fe2cde61abb5e801"
+        post_rc3_plugins = {"szl-science-replay-skills", "szl-science-rare-disease-replay-skills"}
         for entry in entries:
-            self.assertEqual(entry["sha"], "baf0160e1acb2bee0de3c2324211d8d95e1b68b1")
+            expected = post_rc3 if entry["name"] in post_rc3_plugins else "baf0160e1acb2bee0de3c2324211d8d95e1b68b1"
+            self.assertEqual(entry["sha"], expected, entry["name"])
         for name in names:
             if name == "szl-science-workbench":
                 continue  # Its run/check/invalidation behavior is exercised above.
@@ -105,6 +108,33 @@ class VendoredScienceTests(unittest.TestCase):
                                                  capture_output=True, text=True, timeout=30)
                         self.assertEqual(process.returncode, 0, process.stderr)
                         self.assertEqual(json.loads(process.stdout)["status"], expected_status)
+                    continue
+                elif name == "szl-measurement-harmonizer":
+                    harmonizer_root = pathlib.Path(self.temp.name) / "harmonizer"
+                    shutil.copytree(directory, harmonizer_root)
+                    process = subprocess.run(
+                        [sys.executable, "-B", str(harmonizer_root / "scripts" / "run.py"),
+                         str(harmonizer_root / "assets" / "example.json"),
+                         "--root", str(harmonizer_root / "assets"),
+                         "--output", str(pathlib.Path(self.temp.name) / "harmonized-report.json")],
+                        capture_output=True, text=True, timeout=30)
+                    self.assertEqual(process.returncode, 0, process.stderr + process.stdout)
+                    report = json.loads(process.stdout)
+                    self.assertEqual(report["status"], "HARMONIZED")
+                    self.assertEqual(report["rows"], 4)
+                    continue
+                elif name == "szl-rare-disease-evidence-replay":
+                    rare_root = pathlib.Path(self.temp.name) / "rare-replay"
+                    shutil.copytree(directory, rare_root)
+                    process = subprocess.run(
+                        [sys.executable, "-I", "-B", str(rare_root / "scripts" / "replay.py"),
+                         "--root", str(rare_root), "--manifest", "assets/manifest.json",
+                         "--output", "replay-report.json"],
+                        capture_output=True, text=True, timeout=30)
+                    self.assertEqual(process.returncode, 0, process.stderr)
+                    report = json.loads(process.stdout)
+                    self.assertEqual(report["status"], "DECLARED_ONLY")
+                    self.assertEqual(report["readiness"], "HOLD")
                     continue
                 elif name == "szl-figure-data-contract":
                     figure_root = pathlib.Path(self.temp.name) / "figure"

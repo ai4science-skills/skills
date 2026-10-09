@@ -1,0 +1,12 @@
+{
+  "schema": "szl.rare-disease-evidence-replay.snapshot.v1",
+  "synthetic": true,
+  "rights": "SYNTHETIC_ONLY",
+  "source_id": "hpo-source",
+  "kind": "HPO_ANNOTATIONS",
+  "release": "SYNTHETIC-HPO-1",
+  "complete": true,
+  "annotations": [
+    {"condition": "SYNTH-COND:0001", "term": "SYNTH-HP:0001", "qualifier": "ANNOTATED", "source_ref": "SYNTH-REF:STUDY-A", "observed_at_utc": "2025-12-30T00:00:00Z"}
+  ]
+}

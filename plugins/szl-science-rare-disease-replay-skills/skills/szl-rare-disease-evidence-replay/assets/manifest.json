@@ -1,0 +1,51 @@
+{
+  "schema": "szl.rare-disease-evidence-replay.manifest.v1",
+  "data_class": "SYNTHETIC",
+  "cutoff_utc": "2026-01-15T00:00:00Z",
+  "case": {
+    "path": "assets/case.json",
+    "sha256": "50e9738c6b8c5a66b54ca8f9f24514d5bb88145f4e4f5d6809ec7a97c2ade308"
+  },
+  "sources": [
+    {
+      "id": "hpo-source",
+      "kind": "HPO_ANNOTATIONS",
+      "snapshots": [
+        {
+          "id": "source-a-early",
+          "captured_at_utc": "2026-01-01T00:00:00Z",
+          "release": "SYNTHETIC-HPO-1",
+          "path": "assets/source-a-early.json",
+          "sha256": "3ae39e429601bb6bc3faaf8f7cd342681ed529c7c20341276c811525d96f838b"
+        },
+        {
+          "id": "source-a-current",
+          "captured_at_utc": "2026-01-10T00:00:00Z",
+          "release": "SYNTHETIC-HPO-1",
+          "path": "assets/source-a-current.json",
+          "sha256": "9c4af21d963ad4ed39da054a5efad3b19fc662c747621cad2f735c83d6e37e54"
+        },
+        {
+          "id": "source-a-future",
+          "captured_at_utc": "2026-02-01T00:00:00Z",
+          "release": "SYNTHETIC-HPO-2",
+          "path": "assets/source-a-future.json",
+          "sha256": "a777bff16e030fa52e8a5afbe1f970d2d3a2cecb6146463bfbc63fd4df8ce626"
+        }
+      ]
+    },
+    {
+      "id": "clinvar-source",
+      "kind": "CLINVAR_ASSERTIONS",
+      "snapshots": [
+        {
+          "id": "source-b-current",
+          "captured_at_utc": "2026-01-09T00:00:00Z",
+          "release": "SYNTHETIC-CLINVAR-1",
+          "path": "assets/source-b-current.json",
+          "sha256": "eb540c6319893779e5eea4f2130f356adf8a558ad425db2677ae3c8f53f660a2"
+        }
+      ]
+    }
+  ]
+}

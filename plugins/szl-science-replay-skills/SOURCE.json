@@ -1,7 +1,7 @@
 {
   "repo": "szl-holdings/szl-skills",
-  "ref": "baf0160e1acb2bee0de3c2324211d8d95e1b68b1",
-  "sha": "baf0160e1acb2bee0de3c2324211d8d95e1b68b1",
+  "ref": "b8e259c43f01190a306657c2fe2cde61abb5e801",
+  "sha": "b8e259c43f01190a306657c2fe2cde61abb5e801",
   "path": "skills",
   "files_sha256": {
     "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
@@ -15,6 +15,13 @@
     "skills/szl-figure-data-contract/SKILL.md": "6ef792c1d165a5a8bd4488f5c0f1c803db6faf7976d5b86668c6d3b9a904801f",
     "skills/szl-figure-data-contract/assets/data.csv": "a447e317c6f4af3b2143103e95c10a6dda2fd73cf9c677ca13da0548c622108b",
     "skills/szl-figure-data-contract/assets/spec.json": "01b8ef9ef7b76a18dfd2132bcb698de9901988f65a8069eb24fc6cb78acae581",
-    "skills/szl-figure-data-contract/scripts/run.py": "fa50809807820368668a2f53263d77dd9042fc7418308440f8b4cd1f5ab4fc58"
+    "skills/szl-figure-data-contract/scripts/run.py": "fa50809807820368668a2f53263d77dd9042fc7418308440f8b4cd1f5ab4fc58",
+    "skills/szl-measurement-harmonizer/SKILL.md": "61dcad3e9b8f34b168ec87baf5756a098de3c37ac73cd794bd3c569f07793bbc",
+    "skills/szl-measurement-harmonizer/assets/example.json": "629cce0af224f4c00a3beae350e6d2d287ae7caf5db0f8fbe20a50b7bb979c8a",
+    "skills/szl-measurement-harmonizer/assets/lab-a.csv": "4969a7f720619287e0f52a52b74e6064ae9125391a70408f63df41c952a7da58",
+    "skills/szl-measurement-harmonizer/assets/lab-b.csv": "70a058aab1ee12c7e19172a7991f7e6d2a50ac8fdac9445371f349d94624c26e",
+    "skills/szl-measurement-harmonizer/references/contract.md": "71d9b387a32dac10ce1524119ee4e60bc1b0eb938029d40ffd419a14f1590c36",
+    "skills/szl-measurement-harmonizer/scripts/harmonizer.py": "23f5af055622c9a907d4e4ba3662884411ddffa4bcfff925624b11c7fda28c3e",
+    "skills/szl-measurement-harmonizer/scripts/run.py": "d64127249ef9b56f978a7f40c64ad9dc991b6043de7d4bff6225a1ed980e71fe"
   }
 }

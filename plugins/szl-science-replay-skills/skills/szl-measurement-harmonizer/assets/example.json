@@ -1,0 +1,29 @@
+{
+  "schema": "szl.measurement-harmonizer.v1",
+  "expected_ids": ["specimen-1", "specimen-2"],
+  "target_unit": "K",
+  "conversions": {
+    "K": {"scale": "1", "offset": "0"},
+    "degC": {"scale": "1", "offset": "273.15"}
+  },
+  "sources": [
+    {
+      "id": "lab-a",
+      "path": "lab-a.csv",
+      "sha256": "4969a7f720619287e0f52a52b74e6064ae9125391a70408f63df41c952a7da58",
+      "id_column": "specimen",
+      "value_column": "celsius",
+      "unit": "degC",
+      "id_map": {"A-1": "specimen-1", "A-2": "specimen-2"}
+    },
+    {
+      "id": "lab-b",
+      "path": "lab-b.csv",
+      "sha256": "70a058aab1ee12c7e19172a7991f7e6d2a50ac8fdac9445371f349d94624c26e",
+      "id_column": "sample",
+      "value_column": "kelvin",
+      "unit": "K",
+      "id_map": {"B1": "specimen-1", "B2": "specimen-2"}
+    }
+  ]
+}

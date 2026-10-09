@@ -18,13 +18,17 @@ Imported skills do not update automatically. Review available changes in the tar
 
 ## Current source preview
 
-This proposed update pins all 35 science skills to the reviewed source commit
-`baf0160e1acb2bee0de3c2324211d8d95e1b68b1`. The eight integrated workbench skills
-remain in `szl-science-skills`; nineteen standalone core checks are in
-`szl-science-ledger-skills`. Separate families contain experiment design,
-multiplicity, assay audit, two replay/figure checks, paper evidence,
-research change impact and uncertainty lineage. Each vendored plugin remains
-below 1 MiB. The two evidence skills and flotation skill retain their separate pins.
+The eight integrated workbench skills in `szl-science-skills`, the nineteen
+ledger checks, and the design, multiplicity, assay, paper, change-impact and
+uncertainty families stay pinned to
+`baf0160e1acb2bee0de3c2324211d8d95e1b68b1`. The replay family now also includes
+`szl-measurement-harmonizer`, and `szl-science-rare-disease-replay-skills`
+adds `szl-rare-disease-evidence-replay`. Those two plugins are pinned to
+`b8e259c43f01190a306657c2fe2cde61abb5e801`. The synthetic rare-disease evidence
+map and the OSF, paper-rescue, range-propagation and skill-conformance pilots
+stay out of this index, matching the source marketplace. Each vendored plugin
+remains below 1 MiB. The two evidence skills and flotation skill retain their
+separate pins.
 
 This is a source preview, not a released tag or security admission. The independent
 security-prerequisites pipeline is still BLOCKED. Review selected code and external
