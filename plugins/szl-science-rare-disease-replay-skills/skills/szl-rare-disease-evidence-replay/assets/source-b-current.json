@@ -1,0 +1,30 @@
+{
+  "schema": "szl.rare-disease-evidence-replay.snapshot.v1",
+  "synthetic": true,
+  "rights": "SYNTHETIC_ONLY",
+  "source_id": "clinvar-source",
+  "kind": "CLINVAR_ASSERTIONS",
+  "release": "SYNTHETIC-CLINVAR-1",
+  "complete": true,
+  "records": [
+    {
+      "condition": "SYNTH-COND:0001",
+      "vcv": "SYNTH-VCV:0001.1",
+      "rcv": "SYNTH-RCV:0001.1",
+      "observed_at_utc": "2026-01-08T00:00:00Z",
+      "submissions": [
+        {"scv": "SYNTH-SCV:0001.1", "assertion_token": "SYNTH-ASSERT:0001", "source_ref": "SYNTH-REF:SUBMISSION-A", "observed_at_utc": "2026-01-08T00:00:00Z"},
+        {"scv": "SYNTH-SCV:0002.1", "assertion_token": "SYNTH-ASSERT:0002", "source_ref": "SYNTH-REF:SUBMISSION-B", "observed_at_utc": "2026-01-09T00:00:00Z"}
+      ]
+    },
+    {
+      "condition": "SYNTH-COND:0003",
+      "vcv": "SYNTH-VCV:0002.1",
+      "rcv": "SYNTH-RCV:0002.1",
+      "observed_at_utc": "2026-01-08T00:00:00Z",
+      "submissions": [
+        {"scv": "SYNTH-SCV:0003.1", "assertion_token": "SYNTH-ASSERT:0003", "source_ref": "SYNTH-REF:SUBMISSION-C", "observed_at_utc": "2026-01-08T00:00:00Z"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "repo": "szl-holdings/szl-skills",
+  "ref": "b8e259c43f01190a306657c2fe2cde61abb5e801",
+  "sha": "b8e259c43f01190a306657c2fe2cde61abb5e801",
+  "path": "skills",
+  "files_sha256": {
+    "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "NOTICE": "021ac47ff117a126574e3ced3f4496b3b6e332854c683f93bd8acf2ce79c9106",
+    "skills/szl-rare-disease-evidence-replay/SKILL.md": "c2e858e47ca8804f19a410cba4435cb2c6453156b24a1b847e4878461cc774ee",
+    "skills/szl-rare-disease-evidence-replay/assets/case.json": "50e9738c6b8c5a66b54ca8f9f24514d5bb88145f4e4f5d6809ec7a97c2ade308",
+    "skills/szl-rare-disease-evidence-replay/assets/manifest.json": "8599f968864abeaeb26cb2e4bd6325237abcb66fddbdf229f6d1b929763d1cde",
+    "skills/szl-rare-disease-evidence-replay/assets/source-a-current.json": "9c4af21d963ad4ed39da054a5efad3b19fc662c747621cad2f735c83d6e37e54",
+    "skills/szl-rare-disease-evidence-replay/assets/source-a-early.json": "3ae39e429601bb6bc3faaf8f7cd342681ed529c7c20341276c811525d96f838b",
+    "skills/szl-rare-disease-evidence-replay/assets/source-a-future.json": "a777bff16e030fa52e8a5afbe1f970d2d3a2cecb6146463bfbc63fd4df8ce626",
+    "skills/szl-rare-disease-evidence-replay/assets/source-b-current.json": "eb540c6319893779e5eea4f2130f356adf8a558ad425db2677ae3c8f53f660a2",
+    "skills/szl-rare-disease-evidence-replay/references/contract.md": "83fc82fad3c378742e4a62049c4977adf96e00d421ddf6ef0eb1dab5a6d6d88e",
+    "skills/szl-rare-disease-evidence-replay/scripts/replay.py": "3c96e9b031337097dbb0c53056c114e31e1179e76307681e005e81367104c60d"
+  }
+}

@@ -4,7 +4,7 @@
     "name": "AI for Science community"
   },
   "description": "Community index of Claude skills for scientific work. Every entry is pinned to an exact commit and checked automatically.",
-  "version": "0.5.0-preview.20261003",
+  "version": "0.5.0-preview.20261009",
   "plugins": [
     {
       "name": "szl-evidence-skills",
@@ -100,14 +100,15 @@
     {
       "name": "szl-science-replay-skills",
       "repo": "szl-holdings/szl-skills",
-      "ref": "baf0160e1acb2bee0de3c2324211d8d95e1b68b1",
-      "sha": "baf0160e1acb2bee0de3c2324211d8d95e1b68b1",
+      "ref": "b8e259c43f01190a306657c2fe2cde61abb5e801",
+      "sha": "b8e259c43f01190a306657c2fe2cde61abb5e801",
       "path": "skills",
       "skills": [
         "szl-experiment-replay",
-        "szl-figure-data-contract"
+        "szl-figure-data-contract",
+        "szl-measurement-harmonizer"
       ],
-      "description": "Two bounded offline replay skills: pin and rerun a CSV mean, or render and inspect a declared CSV-to-SVG figure with point and caption evidence. No supplied code, network or credentials.",
+      "description": "Three bounded offline replay skills: pin and rerun a CSV mean, render and inspect a declared CSV-to-SVG figure, or align CSV exports under declared specimen IDs and unit conversions. No supplied code, network or credentials.",
       "maintainer": "betterwithage (SZL Holdings)",
       "license": "Apache-2.0",
       "hosted_services": [
@@ -208,6 +209,23 @@
         "szl-uncertainty-lineage"
       ],
       "description": "One bounded offline first-order uncertainty-lineage skill for declared arithmetic graphs and complete input correlations. Exact decimal correlation PSD check; synthetic fixtures only. No unit, coverage, scientific-truth, network or credential verification."
+    },
+    {
+      "name": "szl-science-rare-disease-replay-skills",
+      "repo": "szl-holdings/szl-skills",
+      "ref": "b8e259c43f01190a306657c2fe2cde61abb5e801",
+      "sha": "b8e259c43f01190a306657c2fe2cde61abb5e801",
+      "path": "skills",
+      "skills": [
+        "szl-rare-disease-evidence-replay"
+      ],
+      "description": "One synthetic-only offline rare-disease evidence timeline replay with pinned HPO/ClinVar-shaped snapshots and source/provenance ablations. Always HOLD; no diagnosis, model use, network or credentials.",
+      "maintainer": "betterwithage (SZL Holdings)",
+      "license": "Apache-2.0",
+      "hosted_services": [
+        "obophenotype.github.io - linked HPO annotation-format documentation; visiting fetches HTML, not evidence bytes",
+        "www.ncbi.nlm.nih.gov - linked ClinVar data-model documentation; visiting fetches HTML, not evidence bytes"
+      ]
     }
   ]
 }

@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "Community index of Claude skills for scientific work. Every entry is pinned to an exact commit and checked automatically.",
-    "version": "0.5.0-preview.20261003"
+    "version": "0.5.0-preview.20261009"
   },
   "plugins": [
     {
@@ -88,18 +88,19 @@
     },
     {
       "name": "szl-science-replay-skills",
-      "description": "Two bounded offline replay skills: pin and rerun a CSV mean, or render and inspect a declared CSV-to-SVG figure with point and caption evidence. No supplied code, network or credentials.",
+      "description": "Three bounded offline replay skills: pin and rerun a CSV mean, render and inspect a declared CSV-to-SVG figure, or align CSV exports under declared specimen IDs and unit conversions. No supplied code, network or credentials.",
       "source": "./plugins/szl-science-replay-skills",
       "strict": false,
       "skills": [
         "./skills/szl-experiment-replay",
-        "./skills/szl-figure-data-contract"
+        "./skills/szl-figure-data-contract",
+        "./skills/szl-measurement-harmonizer"
       ],
       "author": {
         "name": "betterwithage (SZL Holdings)"
       },
       "license": "Apache-2.0",
-      "homepage": "https://github.com/szl-holdings/szl-skills/tree/baf0160e1acb2bee0de3c2324211d8d95e1b68b1"
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/b8e259c43f01190a306657c2fe2cde61abb5e801"
     },
     {
       "name": "szl-paper-evidence-skills",
@@ -188,6 +189,20 @@
       },
       "license": "Apache-2.0",
       "homepage": "https://github.com/szl-holdings/szl-skills/tree/baf0160e1acb2bee0de3c2324211d8d95e1b68b1"
+    },
+    {
+      "name": "szl-science-rare-disease-replay-skills",
+      "description": "One synthetic-only offline rare-disease evidence timeline replay with pinned HPO/ClinVar-shaped snapshots and source/provenance ablations. Always HOLD; no diagnosis, model use, network or credentials.",
+      "source": "./plugins/szl-science-rare-disease-replay-skills",
+      "strict": false,
+      "skills": [
+        "./skills/szl-rare-disease-evidence-replay"
+      ],
+      "author": {
+        "name": "betterwithage (SZL Holdings)"
+      },
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/b8e259c43f01190a306657c2fe2cde61abb5e801"
     }
   ]
 }
