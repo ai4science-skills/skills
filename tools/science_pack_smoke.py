@@ -80,12 +80,19 @@ class VendoredScienceTests(unittest.TestCase):
         registry = json.loads((ROOT / "registry.json").read_text())
         entries = [p for p in registry["plugins"] if p["repo"] == "szl-holdings/szl-skills" and p["name"] != "szl-evidence-skills"]
         names = [name for entry in entries for name in entry["skills"]]
-        self.assertEqual(len(names), 37)
+        self.assertEqual(len(names), 38)
         self.assertEqual(len(names), len(set(names)))
         post_rc3 = "b8e259c43f01190a306657c2fe2cde61abb5e801"
+        reporting = "71b513ae2a3697466a3e8e0ec0f3599d6bfac4a6"
         post_rc3_plugins = {"szl-science-replay-skills", "szl-science-rare-disease-replay-skills"}
+        reporting_plugins = {"szl-science-reporting-skills"}
         for entry in entries:
-            expected = post_rc3 if entry["name"] in post_rc3_plugins else "baf0160e1acb2bee0de3c2324211d8d95e1b68b1"
+            if entry["name"] in post_rc3_plugins:
+                expected = post_rc3
+            elif entry["name"] in reporting_plugins:
+                expected = reporting
+            else:
+                expected = "baf0160e1acb2bee0de3c2324211d8d95e1b68b1"
             self.assertEqual(entry["sha"], expected, entry["name"])
         for name in names:
             if name == "szl-science-workbench":
@@ -185,6 +192,21 @@ class VendoredScienceTests(unittest.TestCase):
                                              capture_output=True, text=True, timeout=30)
                     self.assertEqual(process.returncode, 0, process.stderr)
                     self.assertEqual(json.loads((output / "UPDATE_REVIEW.json").read_text())["status"], "CHANGES_REVIEW_REQUIRED")
+                    continue
+                elif name == "szl-reporting-guideline-audit":
+                    output = pathlib.Path(self.temp.name) / "reporting-map.json"
+                    process = subprocess.run(
+                        [sys.executable, "-I", "-B", str(directory / "scripts" / "run.py"),
+                         str(directory / "assets" / "example.json"), "--output", str(output)],
+                        capture_output=True, text=True, timeout=30)
+                    self.assertEqual(process.returncode, 0, process.stderr + process.stdout)
+                    report = json.loads(process.stdout)
+                    self.assertEqual(report["status"], "MAP_COMPLETE")
+                    self.assertEqual(report["readiness"], "HOLD")
+                    self.assertEqual(report["reporting_compliance"], "NOT_EVALUATED")
+                    self.assertEqual(report["visual_confirmation"], "NOT_PERFORMED")
+                    self.assertEqual(report["item_count"], 42)
+                    self.assertEqual(output.read_text(encoding="utf-8"), process.stdout)
                     continue
                 elif name == "szl-clustered-replication":
                     lock = json.loads((directory / "assets" / "fixture-lock.json").read_text())

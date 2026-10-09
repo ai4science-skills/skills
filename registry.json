@@ -226,6 +226,20 @@
         "obophenotype.github.io - linked HPO annotation-format documentation; visiting fetches HTML, not evidence bytes",
         "www.ncbi.nlm.nih.gov - linked ClinVar data-model documentation; visiting fetches HTML, not evidence bytes"
       ]
+    },
+    {
+      "name": "szl-science-reporting-skills",
+      "repo": "szl-holdings/szl-skills",
+      "path": "skills",
+      "maintainer": "betterwithage (SZL Holdings)",
+      "license": "Apache-2.0",
+      "hosted_services": [],
+      "ref": "71b513ae2a3697466a3e8e0ec0f3599d6bfac4a6",
+      "sha": "71b513ae2a3697466a3e8e0ec0f3599d6bfac4a6",
+      "skills": [
+        "szl-reporting-guideline-audit"
+      ],
+      "description": "One offline manuscript map onto frozen PRISMA 2020, CONSORT 2025, or combined STROBE 2007 item ids. A locator is not visual confirmation and reporting compliance stays NOT_EVALUATED. No download, network, or credentials."
     }
   ]
 }
