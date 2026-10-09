@@ -1,0 +1,174 @@
+{
+  "schema": "szl.reporting-guideline-audit/v1",
+  "guideline": "PRISMA_2020",
+  "items": [
+    {
+      "id": "1",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "2",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "3",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "4",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "5",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "6",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "7",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "8",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "9",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "10a",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "10b",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "11",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "12",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "13a",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "13b",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "13c",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "13d",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "13e",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "13f",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "14",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "15",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "16a",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "16b",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "17",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "18",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "19",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "20a",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "20b",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "20c",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "20d",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "21",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "22",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "23a",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "23b",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "23c",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "23d",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "24a",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "24b",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "24c",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "25",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "26",
+      "locator": "synthetic fixture"
+    },
+    {
+      "id": "27",
+      "locator": "synthetic fixture"
+    }
+  ]
+}

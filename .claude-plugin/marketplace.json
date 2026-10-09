@@ -203,6 +203,20 @@
       },
       "license": "Apache-2.0",
       "homepage": "https://github.com/szl-holdings/szl-skills/tree/b8e259c43f01190a306657c2fe2cde61abb5e801"
+    },
+    {
+      "name": "szl-science-reporting-skills",
+      "description": "One offline manuscript map onto frozen PRISMA 2020, CONSORT 2025, or combined STROBE 2007 item ids. A locator is not visual confirmation and reporting compliance stays NOT_EVALUATED. No download, network, or credentials.",
+      "source": "./plugins/szl-science-reporting-skills",
+      "strict": false,
+      "skills": [
+        "./skills/szl-reporting-guideline-audit"
+      ],
+      "author": {
+        "name": "betterwithage (SZL Holdings)"
+      },
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/71b513ae2a3697466a3e8e0ec0f3599d6bfac4a6"
     }
   ]
 }

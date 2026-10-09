@@ -24,7 +24,9 @@ uncertainty families stay pinned to
 `baf0160e1acb2bee0de3c2324211d8d95e1b68b1`. The replay family now also includes
 `szl-measurement-harmonizer`, and `szl-science-rare-disease-replay-skills`
 adds `szl-rare-disease-evidence-replay`. Those two plugins are pinned to
-`b8e259c43f01190a306657c2fe2cde61abb5e801`. The synthetic rare-disease evidence
+`b8e259c43f01190a306657c2fe2cde61abb5e801`. `szl-science-reporting-skills`
+adds the offline `szl-reporting-guideline-audit` and is pinned only to
+`71b513ae2a3697466a3e8e0ec0f3599d6bfac4a6`. The synthetic rare-disease evidence
 map and the OSF, paper-rescue, range-propagation and skill-conformance pilots
 stay out of this index, matching the source marketplace. Each vendored plugin
 remains below 1 MiB. The two evidence skills and flotation skill retain their
