@@ -27,8 +27,11 @@ adds `szl-rare-disease-evidence-replay`. Those two plugins are pinned to
 `b8e259c43f01190a306657c2fe2cde61abb5e801`. `szl-science-reporting-skills`
 adds the offline `szl-reporting-guideline-audit` and is pinned only to
 `71b513ae2a3697466a3e8e0ec0f3599d6bfac4a6`. The synthetic rare-disease evidence
-map and the OSF, paper-rescue, range-propagation and skill-conformance pilots
-stay out of this index, matching the source marketplace. Each vendored plugin
+map and the OSF, paper-rescue and range-propagation pilots
+stay out of this index, matching the source marketplace. The selected offline
+`szl-skill-conformance` checker is now a separate sharing plugin pinned to
+`24a7c835a2d1e7b8fa2fc4f4e070a570ab361e29`; supplied trial records never
+verify actual Claude Science invocation or scientific correctness. Each vendored plugin
 remains below 1 MiB. The two evidence skills and flotation skill retain their
 separate pins.
 

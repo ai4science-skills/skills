@@ -4,7 +4,7 @@
     "name": "AI for Science community"
   },
   "description": "Community index of Claude skills for scientific work. Every entry is pinned to an exact commit and checked automatically.",
-  "version": "0.5.0-preview.20261009",
+  "version": "0.5.0-preview.20261014",
   "plugins": [
     {
       "name": "szl-evidence-skills",
@@ -240,6 +240,20 @@
         "szl-reporting-guideline-audit"
       ],
       "description": "One offline manuscript map onto frozen PRISMA 2020, CONSORT 2025, or combined STROBE 2007 item ids. A locator is not visual confirmation and reporting compliance stays NOT_EVALUATED. No download, network, or credentials."
+    },
+    {
+      "name": "szl-science-sharing-skills",
+      "repo": "szl-holdings/szl-skills",
+      "ref": "24a7c835a2d1e7b8fa2fc4f4e070a570ab361e29",
+      "sha": "24a7c835a2d1e7b8fa2fc4f4e070a570ab361e29",
+      "path": "skills",
+      "skills": [
+        "szl-skill-conformance"
+      ],
+      "description": "One offline conformance check for retained skill-sharing source and export bytes plus declared positive and irrelevant-task trials. Supplied records do not verify host invocation or scientific correctness. No candidate execution, network, or credentials.",
+      "maintainer": "betterwithage (SZL Holdings)",
+      "license": "Apache-2.0",
+      "hosted_services": []
     }
   ]
 }
