@@ -80,17 +80,21 @@ class VendoredScienceTests(unittest.TestCase):
         registry = json.loads((ROOT / "registry.json").read_text())
         entries = [p for p in registry["plugins"] if p["repo"] == "szl-holdings/szl-skills" and p["name"] != "szl-evidence-skills"]
         names = [name for entry in entries for name in entry["skills"]]
-        self.assertEqual(len(names), 38)
+        self.assertEqual(len(names), 39)
         self.assertEqual(len(names), len(set(names)))
         post_rc3 = "b8e259c43f01190a306657c2fe2cde61abb5e801"
         reporting = "71b513ae2a3697466a3e8e0ec0f3599d6bfac4a6"
+        sharing = "24a7c835a2d1e7b8fa2fc4f4e070a570ab361e29"
         post_rc3_plugins = {"szl-science-replay-skills", "szl-science-rare-disease-replay-skills"}
         reporting_plugins = {"szl-science-reporting-skills"}
+        sharing_plugins = {"szl-science-sharing-skills"}
         for entry in entries:
             if entry["name"] in post_rc3_plugins:
                 expected = post_rc3
             elif entry["name"] in reporting_plugins:
                 expected = reporting
+            elif entry["name"] in sharing_plugins:
+                expected = sharing
             else:
                 expected = "baf0160e1acb2bee0de3c2324211d8d95e1b68b1"
             self.assertEqual(entry["sha"], expected, entry["name"])
@@ -207,6 +211,17 @@ class VendoredScienceTests(unittest.TestCase):
                     self.assertEqual(report["visual_confirmation"], "NOT_PERFORMED")
                     self.assertEqual(report["item_count"], 42)
                     self.assertEqual(output.read_text(encoding="utf-8"), process.stdout)
+                    continue
+                elif name == "szl-skill-conformance":
+                    process = subprocess.run(
+                        [sys.executable, "-I", "-B", str(cli), "--source", str(directory)],
+                        capture_output=True, text=True, timeout=30)
+                    self.assertEqual(process.returncode, 2, process.stderr)
+                    report = json.loads(process.stdout)
+                    self.assertEqual(report["offline_conformance"], "INCOMPLETE")
+                    self.assertEqual(report["source_binding"], "OBSERVED_LOCAL_BYTES")
+                    self.assertEqual(report["actual_host_invocation"], "NOT_VERIFIED")
+                    self.assertEqual(report["scientific_result_validity"], "NOT_EVALUATED")
                     continue
                 elif name == "szl-clustered-replication":
                     lock = json.loads((directory / "assets" / "fixture-lock.json").read_text())

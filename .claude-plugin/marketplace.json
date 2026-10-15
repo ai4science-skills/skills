@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "Community index of Claude skills for scientific work. Every entry is pinned to an exact commit and checked automatically.",
-    "version": "0.5.0-preview.20261009"
+    "version": "0.5.0-preview.20261014"
   },
   "plugins": [
     {
@@ -217,6 +217,20 @@
       },
       "license": "Apache-2.0",
       "homepage": "https://github.com/szl-holdings/szl-skills/tree/71b513ae2a3697466a3e8e0ec0f3599d6bfac4a6"
+    },
+    {
+      "name": "szl-science-sharing-skills",
+      "description": "One offline conformance check for retained skill-sharing source and export bytes plus declared positive and irrelevant-task trials. Supplied records do not verify host invocation or scientific correctness. No candidate execution, network, or credentials.",
+      "source": "./plugins/szl-science-sharing-skills",
+      "strict": false,
+      "skills": [
+        "./skills/szl-skill-conformance"
+      ],
+      "author": {
+        "name": "betterwithage (SZL Holdings)"
+      },
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/szl-holdings/szl-skills/tree/24a7c835a2d1e7b8fa2fc4f4e070a570ab361e29"
     }
   ]
 }
