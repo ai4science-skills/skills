@@ -3,7 +3,7 @@ on:
   pull_request:
   push:
     branches: [main]
-# This functional job executes pull-request code. It needs no repository API authority.
+# This functional job executes pull-request code. It needs no content-read token.
 permissions: {}
 jobs:
   check:
