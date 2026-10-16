@@ -152,6 +152,23 @@ class ImporterTests(unittest.TestCase):
         self.assertEqual(opener.open.call_args.args[0].get_header("Accept"), "application/vnd.github.sha")
         response.read.assert_called_once_with(42)
 
+    def test_tokenless_ci_source_request_has_no_authorization_header(self):
+        from unittest.mock import MagicMock
+        url = "https://api.github.com/repos/example/science/commits/v1.0.0"
+        response = MagicMock()
+        response.status = 200
+        response.geturl.return_value = url
+        response.read.return_value = b"1" * 40
+        response.__enter__.return_value = response
+        opener = MagicMock()
+        opener.open.return_value = response
+        with patch.dict(sync.os.environ, {"GITHUB_TOKEN": "", "GH_TOKEN": ""}, clear=True), \
+                patch.object(sync.urllib.request, "build_opener", return_value=opener):
+            sync.verify_ref(entry())
+        request = opener.open.call_args.args[0]
+        self.assertIsNone(request.get_header("Authorization"))
+        self.assertEqual(request.get_header("Accept"), "application/vnd.github.sha")
+
     def test_redirects_and_external_source_urls_refused(self):
         with self.assertRaises(sync.SyncError):
             sync.NoRedirect().redirect_request(None, None, 302, "redirect", {}, "https://evil.example")
