@@ -1,0 +1,21 @@
+{
+  "schema": "ai4s.static-integrity-policy/v0",
+  "repository": "ai4science-skills/skills",
+  "scope": "SOURCE_AND_STATIC_METADATA_ONLY",
+  "max_download_bytes": 33554432,
+  "max_expanded_bytes": 67108864,
+  "max_members": 10000,
+  "max_total_source_download_bytes": 268435456,
+  "protected_paths": [
+    ".github/workflows/base-static-integrity.yml",
+    ".github/workflows/check.yml",
+    ".github/workflows/security-prerequisites.yml",
+    "policy/static-integrity.json",
+    "tools/check.py",
+    "tools/static_integrity.py",
+    "tools/static_integrity_status.py",
+    "tools/sync.py",
+    "tools/test_static_integrity.py",
+    "tools/trust_common.py"
+  ]
+}
