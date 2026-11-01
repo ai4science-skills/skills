@@ -1,0 +1,70 @@
+{
+  "name": "Base-owned static integrity (not security admission)",
+  "on": {
+    "pull_request_target": {
+      "types": ["opened", "synchronize", "reopened", "ready_for_review", "edited"]
+    }
+  },
+  "permissions": {},
+  "jobs": {
+    "scan_inert_pr_bytes": {
+      "runs-on": "ubuntu-24.04",
+      "timeout-minutes": 15,
+      "permissions": {"contents": "read"},
+      "outputs": {"report_b64": "${{ steps.scan.outputs.report_b64 }}"},
+      "steps": [
+        {
+          "uses": "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "with": {
+            "ref": "${{ github.sha }}",
+            "persist-credentials": false
+          }
+        },
+        {
+          "uses": "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+          "with": {"python-version": "3.12"}
+        },
+        {
+          "id": "scan",
+          "name": "Read candidate archive as bounded inert data",
+          "shell": "bash",
+          "env": {
+            "GITHUB_TOKEN": "${{ github.token }}",
+            "GH_TOKEN": ""
+          },
+          "run": "set -euo pipefail\npython -I -S -B tools/static_integrity.py --event \"$GITHUB_EVENT_PATH\" --base-sha \"$GITHUB_SHA\"\n"
+        }
+      ]
+    },
+    "publish_exact_head_status": {
+      "needs": ["scan_inert_pr_bytes"],
+      "if": "${{ always() }}",
+      "runs-on": "ubuntu-24.04",
+      "timeout-minutes": 5,
+      "permissions": {"contents": "read", "pull-requests": "read", "statuses": "write"},
+      "steps": [
+        {
+          "uses": "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "with": {
+            "ref": "${{ github.sha }}",
+            "persist-credentials": false
+          }
+        },
+        {
+          "uses": "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+          "with": {"python-version": "3.12"}
+        },
+        {
+          "name": "Publish exact-head status from base-owned code",
+          "shell": "bash",
+          "env": {
+            "GITHUB_TOKEN": "${{ github.token }}",
+            "REPORT_B64": "${{ needs.scan_inert_pr_bytes.outputs.report_b64 }}",
+            "SCAN_RESULT": "${{ needs.scan_inert_pr_bytes.result }}"
+          },
+          "run": "set -euo pipefail\npython -I -S -B tools/static_integrity_status.py --event \"$GITHUB_EVENT_PATH\" --base-sha \"$GITHUB_SHA\" --report-b64 \"$REPORT_B64\" --scan-result \"$SCAN_RESULT\"\n"
+        }
+      ]
+    }
+  }
+}
