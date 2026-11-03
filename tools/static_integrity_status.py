@@ -24,6 +24,13 @@ from trust_common import read_json_bytes, strict_json
 CONTEXT = "ai4s/static-integrity"
 API = "https://api.github.com/repos/" + gate.REPOSITORY
 HEX64 = re.compile(r"[0-9a-f]{64}\Z")
+REPORT_KEYS = frozenset({
+    "schema", "decision", "installable", "provider_policy", "scope", "repository", "number",
+    "base_sha", "base_ref", "head_repo", "head_sha", "trusted_base_sha", "merge_base_sha",
+    "policy_sha256", "checker_sha256", "candidate_archive_sha256", "plugin_count",
+    "skill_count", "upstream", "unobserved",
+})
+UPSTREAM_KEYS = frozenset({"name", "repository", "commit", "archive_sha256"})
 
 
 def _request(url, token, payload=None):
@@ -45,15 +52,28 @@ def _request(url, token, payload=None):
     return sync.read_json(data)
 
 
+def _upstream(report):
+    upstream = report["upstream"]
+    return (type(report["plugin_count"]) is int and type(report["skill_count"]) is int
+            and report["skill_count"] >= 0 and isinstance(upstream, list)
+            and report["plugin_count"] == len(upstream)
+            and all(isinstance(item, dict) and item.keys() == UPSTREAM_KEYS
+                    and all(type(item[key]) is str for key in UPSTREAM_KEYS)
+                    and gate.SHA.fullmatch(item["commit"]) and HEX64.fullmatch(item["archive_sha256"])
+                    for item in upstream))
+
+
 def _result(report, bound):
-    if not isinstance(report, dict) or report.get("schema") != gate.SCHEMA:
+    if not isinstance(report, dict) or report.keys() != REPORT_KEYS or report.get("schema") != gate.SCHEMA:
         return False
     if (report.get("decision") != "STATIC_MATCH" or report.get("installable") is not False
             or report.get("provider_policy") != "UNVERIFIED"):
         return False
     for key in ("repository", "number", "base_ref", "base_sha", "head_sha", "head_repo"):
-        if report.get(key) != bound[key]:
+        if not gate._exact(report.get(key), bound[key]):
             return False
+    if not gate._exact(report.get("merge_base_sha"), bound["base_sha"]) or not _upstream(report):
+        return False
     root = pathlib.Path(__file__).resolve().parent.parent
     _, expected_policy_sha = gate.policy(root)
     expected_checker_sha = hashlib.sha256(gate._regular_bytes(root, "tools/static_integrity.py")).hexdigest()
@@ -69,20 +89,27 @@ def _result(report, bound):
 def publish(event, base_sha, report, token, scan_result, request=_request):
     bound = gate.identity(event, base_sha)
     current = request(API + "/pulls/" + str(bound["number"]), token)
-    if (current.get("state") != "open" or current.get("head", {}).get("sha") != bound["head_sha"]
-            or current.get("head", {}).get("repo", {}).get("full_name") != bound["head_repo"]
-            or current.get("base", {}).get("ref") != gate.PROTECTED_BASE_REF
-            or current.get("base", {}).get("sha") != bound["base_sha"]
-            or current.get("base", {}).get("repo", {}).get("full_name") != gate.REPOSITORY):
-        raise gate.Hold("STALE_OR_UNAVAILABLE_PR")
+    stale = "STALE_OR_UNAVAILABLE_PR"
+    if (gate._field(current, stale, str, "state") != "open"
+            or gate._field(current, stale, str, "head", "sha") != bound["head_sha"]
+            or gate._field(current, stale, str, "head", "repo", "full_name") != bound["head_repo"]
+            or gate._field(current, stale, str, "base", "ref") != gate.PROTECTED_BASE_REF
+            or gate._field(current, stale, str, "base", "sha") != bound["base_sha"]
+            or gate._field(current, stale, str, "base", "repo", "full_name") != gate.REPOSITORY):
+        raise gate.Hold(stale)
     matched = scan_result == "success" and _result(report, bound)
     payload = {"state": "success" if matched else "failure", "context": CONTEXT,
                "description": ("Pinned source/static metadata match; not security admission" if matched
                                else "HOLD: static integrity unavailable; not security admission")}
-    response = request(API + "/statuses/" + bound["head_sha"], token, payload)
-    if (response.get("context") != CONTEXT or response.get("state") != payload["state"]
-            or response.get("sha") != bound["head_sha"]):
-        raise gate.Hold("PROVIDER_STATUS_UNAVAILABLE")
+    status_url = API + "/statuses/" + bound["head_sha"]
+    response = request(status_url, token, payload)
+    unavailable = "PROVIDER_STATUS_UNAVAILABLE"
+    # GitHub's status object identifies its commit by url (.../statuses/<sha>), not a sha field.
+    if (gate._field(response, unavailable, str, "url") != status_url
+            or gate._field(response, unavailable, str, "context") != CONTEXT
+            or gate._field(response, unavailable, str, "state") != payload["state"]
+            or ("sha" in response and response["sha"] != bound["head_sha"])):
+        raise gate.Hold(unavailable)
     return matched
 
 
