@@ -32,6 +32,8 @@ SHA = re.compile(r"[0-9a-f]{40}\Z")
 MAX_EVENT_BYTES = 2 * 1024 * 1024
 MAX_POLICY_BYTES = 64 * 1024
 MAX_REPORT_BYTES = 64 * 1024
+MAX_PROVIDER_BYTES = 1024 * 1024
+COMPARE_URL = "https://api.github.com/repos/%s/compare/%s...%s"
 PROTECTED = frozenset({
     ".github/workflows/base-static-integrity.yml",
     ".github/workflows/check.yml",
@@ -59,8 +61,61 @@ def _get(value, *keys):
         raise Hold("INVALID_EVENT") from None
 
 
+def _exact(left, right):
+    """JSON equality that also requires identical types (True != 1, 1.0 != 1)."""
+    if type(left) is not type(right):
+        return False
+    if isinstance(left, dict):
+        return left.keys() == right.keys() and all(_exact(left[key], right[key]) for key in left)
+    if isinstance(left, list):
+        return len(left) == len(right) and all(_exact(a, b) for a, b in zip(left, right))
+    return left == right
+
+
+def _field(record, reason, kind, *keys):
+    """Typed access into provider JSON; a missing key or wrong type is a named Hold."""
+    value = record
+    for key in keys:
+        if not isinstance(value, dict) or key not in value:
+            raise Hold(reason)
+        value = value[key]
+    if type(value) is not kind:
+        raise Hold(reason)
+    return value
+
+
+def _provider_json(raw, reason):
+    """Strict provider JSON: duplicate keys, non-finite numbers and non-objects hold."""
+    try:
+        record = strict_json(raw)
+    except (TypeError, ValueError):
+        raise Hold(reason) from None
+    if not isinstance(record, dict):
+        raise Hold(reason)
+    return record
+
+
+def ancestry(record, base_sha, head_sha):
+    """Require the exact head to descend from the exact base (merge-base == base)."""
+    reason = "ANCESTRY_UNVERIFIED"
+    url = _field(record, reason, str, "url")
+    status = _field(record, reason, str, "status")
+    ahead = _field(record, reason, int, "ahead_by")
+    behind = _field(record, reason, int, "behind_by")
+    compared_base = _field(record, reason, str, "base_commit", "sha")
+    merge_base = _field(record, reason, str, "merge_base_commit", "sha")
+    if url != COMPARE_URL % (REPOSITORY, base_sha, head_sha) or compared_base != base_sha:
+        raise Hold(reason)
+    if merge_base != base_sha or status != "ahead" or behind != 0 or ahead < 1:
+        raise Hold("BASE_NOT_ANCESTOR")
+    return merge_base
+
+
 def identity(event, runner_base_sha):
-    if not isinstance(event, dict) or _get(event, "action") not in {
+    if not isinstance(event, dict):
+        raise Hold("INVALID_EVENT")
+    action = _get(event, "action")
+    if type(action) is not str or action not in {
         "opened", "synchronize", "reopened", "ready_for_review", "edited"
     }:
         raise Hold("INVALID_EVENT")
@@ -100,7 +155,7 @@ def policy(root):
         "max_total_source_download_bytes": 256 * 1024 * 1024,
         "protected_paths": sorted(PROTECTED),
     }
-    if document != expected:
+    if not _exact(document, expected):
         raise Hold("POLICY_UNAVAILABLE")
     return document, hashlib.sha256(raw).hexdigest()
 
@@ -202,11 +257,23 @@ def evaluate(event, runner_base_sha, trusted_root, get=sync.bounded_get,
     rules, policy_sha = policy(trusted_root)
     if verify_base is None:
         def verify_base(sha):
-            raw = get("https://api.github.com/repos/%s/commits/%s" % (REPOSITORY, sha), 128 * 1024)
-            record = sync.read_json(raw)
-            return record.get("sha") == sha and record.get("commit", {}).get("verification", {}).get("verified") is True
-    if not verify_base(bound["base_sha"]):
+            reason = "BASE_SIGNATURE_UNVERIFIED"
+            try:
+                raw = get("https://api.github.com/repos/%s/commits/%s" % (REPOSITORY, sha), 128 * 1024)
+            except (OSError, ValueError):
+                raise Hold(reason) from None
+            record = _provider_json(raw, reason)
+            return (_field(record, reason, str, "sha") == sha
+                    and _field(record, reason, bool, "commit", "verification", "verified") is True)
+    if verify_base(bound["base_sha"]) is not True:
         raise Hold("BASE_SIGNATURE_UNVERIFIED")
+    compare_url = COMPARE_URL % (REPOSITORY, bound["base_sha"], bound["head_sha"])
+    try:
+        compare_raw = get(compare_url + "?per_page=1", MAX_PROVIDER_BYTES)
+    except (OSError, ValueError):
+        raise Hold("ANCESTRY_UNVERIFIED") from None
+    merge_base = ancestry(_provider_json(compare_raw, "ANCESTRY_UNVERIFIED"),
+                          bound["base_sha"], bound["head_sha"])
     url = "https://codeload.github.com/%s/tar.gz/%s" % (bound["head_repo"], bound["head_sha"])
     candidate_raw = get(url, rules["max_download_bytes"])
     files = snapshot(candidate_raw, rules)
@@ -253,7 +320,8 @@ def evaluate(event, runner_base_sha, trusted_root, get=sync.bounded_get,
     return {"schema": SCHEMA, "decision": "STATIC_MATCH", "installable": False,
             "provider_policy": "UNVERIFIED",
             "scope": "SOURCE_AND_STATIC_METADATA_ONLY", **bound,
-            "trusted_base_sha": runner_base_sha, "policy_sha256": policy_sha,
+            "trusted_base_sha": runner_base_sha, "merge_base_sha": merge_base,
+            "policy_sha256": policy_sha,
             "checker_sha256": hashlib.sha256(_regular_bytes(trusted_root, "tools/static_integrity.py")).hexdigest(),
             "candidate_archive_sha256": hashlib.sha256(candidate_raw).hexdigest(),
             "plugin_count": len(upstream), "skill_count": count, "upstream": upstream,
